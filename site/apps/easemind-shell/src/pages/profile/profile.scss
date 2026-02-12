@@ -1,0 +1,27 @@
+.content {
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        
+        .image-section {
+            width: 100%;
+
+            span {
+                font-size: 32px ;
+            }
+        }
+    }
+}
+
+.user-image {
+    border-radius: 50%;
+    overflow: hidden;
+    aspect-ratio: 1;
+
+    img {
+        width: 100%;
+    }
+}
+
+.darkmode-user-image {
+    filter: contrast(0) brightness(2);
+}
