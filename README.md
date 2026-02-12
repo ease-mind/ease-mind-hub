@@ -1,4 +1,4 @@
-# EaseMind - Tech Challenge #2
+# EaseMind - Tech Challenge #5
 
 Bem-vindo ao projeto de estudo **EaseMind**, uma aplicação moderna desenvolvida em **React**. Para garantir uma estrutura flexível, escalável e organizada, o projeto foi criado utilizando o **Turborepo** (https://turborepo.com/docs). Essa abordagem facilita o compartilhamento de componentes e a gestão de diferentes features, possibilitando uma integração eficiente de múltiplos frameworks.
 
