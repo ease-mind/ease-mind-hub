@@ -1,0 +1,74 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.DS_Store
+*.pem
+blog-easemind/.gitignore
+blog-easemind/astro.config.mjs
+blog-easemind/package.json
+blog-easemind/README.md
+blog-easemind/tsconfig.json
+blog-easemind/yarn.lock
+blog-easemind/.vscode/extensions.json
+blog-easemind/.vscode/launch.json
+blog-easemind/public/favicon.svg
+blog-easemind/public/fonts/atkinson-bold.woff
+blog-easemind/public/fonts/atkinson-regular.woff
+blog-easemind/src/consts.ts
+blog-easemind/src/content.config.ts
+blog-easemind/src/assets/blog-placeholder-1.jpg
+blog-easemind/src/assets/blog-placeholder-2.jpg
+blog-easemind/src/assets/blog-placeholder-3.jpg
+blog-easemind/src/assets/blog-placeholder-4.jpg
+blog-easemind/src/assets/blog-placeholder-5.jpg
+blog-easemind/src/assets/blog-placeholder-about.jpg
+blog-easemind/src/components/BaseHead.astro
+blog-easemind/src/components/Footer.astro
+blog-easemind/src/components/FormattedDate.astro
+blog-easemind/src/components/Header.astro
+blog-easemind/src/components/HeaderLink.astro
+blog-easemind/src/content/blog/first-post.md
+blog-easemind/src/content/blog/markdown-style-guide.md
+blog-easemind/src/content/blog/second-post.md
+blog-easemind/src/content/blog/third-post.md
+blog-easemind/src/content/blog/using-mdx.mdx
+blog-easemind/src/layouts/BlogPost.astro
+blog-easemind/src/pages/about.astro
+blog-easemind/src/pages/index.astro
+blog-easemind/src/pages/rss.xml.js
+blog-easemind/src/pages/blog/\[...slug].astro
+blog-easemind/src/pages/blog/index.astro
+blog-easemind/src/styles/global.css

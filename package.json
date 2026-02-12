@@ -1,0 +1,30 @@
+{
+  "name": "tech-challenge-2",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "build:prod": "NODE_ENV=production turbo run build",
+    "preview": "turbo run preview --filter=easemind-shell",
+    "build:easemind-shell": "turbo run build --filter=easemind-shell",
+    "dev": "turbo dev --concurrency=12",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types",
+    "json-server": "json-server --watch db.json --port 8080"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "json-server": "^1.0.0-beta.3",
+    "prettier": "^3.5.3",
+    "turbo": "^2.5.4",
+    "typescript": "5.8.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "yarn@1.22.22",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

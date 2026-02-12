@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "id": "c0d9",
+      "name": "João Silva",
+      "email": "joao@example.com",
+      "password": "$2b$10$o/Mf2ddrYpvIGPSxvgjms.x.UuO13ZjFHK4RCedrLC/lt8YwPv81i"
+    }
+  ],
+  "extract": [
+    {
+      "id": "3992",
+      "date": "2025-05-19T13:46:41.339Z",
+      "type": "DOC/TED",
+      "value": "20",
+      "userId": "c0d9"
+    },
+    {
+      "id": "3204",
+      "userId": "c0d9",
+      "type": "DOC/TED",
+      "value": "100",
+      "date": "2025-05-20T15:26:06.413Z"
+    }
+  ],
+  "cards": [
+    {
+      "id": "bff3",
+      "userId": "c0d9",
+      "cardNumber": "4929970605666969",
+      "name": "João Silva",
+      "functions": [
+        "Crédito",
+        "Débito"
+      ],
+      "variant": "Físico"
+    },
+    {
+      "id": "af5b",
+      "userId": "c0d9",
+      "cardNumber": "5407978391046187",
+      "name": "João Silva",
+      "functions": [
+        "Crédito"
+      ],
+      "variant": "Virtual"
+    }
+  ]
+}
