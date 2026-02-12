@@ -1,0 +1,84 @@
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                  example: Daniela Pereira
+                email:
+                  type: string
+                  example: daniela@example.com
+                password:
+                  type: string
+                  example: Teste123
+      responses:
+        '201':
+          description: Usuário criado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
+        '401':
+          description: Nome, e-mail e senha são obrigatórios ou e-mail já cadastrado.
+        '500':
+          description: Erro interno do servidor.
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Realiza login do usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: daniela@example.com
+                password:
+                  type: string
+                  example: Teste123
+      responses:
+        '200':
+          description: Login realizado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  accessToken:
+                    type: string
+        '401':
+          description: Senha incorreta.
+        '409':
+          description: E-mail ou senha incorretos.
+        '500':
+          description: Erro interno do servidor.

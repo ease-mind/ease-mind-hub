@@ -1,0 +1,67 @@
+paths:
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Lista todos os usuários
+      responses:
+        '200':
+          description: Operação bem-sucedida. Retorna a lista de usuários.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - Users
+      summary: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Usuário criado com sucesso.
+        '400':
+          description: Dados de entrada inválidos.
+
+  /users/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: O ID único do usuário.
+    put:
+      tags:
+        - Users
+      summary: Atualiza um usuário existente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: Usuário atualizado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuário não encontrado.
+    delete:
+      tags:
+        - Users
+      summary: Deleta um usuário
+      responses:
+        '204':
+          description: Usuário deletado com sucesso (sem conteúdo).
+        '404':
+          description: Usuário não encontrado.
