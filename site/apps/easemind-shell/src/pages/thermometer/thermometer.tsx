@@ -119,7 +119,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                     width="180px"
                     height="350px"
                     bgcolor={colors['thermometer.background']}
-                    borderRadius="90px 90px 90px 90px"
+                    borderRadius="90px 90px"
                     border="2px solid #E0E0E0"
                   />
                   

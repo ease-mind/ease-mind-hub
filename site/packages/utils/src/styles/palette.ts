@@ -35,7 +35,7 @@ const lightPalette = {
   "white.main": "#ffffff",
   "red.200": "#ff5c5c",
   "red.700": "#B00020",
-  "warning.200": "#ffb347",
+  "warning.200": "#ffdeaf",
   "thermometer.background": "#ffffff",
   "logo.filter": "brightness(1)",
 };
