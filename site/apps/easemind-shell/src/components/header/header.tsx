@@ -131,7 +131,7 @@ export function EaseMindHeader() {
                                 sx={{
                                     fontFamily: "'Bukhari Script', cursive",
                                     fontWeight: 400,
-                                    color: colors["lime.contrast"],
+                                    color: colors["lime.800"],
                                     cursor: "pointer",
                                     userSelect: "none"
                                 }}

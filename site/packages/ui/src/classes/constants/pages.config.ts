@@ -3,11 +3,15 @@ import { WrapperRouteProps } from "../models/wrapper-route";
 
 export const loggedPages: WrapperRouteProps[] = [
     {
-        name: 'início',
-        route: '/dashboard'
+        name: 'termômetro',
+        route: '/termometro'
     },
     {
-        name: 'meus cartões',
-        route: '/cartoes'
+        name: 'tarefas',
+        route: '/tarefas'
+    },
+    {
+        name: 'configurações',
+        route: '/configuracoes'
     },
 ];
