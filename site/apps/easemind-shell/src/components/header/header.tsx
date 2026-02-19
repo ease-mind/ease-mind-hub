@@ -68,7 +68,7 @@ export function EaseMindHeader() {
         if (status === 'success') {
             setTimeout(() => {
                 closeLoginModal();
-                navigate('/dashboard');
+                navigate('/termometro');
             }, 500);
         } else {
             closeRegisterModal();
@@ -120,7 +120,7 @@ export function EaseMindHeader() {
                     <Toolbar disableGutters>
                         <Box
                             className={'link'}
-                            onClick={() => navigate((isLogged ? '/dashboard' : '/'))}
+                            onClick={() => navigate((isLogged ? '/termometro' : '/'))}
                             sx={{
                                 display: { xs: "none", md: "flex" },
                                 filter: `${colors['logo.filter']}`
@@ -188,7 +188,7 @@ export function EaseMindHeader() {
                         : null}
                         <Box
                             className={'link'}
-                            onClick={() => navigate((isLogged ? '/dashboard' : '/'))}
+                            onClick={() => navigate((isLogged ? '/termometro' : '/'))}
                             sx={{
                                 mr: 2,
                                 ml: 2,

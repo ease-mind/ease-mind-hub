@@ -7,7 +7,7 @@ export default function NotFound() {
   const { user } = useUser();
   const isLogged = !!user;
   const navigate = useNavigate();
-  const handleRedirect = () => navigate((isLogged ? '/dashboard' : '/'));
+  const handleRedirect = () => navigate((isLogged ? '/termometro' : '/'));
 
   return (
     <Box

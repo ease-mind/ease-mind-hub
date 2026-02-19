@@ -35,6 +35,8 @@ const lightPalette = {
   "white.main": "#ffffff",
   "red.200": "#ff5c5c",
   "red.700": "#B00020",
+  "warning.200": "#ffb347",
+  "thermometer.background": "#ffffff",
   "logo.filter": "brightness(1)",
 };
 
@@ -75,6 +77,8 @@ const darkPalette = {
   "white.main": "#ffffff",
   "red.200": "#ff8181",
   "red.700": "#B00020",
+  "warning.200": "#8a7354",
+  "thermometer.background": "#261c1c",
   "logo.filter": "brightness(1)",
 };
 

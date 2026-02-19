@@ -95,7 +95,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
             onClose={() => setShowAlert(false)}
           
             sx={{ 
-              backgroundColor: '#FFF4E5',
+              backgroundColor: colors['warning.200'],
               '& .MuiAlert-message': { width: '100%' }
             }}
           >
@@ -118,7 +118,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                     sx={{ transform: 'translateX(-50%)' }}
                     width="180px"
                     height="350px"
-                    bgcolor="#F5F5F5"
+                    bgcolor={colors['thermometer.background']}
                     borderRadius="90px 90px 90px 90px"
                     border="2px solid #E0E0E0"
                   />
@@ -276,7 +276,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                     <Typography variant="body2">Físicos</Typography>
                     <Box 
-                      bgcolor={colors['grey.200']} 
+                      bgcolor={colors['coral.500']} 
                       color="white" 
                       sx={{ px: 2, py: 1 }}
                       borderRadius={1}
@@ -289,7 +289,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Typography variant="body2">Estereotipias</Typography>
                     <Box 
-                      bgcolor={colors['grey.200']} 
+                      bgcolor={colors['coral.500']} 
                       color="white" 
                       sx={{ px: 2, py: 1 }}
                       borderRadius={1}
