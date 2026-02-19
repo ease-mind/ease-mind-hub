@@ -8686,8 +8686,8 @@ _we, Ij, Mht, Nht, Lht, kht, qht, Dht, Lwe, rr, Qa = D(() => {
     lightslategrey: "789",
     lightsteelblue: "b0c4de",
     lightyellow: "ffffe0",
-    lime: "0f0",
-    limegreen: "32cd32",
+    coral: "0f0",
+    coralgreen: "32cd32",
     linen: "faf0e6",
     magenta: "f0f",
     maroon: "800000",
@@ -8826,7 +8826,7 @@ var le, Fo, Wr, kp = D(() => {
     // ocean
     tertiary: "#FAFBFC",
     ancillary: "#22a699",
-    // Complimentary
+    // Compcoralntary
     orange: "#FC521F",
     gold: "#FFAE00",
     green: "#66BF3C",
@@ -9519,7 +9519,7 @@ var Wwe, Gwe, Ywe, I1, OP = D(() => {
     secondary: e.colorSecondary,
     tertiary: le.tertiary,
     ancillary: le.ancillary,
-    // Complimentary
+    // Compcoralntary
     orange: le.orange,
     gold: le.gold,
     green: le.green,
@@ -25517,8 +25517,8 @@ var one = S((A$t, nne) => {
     lightslategrey: [119, 136, 153],
     lightsteelblue: [176, 196, 222],
     lightyellow: [255, 255, 224],
-    lime: [0, 255, 0],
-    limegreen: [50, 205, 50],
+    coral: [0, 255, 0],
+    coralgreen: [50, 205, 50],
     linen: [250, 240, 230],
     magenta: [255, 0, 255],
     maroon: [128, 0, 0],

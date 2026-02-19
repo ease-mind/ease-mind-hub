@@ -51,23 +51,23 @@ export const lightTheme = createTheme(defaultTheme, {
       gradient: lightPalette["background.gradient"],
     },
     primary: {
-      main: lightPalette["lime.contrast"],
-      light: lightPalette["lime.700"],
-      dark: lightPalette["lime.contrast"],
-      contrastText: lightPalette["lime.50"],
+      main: lightPalette["coral.contrast"],
+      light: lightPalette["coral.700"],
+      dark: lightPalette["coral.contrast"],
+      contrastText: lightPalette["coral.50"],
     },
     secondary: {
-      main: lightPalette["lime.500"],
-      light: lightPalette["lime.400"],
-      dark: lightPalette["lime.600"],
-      contrastText: lightPalette["lime.contrast"],
+      main: lightPalette["coral.500"],
+      light: lightPalette["coral.400"],
+      dark: lightPalette["coral.600"],
+      contrastText: lightPalette["coral.contrast"],
     },
     tertiary: defaultTheme.palette.augmentColor({
       color: {
-        main: lightPalette["lime.100"],
-        light: lightPalette["lime.50"],
-        dark: lightPalette["lime.200"],
-        contrastText: lightPalette["lime.highcontrast"],
+        main: lightPalette["coral.100"],
+        light: lightPalette["coral.50"],
+        dark: lightPalette["coral.200"],
+        contrastText: lightPalette["coral.highcontrast"],
       },
       name: "tertiary",
     }),
@@ -86,8 +86,8 @@ export const lightTheme = createTheme(defaultTheme, {
       name: "white",
     }),
     text: {
-      primary: lightPalette["lime.900"],
-      secondary: lightPalette["lime.500"],
+      primary: lightPalette["coral.900"],
+      secondary: lightPalette["coral.500"],
     },
   },
   components: {
@@ -95,22 +95,22 @@ export const lightTheme = createTheme(defaultTheme, {
       styleOverrides: {
         root: {
           backgroundColor: lightPalette["navigation"],
-          color: lightPalette["lime.contrast"],
+          color: lightPalette["coral.contrast"],
         },
       },
     },
     MuiTypography: {
       styleOverrides: {
         root: {
-          color: lightPalette["lime.900"],
+          color: lightPalette["coral.900"],
         },
       },
     },
     MuiLink: {
       styleOverrides: {
         root: {
-          color: lightPalette["lime.800"],
-          textDecorationColor: lightPalette["lime.800"],
+          color: lightPalette["coral.800"],
+          textDecorationColor: lightPalette["coral.800"],
         },
       },
     },
@@ -193,7 +193,7 @@ export const lightTheme = createTheme(defaultTheme, {
 });
 
 export const darkTheme = createTheme(defaultTheme, {
-  ...getTypographyDefinition(darkPalette["lime.highcontrast"]),
+  ...getTypographyDefinition(darkPalette["coral.highcontrast"]),
   palette: {
     mode: "dark",
     background: {
@@ -202,23 +202,23 @@ export const darkTheme = createTheme(defaultTheme, {
       gradient: darkPalette["background.gradient"],
     },
     primary: {
-      main: darkPalette["lime.contrast"],
-      light: darkPalette["lime.700"],
-      dark: darkPalette["lime.contrast"],
-      contrastText: darkPalette["lime.50"],
+      main: darkPalette["coral.contrast"],
+      light: darkPalette["coral.700"],
+      dark: darkPalette["coral.contrast"],
+      contrastText: darkPalette["coral.50"],
     },
     secondary: {
-      main: darkPalette["lime.500"],
-      light: darkPalette["lime.400"],
-      dark: darkPalette["lime.600"],
-      contrastText: darkPalette["lime.subcontrast"],
+      main: darkPalette["coral.500"],
+      light: darkPalette["coral.400"],
+      dark: darkPalette["coral.600"],
+      contrastText: darkPalette["coral.subcontrast"],
     },
     tertiary: defaultTheme.palette.augmentColor({
       color: {
-        main: darkPalette["lime.800"],
-        light: darkPalette["lime.900"],
-        dark: darkPalette["lime.600"],
-        contrastText: darkPalette["lime.subcontrast"],
+        main: darkPalette["coral.800"],
+        light: darkPalette["coral.900"],
+        dark: darkPalette["coral.600"],
+        contrastText: darkPalette["coral.subcontrast"],
       },
       name: "tertiary",
     }),
@@ -237,8 +237,8 @@ export const darkTheme = createTheme(defaultTheme, {
       name: "white",
     }),
     text: {
-      primary: darkPalette["lime.accent"],
-      secondary: darkPalette["lime.accent"],
+      primary: darkPalette["coral.accent"],
+      secondary: darkPalette["coral.accent"],
     },
   },
   components: {
@@ -246,7 +246,7 @@ export const darkTheme = createTheme(defaultTheme, {
       styleOverrides: {
         root: {
           backgroundColor: darkPalette["navigation"],
-          color: darkPalette["lime.contrast"],
+          color: darkPalette["coral.contrast"],
         },
       },
     },
@@ -256,25 +256,25 @@ export const darkTheme = createTheme(defaultTheme, {
           color: darkPalette["grey.main"],
         },
         "&.Mui-selected:hover": {
-          backgroundColor: darkPalette["lime.600"],
+          backgroundColor: darkPalette["coral.600"],
         },
         "&:hover": {
-          backgroundColor: darkPalette["lime.600"], //hover do options do select
+          backgroundColor: darkPalette["coral.600"], //hover do options do select
         },
       },
     },
     MuiTypography: {
       styleOverrides: {
         root: {
-          color: darkPalette["lime.accent"],
+          color: darkPalette["coral.accent"],
         },
       },
     },
     MuiLink: {
       styleOverrides: {
         root: {
-          color: darkPalette["lime.900"],
-          textDecorationColor: darkPalette["lime.900"],
+          color: darkPalette["coral.900"],
+          textDecorationColor: darkPalette["coral.900"],
         },
       },
     },
@@ -287,7 +287,7 @@ export const darkTheme = createTheme(defaultTheme, {
         },
         ".MuiButtonBase-root": {
           "--variant-textColor": darkPalette["grey.50"] + " !important",
-          "--variant-containedColor": darkPalette["lime.900"] + " !important",
+          "--variant-containedColor": darkPalette["coral.900"] + " !important",
           "--variant-outlinedBorder": lightPalette["grey.200"] + " !important",
         },
         ".MuiPaper-root": {

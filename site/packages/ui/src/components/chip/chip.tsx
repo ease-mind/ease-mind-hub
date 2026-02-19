@@ -16,11 +16,11 @@ export function EaseMindChip({
   return (
     <Chip
       sx={{
-        bgcolor: colors["lime.100"],
+        bgcolor: colors["coral.100"],
         maxWidth: 135,
         "&:hover": {
-          color: colors["lime.800"],
-          bgcolor: colors["lime.300"],
+          color: colors["coral.800"],
+          bgcolor: colors["coral.300"],
           cursor: "pointer",
         },
         "& .MuiChip-label": {

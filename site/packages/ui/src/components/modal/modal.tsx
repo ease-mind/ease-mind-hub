@@ -12,12 +12,12 @@ export function EaseMindModal({
   title,
 }: EaseMindModalProps) {
   const { isDarkMode, colors } = useTheme();
-  const bgColor = isDarkMode ? colors['lime.50'] : colors['white.main'];
+  const bgColor = isDarkMode ? colors['coral.50'] : colors['white.main'];
   return (
     <Modal open={open} onClose={onClose} aria-labelledby={title}>
       <Box
         className={`easemind-modal`}
-        sx={{ backgroundColor: bgColor, borderColor: colors['lime.200'], borderWidth: 1, borderStyle: 'solid' }}
+        sx={{ backgroundColor: bgColor, borderColor: colors['coral.200'], borderWidth: 1, borderStyle: 'solid' }}
       >
         <Box
           className="easemind-modal-close"

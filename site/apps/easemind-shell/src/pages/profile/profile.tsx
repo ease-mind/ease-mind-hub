@@ -181,12 +181,12 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                     padding: "16px 0 48px"
                 }} className="image-section">
                     <Box padding={2}>
-                        <EaseMindText variant='lg' color={colors['lime.highcontrast']} textTransform='capitalize' fontWeight='bold'>{user?.name}</EaseMindText>
+                        <EaseMindText variant='lg' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>{user?.name}</EaseMindText>
                     </Box>
                     <Box flexGrow={1} px={2} maxWidth={'445px'} >
                         {hasUserImage ?
                             <Box width={'100%'} minWidth={'17em'} minHeight={'17em'} borderRadius={'50%'} sx={{ background: `url(${user?.image}) center center / cover` }}></Box> :
-                            <Box width={'100%'} minWidth={'17em'} minHeight={'17em'} borderRadius={'50%'} bgcolor={isDarkMode ? colors['lime.200'] : colors['lime.200']} display='flex' justifyContent='center' alignItems='center'>
+                            <Box width={'100%'} minWidth={'17em'} minHeight={'17em'} borderRadius={'50%'} bgcolor={isDarkMode ? colors['coral.200'] : colors['coral.200']} display='flex' justifyContent='center' alignItems='center'>
                                 <CameraEnhanceRoundedIcon fontSize={'large'} sx={{fontSize: '100pt'}}/>
                             </Box>
                         }
@@ -216,7 +216,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                 }} className="form-section">
                     <Box p={{ xs: 2, sm: 2, md: 4 }}>
                     <Box pb={{ xs: 2, sm: 2, md: 4 }}>
-                        <EaseMindText variant='md' color={colors['lime.highcontrast']} textTransform='capitalize' fontWeight='bold'>Dados pessoais</EaseMindText>
+                        <EaseMindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Dados pessoais</EaseMindText>
                     </Box>
                     <FormProvider {...userMethods}>
                         <form onSubmit={userMethods.handleSubmit(handleSubmit)}>
@@ -304,7 +304,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                 </Box>
                             </Box>
                             <Box pt={{xs: 2, sm: 2, md:4}}>
-                                <EaseMindText variant='md' color={colors['lime.highcontrast']} textTransform='capitalize' fontWeight='bold'>Atualizar senha</EaseMindText>
+                                <EaseMindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Atualizar senha</EaseMindText>
                             </Box>
                             <Box display="flex" gap={{xs: 0, sm: 0, md:3}} pt={{xs: 1, sm: 1, md:2}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
                                 <Box sx={{ width: { xs: "100%", md: "50%" } }}>

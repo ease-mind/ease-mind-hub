@@ -131,7 +131,7 @@ export function EaseMindHeader() {
                                 sx={{
                                     fontFamily: "'Bukhari Script', cursive",
                                     fontWeight: 400,
-                                    color: colors["lime.800"],
+                                    color: colors["coral.800"],
                                     cursor: "pointer",
                                     userSelect: "none"
                                 }}
@@ -203,7 +203,7 @@ export function EaseMindHeader() {
                                 sx={{
                                     fontFamily: "'Bukhari Script', cursive",
                                     fontWeight: 400,
-                                    color: colors["lime.contrast"],
+                                    color: colors["coral.contrast"],
                                     cursor: "pointer",
                                     userSelect: "none"
                                 }}
@@ -265,7 +265,7 @@ export function EaseMindHeader() {
                                             {
                                                 user?.image ?
                                                     <Avatar alt={user?.name} src={user?.image} /> :
-                                                    <Avatar sx={{ bgcolor: colors["lime.400"] }} alt={user?.name} />
+                                                    <Avatar sx={{ bgcolor: colors["coral.400"] }} alt={user?.name} />
                                             }
                                         </IconButton>
                                     </Tooltip>

@@ -86,8 +86,8 @@ const EaseMindHomePage = () => {
     const footerTextOriginal = footerText.style.cssText;
 
     if (!isDarkMode) {
-      footer.style.backgroundColor = colors["lime.dark"];
-      footerText.style.color = colors["lime.100"];
+      footer.style.backgroundColor = colors["coral.dark"];
+      footerText.style.color = colors["coral.100"];
       document.body.style.background =
         "radial-gradient(100% 244.46% at 0% 0%, rgb(255 67 83) 0%, rgb(255 210 148) 100%) 0% 0% / 120% 120%, radial-gradient(50% 122.23% at 50% 50%, rgb(230 57 70) 0%, rgb(255 140 126) 100%), radial-gradient(100.45% 245.58% at 0% 0%, rgb(255 138 126) 0%, rgb(255 181 173) 100%), linear-gradient(127.43deg, rgb(204 47 60) 0%, rgb(255 107 119) 100%)";
       document.body.style.backgroundBlendMode =
@@ -139,7 +139,7 @@ const EaseMindHomePage = () => {
 
         <Box
           minWidth={"100vw"}
-          bgcolor={colors["lime.50"]}
+          bgcolor={colors["coral.50"]}
           py={5}
           minHeight={"35em"}
           width={"100%"}
@@ -151,7 +151,7 @@ const EaseMindHomePage = () => {
           <Typography
             fontSize={"35pt"}
             fontWeight={"bolder"}
-            color={colors["lime.900"]}
+            color={colors["coral.900"]}
           >
             Conheça os benefícios do EaseMind
           </Typography>
@@ -167,16 +167,16 @@ const EaseMindHomePage = () => {
                 ({ icon, title, description }: Benefit, index: number) => (
                   <Box maxWidth={"20em"} key={index}>
                     <EaseMindCard
-                      bgcolor={colors["lime.contrast"]}
+                      bgcolor={colors["coral.contrast"]}
                       variant={"outlined"}
-                      styles={{ borderColor: colors["lime.100"] }}
+                      styles={{ borderColor: colors["coral.100"] }}
                     >
                       <Box
                         minHeight={"21em"}
                         px={4}
                         p={4}
                         gap={2}
-                        color={colors["lime.100"]}
+                        color={colors["coral.100"]}
                         display={"flex"}
                         flexDirection={"column"}
                         justifyContent={"center"}
@@ -186,12 +186,12 @@ const EaseMindHomePage = () => {
                         <Typography
                           variant="md"
                           fontWeight={"bold"}
-                          color={colors["lime.400"]}
+                          color={colors["coral.400"]}
                           style={{ marginTop: "8px" }}
                         >
                           {title}
                         </Typography>
-                        <Typography variant="sm" color={colors["lime.100"]}>
+                        <Typography variant="sm" color={colors["coral.100"]}>
                           {description}
                         </Typography>
                       </Box>

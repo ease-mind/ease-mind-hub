@@ -59,7 +59,7 @@ export function EaseMindDatePicker({
           views={views}
           sx={{
             ".MuiSvgIcon-root": {
-              color: colors["lime.contrast"],
+              color: colors["coral.contrast"],
             },
           }}
           slotProps={{
@@ -73,31 +73,31 @@ export function EaseMindDatePicker({
             },
             day: {
               sx: {
-                color: colors["lime.contrast"],
+                color: colors["coral.contrast"],
                 fontWeight: 500,
                 "&.Mui-selected": {
                   "&:hover": {
-                    backgroundColor: colors["lime.contrast"],
-                    color: colors["lime.50"],
+                    backgroundColor: colors["coral.contrast"],
+                    color: colors["coral.50"],
                   },
                 },
                 "&:hover": {
-                  backgroundColor: colors["lime.subcontrast"],
+                  backgroundColor: colors["coral.subcontrast"],
                   color: colors["white.main"],
                 },
                 "&.Mui-disabled": {
                   color: colors["grey.500"],
                 },
                 "&.MuiPickersDay-today": {
-                  border: `1px solid ${colors["lime.900"]}`,
+                  border: `1px solid ${colors["coral.900"]}`,
                 },
               },
             },
             calendarHeader: {
               sx: {
-                color: colors["lime.contrast"],
+                color: colors["coral.contrast"],
                 "& .MuiSvgIcon-root": {
-                  color: colors["lime.contrast"],
+                  color: colors["coral.contrast"],
                 },
                 "& .MuiPickersCalendarHeader-label": {
                   fontWeight: 600,
@@ -110,15 +110,15 @@ export function EaseMindDatePicker({
             popper: {
               sx: {
                 ".MuiDayCalendar-header": {
-                  backgroundColor: colors["lime.500"],
+                  backgroundColor: colors["coral.500"],
                 },
                 ".MuiPickersPopper-paper": {
                   backgroundColor: colors["grey.900"],
-                  color: colors["lime.contrast"],
+                  color: colors["coral.contrast"],
                   borderRadius: 2,
                 },
                 ".MuiDayCalendar-weekDayLabel": {
-                  color: colors["lime.subcontrast"],
+                  color: colors["coral.subcontrast"],
                   fontWeight: "bold",
                 },
               },
@@ -126,9 +126,9 @@ export function EaseMindDatePicker({
             toolbar: {
               sx: {
                 backgroundColor: colors["background.gradient"],
-                color: colors["lime.highcontrast"],
+                color: colors["coral.highcontrast"],
                 "& .MuiTypography-root": {
-                  color: colors["lime.highcontrast"],
+                  color: colors["coral.highcontrast"],
                   fontWeight: 600,
                 },
               },

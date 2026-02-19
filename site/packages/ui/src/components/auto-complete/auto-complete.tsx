@@ -65,7 +65,7 @@ export function EaseMindAutoComplete({
       }}
       sx={{
         ".MuiSvgIcon-root": {
-          color: colors["lime.highcontrast"],
+          color: colors["coral.highcontrast"],
         },
       }}
       inputValue={inputValue}

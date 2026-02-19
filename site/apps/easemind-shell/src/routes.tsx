@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import EaseMindHomePage from './pages/home/home';
-import EaseMindDashboardPage from './pages/dashboard/dashboard';
+import EaseMindDashboardPage from './pages/thermometer/thermometer';
 import NotFound from './pages/not-found/not-found';
 import Profile from './pages/profile/profile';
 import { AuthGuard } from './guards/auth.guard';
@@ -10,7 +10,7 @@ const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<PublicGuard component={EaseMindHomePage} />} />
     <Route
-      path="/dashboard"
+      path="/termometro"
       element={<AuthGuard component={EaseMindDashboardPage} />}
     />
     <Route path="/*" element={<NotFound />} />

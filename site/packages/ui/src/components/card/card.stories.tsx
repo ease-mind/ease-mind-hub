@@ -4,8 +4,8 @@ import * as DocBlock from "@storybook/blocks";
 import { EaseMindCard, EaseMindCardProps } from "./card";
 
 const cards: (EaseMindCardProps & { name: string })[] = [
-  { name: "Titulo do card", variant: "elevation", bgcolor: "lime.900" },
-  { name: "Titulo do card", variant: "outlined", bgcolor: "lime.700" },
+  { name: "Titulo do card", variant: "elevation", bgcolor: "coral.900" },
+  { name: "Titulo do card", variant: "outlined", bgcolor: "coral.700" },
 ];
 export default {
   title: "Components/Card",
@@ -47,7 +47,7 @@ export default {
                   >
                     <EaseMindCard
                       variant={item.variant}
-                      bgcolor={'lime.700'}
+                      bgcolor={'coral.700'}
                     >
                       <Box p={2} gap={4} color="#FFF">
                         <Typography

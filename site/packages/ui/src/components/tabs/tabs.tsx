@@ -41,7 +41,7 @@ export function EaseMindTabs({
           width: "100%",
           borderRadius: "6px",
           overflow: "hidden",
-          border: `1px solid ${colors["lime.500"]}`,
+          border: `1px solid ${colors["coral.500"]}`,
           display: "inline-block",
         }}
       >
@@ -61,16 +61,16 @@ export function EaseMindTabs({
               fontWeight: "400",
               fontSize: "0.875rem",
               textTransform: "uppercase",
-              color: colors["lime.highcontrast"],
-              borderRight: `1px solid ${colors["lime.500"]}`,
+              color: colors["coral.highcontrast"],
+              borderRight: `1px solid ${colors["coral.500"]}`,
               transition: "all 0.2s ease-in-out",
             },
             "& .MuiTab-root:last-of-type": {
               borderRight: "none",
             },
             "& .MuiButtonBase-root.Mui-selected": {
-              backgroundColor: colors["lime.500"],
-              color: colors["lime.subcontrast"],
+              backgroundColor: colors["coral.500"],
+              color: colors["coral.subcontrast"],
             },
           }}
         >

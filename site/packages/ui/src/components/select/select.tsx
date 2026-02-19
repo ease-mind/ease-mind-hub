@@ -65,7 +65,7 @@ export function EaseMindSelect({
         multiple={multiple}
         sx={{
           ".MuiSvgIcon-root": {
-            color: colors["lime.highcontrast"]
+            color: colors["coral.highcontrast"]
           }
         }}
       >

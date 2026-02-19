@@ -55,38 +55,38 @@ export function EaseMindButton({
   shouldForwardProp: (prop) => prop !== 'borderRadius'
 })<ButtonProps & { borderRadius?: string }>(({ borderRadius }) => ([{
     '&.MuiButton-containedSecondary': {
-      backgroundColor: palette['lime.500'],
-      color: palette['lime.subcontrast']
+      backgroundColor: palette['coral.500'],
+      color: palette['coral.subcontrast']
     },
     '&.MuiButton-outlinedSecondary': {
-      borderColor: palette['lime.800'],
-      color: palette['lime.800'],
+      borderColor: palette['coral.800'],
+      color: palette['coral.800'],
     },
     '&.MuiButton-textSecondary': {
-      color: palette['lime.800'],
+      color: palette['coral.800'],
     },
     '&.MuiButton-textTertiary': {
-      color: palette['lime.highcontrast'],
+      color: palette['coral.highcontrast'],
     },
     '&.MuiButton-outlinedTertiary': {
-      borderColor: palette['lime.400'],
-      color: palette['lime.highcontrast'],
+      borderColor: palette['coral.400'],
+      color: palette['coral.highcontrast'],
     },
     '&.MuiButton-containedTertiary': {
       border: '1px solid',
       borderColor: 'rgb(199 201 145 / 15%)',
-      backgroundColor: palette['lime.100'],
+      backgroundColor: palette['coral.100'],
     },
     '&.MuiButton-containedPrimary': {
-      backgroundColor: palette['lime.900'],
-      color: palette['lime.50'],
+      backgroundColor: palette['coral.900'],
+      color: palette['coral.50'],
     },
     '&.MuiButton-outlinedPrimary': {
-      borderColor: palette['lime.700'],
-      color: palette['lime.900'],
+      borderColor: palette['coral.700'],
+      color: palette['coral.900'],
     },
     '&.MuiButton-textPrimary': {
-      color: palette['lime.900'],
+      color: palette['coral.900'],
     },
     '&.Mui-disabled': {
       color: '#3E3E3E',

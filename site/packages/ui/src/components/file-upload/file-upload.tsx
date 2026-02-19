@@ -50,8 +50,8 @@ export function EaseMindButtonFileUpload({
           width: "100%",
           textTransform: "none",
           "&:hover": {
-            color: colors["lime.700"],
-            bgcolor: colors["lime.100"],
+            color: colors["coral.700"],
+            bgcolor: colors["coral.100"],
             cursor: "pointer",
           },
         }}

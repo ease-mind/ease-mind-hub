@@ -19,7 +19,7 @@ export function EaseMindLinearProgress({
   const { colors } = useTheme();
 
   const barColor =
-    variant === 'secondary' ? colors['lime.900'] : colors['lime.500'];
+    variant === 'secondary' ? colors['coral.900'] : colors['coral.500'];
 
   const StyledLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height,
