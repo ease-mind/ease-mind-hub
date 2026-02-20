@@ -1,36 +1,62 @@
 import { FC, useEffect, useState } from 'react';
-import { Box, Typography, Radio, RadioGroup, FormControlLabel, Button, Alert } from '@mui/material';
+import { Box, Typography, Radio, Button, Alert, CircularProgress } from '@mui/material';
 import { Warning, Cancel, Lightbulb, TrendingUp, Loop } from '@mui/icons-material';
 import { EaseMindCard } from '@repo/ui';
 import { useTheme } from '@repo/utils';
+import { 
+  getAllSymptoms, 
+  saveUserSymptoms, 
+  Symptom, 
+  UserSymptomRecord,
+  useUser
+} from '@repo/data-access';
 
 interface EaseMindThermometerProps { }
 
-interface Symptom {
-  id: string;
-  label: string;
-  category: 'communication' | 'physical' | 'stereotypies';
-}
-
-const symptoms: Symptom[] = [
-  { id: 'difficulty-words', label: 'Dificuldade para encontrar palavras', category: 'communication' },
-  { id: 'fast-slow-speech', label: 'Fala mais rápida ou lenta', category: 'communication' },
-  { id: 'avoid-visual-contact', label: 'Evitar contato visual', category: 'communication' },
-  { id: 'short-monosyllabic', label: 'Respostas curtas ou monossilábicas', category: 'communication' },
-  { id: 'muscle-tension', label: 'Tensão muscular', category: 'physical' },
-  { id: 'accelerated-breathing', label: 'Respiração acelerada', category: 'physical' },
-  { id: 'sweaty-hands', label: 'Suor nas mãos', category: 'physical' },
-  { id: 'headache', label: 'Dor de cabeça', category: 'physical' },
-  { id: 'balance-body', label: 'Balançar o corpo', category: 'stereotypies' },
-  { id: 'tap-rub-hands', label: 'Bater ou esfregar as mãos', category: 'stereotypies' },
-  { id: 'repetitive-movements', label: 'Movimentos repetitivos', category: 'stereotypies' },
-  { id: 'constant-restlessness', label: 'Inquietação constante', category: 'stereotypies' },
-];
-
 const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   const { colors } = useTheme();
+  const { user } = useUser();
+  const [symptoms, setSymptoms] = useState<Symptom[]>([]);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [showAlert, setShowAlert] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    loadSymptoms();
+  }, []);
+
+  useEffect(() => {
+    if (selectedSymptoms.length > 5) {
+      setShowAlert(true);
+    } else {
+      setShowAlert(false);
+    }
+  }, [selectedSymptoms]);
+
+  useEffect(() => {
+    if (selectedSymptoms.length > 0 && user?.id) {
+      const timer = setTimeout(() => {
+        handleSaveSymptoms();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedSymptoms, user]);
+
+  const loadSymptoms = async () => {
+    try {
+      setLoading(true);
+      const data = await getAllSymptoms();
+      setSymptoms(data);
+      setError(null);
+    } catch (err) {
+      setError('Erro ao carregar sintomas. Por favor, tente novamente.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSymptomToggle = (symptomId: string) => {
     setSelectedSymptoms(prev => 
@@ -72,20 +98,74 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
     ).length;
   };
 
-  const temperaturePercentage = (selectedSymptoms.length / symptoms.length) * 100;
+  const handleSaveSymptoms = async () => {
+    if (!user?._id || selectedSymptoms.length === 0) return;
 
-  useEffect(() => {  if(selectedSymptoms.length > 5) { setShowAlert(true)}
-}, [selectedSymptoms]);
+    try {
+      setSaving(true);
+      const data: UserSymptomRecord = {
+        userId: user._id,
+        selectedSymptoms,
+        temperature: getTemperature(),
+        level: getTemperatureLevel() || 'Calmo',
+        timestamp: new Date(),
+        categoryCount: {
+          communication: getCategoryCount('communication'),
+          physical: getCategoryCount('physical'),
+          stereotypies: getCategoryCount('stereotypies'),
+        }
+      };
+
+      await saveUserSymptoms(data);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleReset = () => {
+    setSelectedSymptoms([]);
+    setShowAlert(false);
+  };
+
+  const temperaturePercentage = symptoms.length > 0 ? (selectedSymptoms.length / symptoms.length) * 100 : 0;
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box p={3}>
+        <Alert severity="error" action={
+          <Button color="inherit" size="small" onClick={loadSymptoms}>
+            Tentar Novamente
+          </Button>
+        }>
+          {error}
+        </Alert>
+      </Box>
+    );
+  }
+
   return (
     <>
       <Box width={'100%'} px={{xs: 2, sm: 3, md: 4}} py={3} display={'flex'} flexDirection={'column'} gap={3}>
         <Box>
           <Typography variant="h4" fontWeight="bold" display="flex" alignItems="center" gap={1}>
-           Termômetro Sensorial
+          Termômetro Sensorial
           </Typography>
           <Typography variant="body2" color="text.primary" mt={1}>
             Identifique sinais de sobrecarga antes que ela aconteça (Rumble Stage)
           </Typography>
+          {saving && (
+            <Typography variant="caption" color="text.primary" mt={1} display="flex" alignItems="center" gap={1}>
+              <CircularProgress size={12} /> Salvando automaticamente...
+            </Typography>
+          )}
         </Box>
 
         {showAlert && (
@@ -93,7 +173,6 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
             severity="warning" 
             icon={<Warning />}
             onClose={() => setShowAlert(false)}
-          
             sx={{ 
               backgroundColor: colors['warning.200'],
               '& .MuiAlert-message': { width: '100%' }
@@ -119,7 +198,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                     width="180px"
                     height="350px"
                     bgcolor={colors['thermometer.background']}
-                    borderRadius="90px 90px"
+                    borderRadius="90px 90px 90px 90px"
                     border="2px solid #E0E0E0"
                   />
                   
@@ -313,7 +392,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                       bgcolor: colors['coral.500'],
                       '&:hover': { bgcolor: colors['coral.600'] }
                     }}
-                    onClick={() => setSelectedSymptoms([])}
+                    onClick={handleReset}
                   >
                     Resetar
                   </Button>

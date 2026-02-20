@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose'
-import { WidgetKey } from '../enums/widgets.enum'
 
 interface IUser {
     name: string
@@ -7,7 +6,6 @@ interface IUser {
     password: string
     document: string
     image: string;
-    selectedWidgets: WidgetKey[]
 }
 
 const userSchema = new Schema<IUser>({
@@ -18,11 +16,6 @@ const userSchema = new Schema<IUser>({
     image: {
         type: String,
         default: ''
-    },
-    selectedWidgets: {
-        type: [String],
-        enum: Object.values(WidgetKey),
-        default: Object.values(WidgetKey),
     },
 })
 

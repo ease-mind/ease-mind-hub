@@ -7,3 +7,4 @@ export * from "./hooks/use-fetch";
 export * from "./hooks/use-session";
 export * from './api/addressService';
 export * from './api/userService';
+export * from './api/symptomService';
