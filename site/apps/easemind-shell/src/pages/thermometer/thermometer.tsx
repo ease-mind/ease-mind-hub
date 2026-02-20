@@ -5,7 +5,8 @@ import { EaseMindCard } from '@repo/ui';
 import { useTheme } from '@repo/utils';
 import { 
   getAllSymptoms, 
-  saveUserSymptoms, 
+  saveUserSymptoms,
+  getLatestUserSymptoms,
   Symptom, 
   UserSymptomRecord,
   useUser
@@ -28,6 +29,12 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   }, []);
 
   useEffect(() => {
+    if (user?._id) {
+      handleSelectedSymptoms();
+    }
+  }, [user]);
+
+  useEffect(() => {
     if (selectedSymptoms.length > 5) {
       setShowAlert(true);
     } else {
@@ -36,7 +43,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   }, [selectedSymptoms]);
 
   useEffect(() => {
-    if (selectedSymptoms.length > 0 && user?.id) {
+    if (selectedSymptoms.length > 0 && user?._id) {
       const timer = setTimeout(() => {
         handleSaveSymptoms();
       }, 2000);
@@ -44,15 +51,24 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
     }
   }, [selectedSymptoms, user]);
 
+  const handleSelectedSymptoms = async () => {
+    if (!user?._id) return;
+    
+    const result = await getLatestUserSymptoms(user._id);
+    
+    if (result?.selectedSymptoms) {
+      setSelectedSymptoms(result.selectedSymptoms);
+    }
+  };
+
   const loadSymptoms = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       const data = await getAllSymptoms();
       setSymptoms(data);
       setError(null);
     } catch (err) {
       setError('Erro ao carregar sintomas. Por favor, tente novamente.');
-      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -101,25 +117,21 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   const handleSaveSymptoms = async () => {
     if (!user?._id || selectedSymptoms.length === 0) return;
 
-    try {
-      setSaving(true);
-      const data: UserSymptomRecord = {
-        userId: user._id,
-        selectedSymptoms,
-        temperature: getTemperature(),
-        level: getTemperatureLevel() || 'Calmo',
-        timestamp: new Date(),
-        categoryCount: {
-          communication: getCategoryCount('communication'),
-          physical: getCategoryCount('physical'),
-          stereotypies: getCategoryCount('stereotypies'),
-        }
-      };
-
-      await saveUserSymptoms(data);
-    } finally {
-      setSaving(false);
-    }
+    setSaving(true);
+    const data: UserSymptomRecord = {
+      userId: user._id,
+      selectedSymptoms,
+      temperature: getTemperature(),
+      level: getTemperatureLevel() || 'Calmo',
+      timestamp: new Date(),
+      categoryCount: {
+        communication: getCategoryCount('communication'),
+        physical: getCategoryCount('physical'),
+        stereotypies: getCategoryCount('stereotypies'),
+      }
+    };
+    await saveUserSymptoms(data);
+    setSaving(false);
   };
 
   const handleReset = () => {

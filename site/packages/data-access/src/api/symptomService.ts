@@ -77,12 +77,16 @@ export async function saveUserSymptoms(data: UserSymptomRecord): Promise<any> {
   }
 }
 
-export async function getUserSymptomHistory(userId: string): Promise<UserSymptomRecord[]> {
+
+export async function getLatestUserSymptoms(userId: string): Promise<UserSymptomRecord | null> {
   try {
-    const response = await api.get(`/user-symptoms/${userId}`);
+    const response = await api.get(`/user-symptoms/latest/${userId}`);
     return response.data;
   } catch (error: any) {
-    console.error('Erro ao buscar histórico de sintomas:', error);
+    if (error.response?.status === 404) {
+      return null;
+    }
+    console.error('Erro ao buscar último registro de sintomas:', error);
     throw error;
   }
 }
