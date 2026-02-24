@@ -1,4 +1,3 @@
-import { TransactionCreateDrawer } from '@/modules/Transactions';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
 import { Feather } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
@@ -84,7 +83,6 @@ export const BytebankTabBar = () => {
                         </TouchableOpacity>
                     );
                 })}
-                <TransactionCreateDrawer visible={isModalVisible} onDismiss={hideModal} />
             </View>
         </View>
     );

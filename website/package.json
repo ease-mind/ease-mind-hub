@@ -7,7 +7,6 @@
     "preview": "turbo run preview --filter=easemind-web",
     "build:easemind-web": "turbo run build --filter=easemind-web",
     "dev": "turbo dev --concurrency=12",
-    "dev:app": "turbo run start --filter=bytebank",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",

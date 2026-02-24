@@ -1,4 +1,3 @@
-import { TransactionManagerProvider } from '@/modules/Transactions';
 import { AuthProvider } from '@/modules/Users';
 import { PaperDarkTheme, PaperLightTheme } from '@/shared/classes/constants/Colors';
 import { useColorScheme } from '@/shared/hooks/useColorScheme';
@@ -38,7 +37,6 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <TransactionManagerProvider useReactive={true}>
         <PaperProvider theme={colorScheme === 'dark' ? PaperDarkTheme : PaperLightTheme}>
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -47,7 +45,6 @@ export default function RootLayout() {
             <Stack.Screen name="+not-found" />
           </Stack>
         </PaperProvider>
-      </TransactionManagerProvider>
     </AuthProvider>
   );
 }
