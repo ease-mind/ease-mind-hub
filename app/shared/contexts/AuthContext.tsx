@@ -6,7 +6,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  signUp: (name: string, email: string, password: string) => Promise<void>;
+  signUp: (name: string, email: string) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => Promise<void>;
   isAuthenticated: boolean;
@@ -31,18 +31,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (storedUser && storedToken) {
         setAuthToken(storedToken);
+        setUser(storedUser);
+        setIsAuthenticated(true);
         
-        try {
-          const validatedUser = await authService.verifyToken(storedToken);
-          setUser(validatedUser);
-          setIsAuthenticated(true);
-          await authService.updateStoredUser(validatedUser);
-        } catch (error) {
-          console.log('Token inválido ou expirado, fazendo logout...');
-          await authService.logout();
-          setUser(null);
-          setIsAuthenticated(false);
-        }
+        console.log('✅ Usuário restaurado do AsyncStorage');
+      } else {
+        console.log('ℹ️ Nenhum usuário encontrado no AsyncStorage');
       }
     } catch (error) {
       console.error('Erro ao inicializar autenticação:', error);
