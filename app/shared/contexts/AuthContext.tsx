@@ -1,14 +1,6 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { useUser } from '@repo/data-access';
-import { User } from '../../modules/Users/domain/interfaces/IUserRepository';
-import {
-    getUserDataUseCase,
-    loginUseCase,
-    logoutUseCase,
-    signUpUseCase,
-    updateUserUseCase,
-} from '../../modules/Users/infrastructure/factories/userFactories';
-import { UserRepository } from '../../modules/Users/infrastructure/repositories/UserRepository';
+import { authService, User } from '../services/authService';
+import { setAuthToken } from '../config/api';
 
 interface AuthContextType {
   user: User | null;
@@ -23,76 +15,78 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const userRepository = new UserRepository();
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { user: dataAccessUser, setUser: setDataAccessUser } = useUser();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = userRepository.onAuthStateChanged(async (currentUser) => {
-      setUser(currentUser);
-      
-      // Sincroniza com o UserContext do data-access
-      if (currentUser) {
-        setDataAccessUser({
-          id: currentUser.uid,
-          name: currentUser.displayName || '',
-          email: currentUser.email || '',
-          photoURL: currentUser.photoURL || undefined,
-          phoneNumber: currentUser.phoneNumber || undefined,
-        } as any);
-      } else {
-        setDataAccessUser(null);
-      }
-      
-      setIsLoading(false);
-      setIsAuthenticated(!!currentUser);
-    });
+    initializeAuth();
+  }, []);
 
-    return () => unsubscribe();
-  }, [setDataAccessUser]);
+  const initializeAuth = async () => {
+    try {
+      const storedUser = await authService.getStoredUser();
+      const storedToken = await authService.getStoredToken();
+
+      if (storedUser && storedToken) {
+        setAuthToken(storedToken);
+        
+        try {
+          const validatedUser = await authService.verifyToken(storedToken);
+          setUser(validatedUser);
+          setIsAuthenticated(true);
+          await authService.updateStoredUser(validatedUser);
+        } catch (error) {
+          console.log('Token inválido ou expirado, fazendo logout...');
+          await authService.logout();
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao inicializar autenticação:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    const startTime = performance.now();
     try {
-      await loginUseCase.execute({ email, password });
-      const authTime = performance.now() - startTime;
-      console.log(`[Performance - Cenário 1] Tempo de autenticação Firebase Auth: ${authTime.toFixed(2)}ms (${(authTime / 1000).toFixed(2)}s)`);
+      setIsLoading(true);
+      const response = await authService.login({ email, password });
+      
+      setUser(response.user);
+      setIsAuthenticated(true);
+      
       return true;
     } catch (error) {
       console.error('Erro de login:', error);
       return false;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const signUp = async (name: string, email: string, password: string): Promise<void> => {
     try {
-      await signUpUseCase.execute({ name, email, password });
+      setIsLoading(true);
+      await authService.register({ name, email, password });
     } catch (error) {
       console.error('Erro de cadastro:', error);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const reloadUser = async () => {
     try {
-      await userRepository.reloadUser();
-      const currentUser = userRepository.getCurrentUser();
-      if (currentUser) {
-        const userData = await getUserDataUseCase.execute(currentUser.uid);
+      const storedToken = await authService.getStoredToken();
+      if (storedToken) {
+        const userData = await authService.verifyToken(storedToken);
         setUser(userData);
-        
-        // Sincroniza com o UserContext do data-access
-        setDataAccessUser({
-          id: userData.uid,
-          name: userData.displayName || '',
-          email: userData.email || '',
-          photoURL: userData.photoURL || undefined,
-          phoneNumber: userData.phoneNumber || undefined,
-        } as any);
+        await authService.updateStoredUser(userData);
       }
     } catch (error) {
       console.error('Erro ao recarregar usuário:', error);
@@ -100,16 +94,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async (): Promise<void> => {
-    await logoutUseCase.execute();
-    setDataAccessUser(null);
+    try {
+      await authService.logout();
+      setUser(null);
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
   };
 
   const updateUser = async (userData: Partial<User>) => {
     try {
       if (!user) throw new Error('Usuário não autenticado.');
 
-      await updateUserUseCase.execute(user.uid, userData);
-      await reloadUser();
+      const updatedUser = await authService.updateUser(user._id, userData);
+      setUser(updatedUser);
     } catch (error) {
       console.error('Erro ao atualizar usuário:', error);
       throw error;

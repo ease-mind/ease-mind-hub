@@ -1,15 +1,15 @@
 import { Box, Link } from "@mui/material";
+import { useUser } from "@repo/data-access";
+import {
+  AccessModalType,
+  EaseMindAccessModalProps,
+  EaseMindButton,
+  EaseMindInputController,
+  EaseMindModal,
+  EaseMindText,
+} from "@repo/ui";
 import { ReactElement, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { User, useSession, useUser } from "@repo/data-access";
-import {
-  EaseMindAccessModalProps,
-  EaseMindModal,
-  EaseMindInputController,
-  EaseMindButton,
-  EaseMindText,
-  AccessModalType,
-} from "@repo/ui";
 
 export function EaseMindLoginModal({
   open,
@@ -18,8 +18,7 @@ export function EaseMindLoginModal({
   openModal,
 }: EaseMindAccessModalProps): ReactElement {
   const [isLoading, setLoading] = useState(false);
-  const { setUser } = useUser();
-  const [, setSessionValue] = useSession<string | null>("token");
+  const { login } = useUser();
 
   const loginMethods = useForm<{ email: string; password: string }>({
     defaultValues: {
@@ -31,36 +30,18 @@ export function EaseMindLoginModal({
   const handleLogin = async (data: { email: string; password: string }) => {
     setLoading(true);
 
-    const apiUrl = import.meta.env.PUBLIC_API_URL;
+    const result = await login(data);
 
-    const response = await fetch(`${apiUrl}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).catch(() => {
-      setLoading(false);
-      onSubmit({ status: "error", message: "Ocorreu um erro ao tentar logar no sistema, tente novamente mais tarde por favor." });
-    });
-
-    if (!response) { return; }
-    if (response.ok) {
-      const responseData = (await response.json()) as {
-        user: User;
-        accessToken: string;
-      };
-
-      const userData = responseData.user;
-
+    if (result.success) {
       loginMethods.reset();
-      setUser(userData);
-      setSessionValue(responseData.accessToken);
       onSubmit({ status: "success" });
     } else {
-      const responseError = (await response.json()) as { message: string };
-      onSubmit({ status: "error", message: responseError.message });
+      onSubmit({ 
+        status: "error", 
+        message: result.message || "Ocorreu um erro ao tentar logar no sistema, tente novamente mais tarde por favor." 
+      });
     }
+    
     setLoading(false);
   };
 

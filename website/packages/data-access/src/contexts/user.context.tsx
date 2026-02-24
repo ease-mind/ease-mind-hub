@@ -2,39 +2,53 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useSession } from '../hooks/use-session';
 import { User } from '../classes';
 import { isTokenExpired } from '../helpers/is-token-expired';
+import { authService, LoginCredentials, RegisterData } from '../api/authService';
+import { api } from '../helpers/api';
 
 interface UserContextProps {
   user: User | null;
   setUser: (user: User | null) => void;
   loading: boolean;
-  isAuthenticated?: boolean;
+  isAuthenticated: boolean;
+  login: (credentials: LoginCredentials) => Promise<{ success: boolean; message?: string }>;
+  register: (data: RegisterData) => Promise<{ success: boolean; message?: string }>;
+  logout: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sessionUser, setSessionUser] = useSession<User | null>('user');
-  const [sessionToken] = useSession<string | null>('token');
+  const [sessionToken, setSessionToken] = useSession<string | null>('token');
   const [user, setUser] = useState<User | null>(sessionUser);
-  const [, setToken] = useState<string | null>(sessionToken);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!sessionUser);
-
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    if (sessionUser !== null) {
-      setUser(sessionUser);
-      if (sessionToken !== null) {
-        setToken(sessionToken)
+    const initAuth = () => {
+      if (sessionUser && sessionToken) {
         const isExpired = isTokenExpired(sessionToken);
-        setIsAuthenticated(!isExpired);
+        if (!isExpired) {
+          setUser(sessionUser);
+          setIsAuthenticated(true);
+          // Configura o token no header do axios
+          api.defaults.headers.common['Authorization'] = `Bearer ${sessionToken}`;
+        } else {
+          // Token expirado, limpa a sessão
+          setUser(null);
+          setSessionUser(null);
+          setSessionToken(null);
+          setIsAuthenticated(false);
+        }
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
       }
-    } else {
-      setUser(null);
-      setToken(null);
-    }
-    setLoading(false);
-  }, [sessionUser, sessionToken, loading]);
+      setLoading(false);
+    };
+
+    initAuth();
+  }, [sessionUser, sessionToken]);
 
   const handleSetUser = (user: User | null) => {
     setUser(user);
@@ -42,8 +56,56 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsAuthenticated(!!user);
   };
 
+  const login = async (credentials: LoginCredentials): Promise<{ success: boolean; message?: string }> => {
+    try {
+      setLoading(true);
+      const response = await authService.login(credentials);
+      
+      // Salva o usuário e token na sessão
+      setSessionUser(response.user);
+      setSessionToken(response.accessToken);
+      setUser(response.user);
+      setIsAuthenticated(true);
+      
+      // Configura o token no header do axios
+      api.defaults.headers.common['Authorization'] = `Bearer ${response.accessToken}`;
+      
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, message: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const register = async (data: RegisterData): Promise<{ success: boolean; message?: string }> => {
+    try {
+      setLoading(true);
+      await authService.register(data);
+      return { success: true, message: 'Cadastro realizado com sucesso!' };
+    } catch (error: any) {
+      return { success: false, message: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = async (): Promise<void> => {
+    // Chama o serviço de logout que limpa o token do axios
+    await authService.logout();
+    
+    // Limpa todos os estados locais
+    setUser(null);
+    setSessionUser(null);
+    setSessionToken(null);
+    setIsAuthenticated(false);
+    
+    // Remove o token do header do axios (garantia adicional)
+    delete api.defaults.headers.common['Authorization'];
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser: handleSetUser, loading, isAuthenticated }}>
+    <UserContext.Provider value={{ user, setUser: handleSetUser, loading, isAuthenticated, login, register, logout }}>
       {children}
     </UserContext.Provider>
   );

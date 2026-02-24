@@ -1,9 +1,9 @@
 import { api } from '../helpers/api';
 import { User } from '../classes';
 
-export interface LoginResponse {
-    user: User;
-    accessToken: string;
+export interface LoginCredentials {
+    email: string;
+    password: string;
 }
 
 export interface RegisterData {
@@ -12,52 +12,64 @@ export interface RegisterData {
     password: string;
 }
 
-export async function login(email: string, password: string): Promise<LoginResponse> {
-    try {
-        const response = await api.post('/auth/login', { email, password });
-        
-        // Salva o token no localStorage/sessionStorage
-        if (response.data.accessToken) {
-            if (typeof window !== 'undefined') {
-                sessionStorage.setItem('token', response.data.accessToken);
-            }
+export interface AuthResponse {
+    user: User;
+    accessToken: string;
+}
+
+export interface ApiError {
+    message: string;
+}
+
+export const authService = {
+    /**
+     * Realiza o login do usuário
+     */
+    async login(credentials: LoginCredentials): Promise<AuthResponse> {
+        try {
+            const response = await api.post<AuthResponse>('/auth/login', credentials);
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error.response?.data?.message || 'Erro ao realizar login');
         }
-        
-        return response.data;
-    } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Erro ao fazer login');
-    }
-}
+    },
 
-export async function register(data: RegisterData): Promise<User> {
-    try {
-        const response = await api.post('/auth/register', data);
-        return response.data;
-    } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Erro ao registrar usuário');
-    }
-}
+    /**
+     * Realiza o cadastro de um novo usuário
+     */
+    async register(data: RegisterData): Promise<void> {
+        try {
+            await api.post('/auth/register', data);
+        } catch (error: any) {
+            throw new Error(error.response?.data?.message || 'Erro ao realizar cadastro');
+        }
+    },
 
-export async function logout(): Promise<void> {
-    if (typeof window !== 'undefined') {
-        sessionStorage.removeItem('token');
+    /**
+     * Verifica se o usuário está autenticado
+     */
+    async verifyToken(token: string): Promise<User> {
+        try {
+            const response = await api.get<User>('/auth/verify', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error.response?.data?.message || 'Token inválido');
+        }
+    },
+
+    /**
+     * Realiza o logout do usuário
+     */
+    async logout(): Promise<void> {
+        // Limpa o usuário e token do sessionStorage
         sessionStorage.removeItem('user');
-    }
-}
-
-export async function getCurrentUser(): Promise<User | null> {
-    try {
-        const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
-        if (!token) return null;
+        sessionStorage.removeItem('token');
         
-        // Aqui você pode fazer uma chamada para validar o token e obter os dados atualizados do usuário
-        // const response = await api.get('/auth/me');
-        // return response.data;
-        
-        // Por enquanto, retorna o usuário salvo na sessão
-        const userStr = typeof window !== 'undefined' ? sessionStorage.getItem('user') : null;
-        return userStr ? JSON.parse(userStr) : null;
-    } catch (error) {
-        return null;
-    }
-}
+        // Limpa o token do axios
+        delete api.defaults.headers.common['Authorization'];
+    },
+};

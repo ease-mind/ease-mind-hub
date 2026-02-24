@@ -1,4 +1,4 @@
-import { AuthProvider } from '@/modules/Users';
+import { AuthProvider } from '@/shared/contexts';
 import { PaperDarkTheme, PaperLightTheme } from '@/shared/classes/constants/Colors';
 import { useColorScheme } from '@/shared/hooks/useColorScheme';
 import '@/shared/i18n/datePickerLocale';

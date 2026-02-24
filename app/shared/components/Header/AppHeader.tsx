@@ -1,4 +1,4 @@
-import { useAuth } from '@/modules/Users';
+import { useAuth } from '@/shared/contexts';
 import { ColorsPalette } from "@/shared/classes/constants/Pallete";
 import { Feather } from "@expo/vector-icons";
 import { Image } from 'expo-image';

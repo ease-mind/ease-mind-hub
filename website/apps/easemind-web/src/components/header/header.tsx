@@ -38,7 +38,7 @@ export function EaseMindHeader() {
     const [isSnackbarOpen, setSnackbarOpen] = useState(false);
     const [openLoginModal, setOpenLoginModal] = useState(false);
     const [openRegisterModal, setOpenRegisterModal] = useState(false);
-    const { user, setUser } = useUser();
+    const { user, logout } = useUser();
     const isLogged = !!user;
     const pages = isLogged ? loggedPages : [];
 
@@ -97,9 +97,9 @@ export function EaseMindHeader() {
         }
     }
 
-    const handleLogout = (): void => {
+    const handleLogout = async (): Promise<void> => {
         handleCloseUserMenu();
-        setUser(null);
+        await logout();
         navigate('/');
     };
 

@@ -1,5 +1,5 @@
 import { Box, Link } from "@mui/material";
-import { User } from "@repo/data-access";
+import { useUser } from "@repo/data-access";
 import {
   AccessModalType,
   EaseMindAccessModalProps,
@@ -18,8 +18,9 @@ export function EaseMindRegisterModal({
   openModal,
 }: EaseMindAccessModalProps): ReactElement {
   const [isLoading, setLoading] = useState(false);
+  const { register } = useUser();
 
-  const registerMethods = useForm<Partial<User>>({
+  const registerMethods = useForm<{ name: string; email: string; password: string }>({
     defaultValues: {
       name: "",
       email: "",
@@ -27,29 +28,22 @@ export function EaseMindRegisterModal({
     },
   });
 
-  const handleRegister = async (data: Partial<User>) => {
+  const handleRegister = async (data: { name: string; email: string; password: string }) => {
     setLoading(true);
-    const apiUrl = import.meta.env.PUBLIC_API_URL;
-    const response = await fetch(`${apiUrl}/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).catch(() => {
-      setLoading(false);
-      onSubmit({ status: "error", message: "Ocorreu um erro ao tentar criar o cadastro no sistema, tente novamente mais tarde por favor." });
-    });
-    if (!response) { return; }
-    if (response.ok) {
+
+    const result = await register(data);
+
+    if (result.success) {
       registerMethods.reset();
       onSubmit({
         status: "success",
-        message: "Cadastro realizado com sucesso!",
+        message: result.message || "Cadastro realizado com sucesso!",
       });
     } else {
-      const responseError = (await response.json()) as { message: string };
-      onSubmit({ status: "error", message: responseError.message });
+      onSubmit({ 
+        status: "error", 
+        message: result.message || "Ocorreu um erro ao tentar criar o cadastro no sistema, tente novamente mais tarde por favor." 
+      });
     }
 
     setLoading(false);
