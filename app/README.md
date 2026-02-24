@@ -1,6 +1,6 @@
-# Bytebank - Tech Challenge #4
+# Easemind - Tech Challenge #4
 
-Bem-vindo ao projeto de estudo **Bytebank**, uma aplicação mobile moderna desenvolvida em **React Native** utilizando o **Expo**. Este projeto foi criado para explorar boas práticas de arquitetura, componentes reutilizáveis e integração com recursos nativos, proporcionando uma experiência fluida e responsiva para o usuário.
+Bem-vindo ao projeto de estudo **Easemind**, uma aplicação mobile moderna desenvolvida em **React Native** utilizando o **Expo**. Este projeto foi criado para explorar boas práticas de arquitetura, componentes reutilizáveis e integração com recursos nativos, proporcionando uma experiência fluida e responsiva para o usuário.
 
 ---
 
@@ -116,7 +116,7 @@ Com essas configurações, o aplicativo estará pronto para se conectar aos serv
 
 ## 🎨 Design & Estilização
 
-O layout do app foi baseado no protótipo Web do [Figma](https://www.figma.com/design/ZeXkGB9NhAr5ypgpgF1gWf/Bytebank---Redesign?node-id=118-103&t=hyMOJlYGyckL9kYm-1), seguindo o Design System do Bytebank para garantir consistência visual e acessibilidade.
+O layout do app foi baseado no protótipo Web do [Figma](https://www.figma.com/design/ZeXkGB9NhAr5ypgpgF1gWf/Easemind---Redesign?node-id=118-103&t=hyMOJlYGyckL9kYm-1), seguindo o Design System do Easemind para garantir consistência visual e acessibilidade.
 
 ---
 

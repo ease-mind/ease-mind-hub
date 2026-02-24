@@ -1,11 +1,11 @@
-import { BytebankButton } from '@/shared/ui/Button';
+import { EasemindButton } from '@/shared/ui/Button';
 import { MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, Easing, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Portal } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-interface BytebankrDrawerProps {
+interface EasemindrDrawerProps {
     title: string;
     visible: boolean;
     onDismiss: () => void;
@@ -19,7 +19,7 @@ interface BytebankrDrawerProps {
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-export const BytebankDrawer = ({
+export const EasemindDrawer = ({
     title,
     visible,
     onDismiss,
@@ -29,7 +29,7 @@ export const BytebankDrawer = ({
     cancelLabel = "Cancelar",
     children,
     disabled,
-}: BytebankrDrawerProps) => {
+}: EasemindrDrawerProps) => {
     const slideAnim = useRef(new Animated.Value(SCREEN_WIDTH)).current;
     const [mounted, setMounted] = useState(visible);
 
@@ -83,7 +83,7 @@ export const BytebankDrawer = ({
                     </ScrollView>
 
                     <View style={styles.footerButtons}>
-                        <BytebankButton
+                        <EasemindButton
                             onPress={onCancel}
                             mode="contained-tonal"
                             color="tertiary"
@@ -91,8 +91,8 @@ export const BytebankDrawer = ({
                             styles={{ backgroundColor: '#FFF' }}
                         >
                             {cancelLabel}
-                        </BytebankButton>
-                        <BytebankButton
+                        </EasemindButton>
+                        <EasemindButton
                             onPress={onSubmit}
                             mode="contained"
                             color="primary"
@@ -100,7 +100,7 @@ export const BytebankDrawer = ({
                             disabled={disabled}
                         >
                             {confirmLabel}
-                        </BytebankButton>
+                        </EasemindButton>
                     </View>
                 </Animated.View>
             </View>

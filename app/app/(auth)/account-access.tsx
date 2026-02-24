@@ -1,8 +1,8 @@
 import { useAuth } from '@/shared/contexts';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
-import { BytebankButton } from '@/shared/ui/Button';
-import { BytebankInputController } from '@/shared/ui/Input/InputController';
-import { BytebankTabSelector } from '@/shared/ui/TabSelector';
+import { EasemindButton } from '@/shared/ui/Button';
+import { EasemindInputController } from '@/shared/ui/Input/InputController';
+import { EasemindTabSelector } from '@/shared/ui/TabSelector';
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -100,13 +100,13 @@ const AccountAccessScreen = () => {
                         source={require('@/assets/images/logo-auth.png')}
                         style={{ width: 100, height: 111, marginTop: 20, marginBottom: 30 }}
                     />
-                    <Text style={styles.title}>Experimente mais liberdade no controle da sua vida financeira.</Text>
+                    <Text style={styles.title}>Experimente mais liberdade no controle da sua saúde cognitiva.</Text>
 
-                    <BytebankTabSelector tabs={[{ label: 'Login', name: 'login' }, { label: 'Crie uma conta', name: 'register' }]} activeTab={activeTab} onTabChange={handleTabChange} />
+                    <EasemindTabSelector tabs={[{ label: 'Login', name: 'login' }, { label: 'Crie uma conta', name: 'register' }]} activeTab={activeTab} onTabChange={handleTabChange} />
                     {activeTab === 'login' ? (
                         <FormProvider {...loginForm} key="login-form">
                             <View style={styles.formContainer}>
-                                <BytebankInputController
+                                <EasemindInputController
                                     name="email"
                                     label="Digite o seu e-mail"
                                     placeholder="email@example.com"
@@ -119,7 +119,7 @@ const AccountAccessScreen = () => {
                                         }
                                     }}
                                 />
-                                <BytebankInputController
+                                <EasemindInputController
                                     name="password"
                                     label="Digite a sua senha"
                                     placeholder="********"
@@ -133,25 +133,25 @@ const AccountAccessScreen = () => {
                                         />
                                     }
                                 />
-                                <BytebankButton
+                                <EasemindButton
                                     color="primary"
                                     variant="contained"
                                     onPress={loginForm.handleSubmit(handleLogin)}
                                     disabled={isLoading || !loginForm.formState.isValid}>
                                     {isLoading ? <ActivityIndicator color="#fff" /> : "Entrar"}
-                                </BytebankButton>
+                                </EasemindButton>
                             </View>
                         </FormProvider>
                     ) : (
                         <FormProvider {...registerForm} key="register-form">
                             <View style={styles.formContainer}>
-                                <BytebankInputController
+                                <EasemindInputController
                                     name="name"
                                     label="Nome"
                                     placeholder="Seu nome"
                                     rules={{ required: "Nome é obrigatório" }}
                                 />
-                                <BytebankInputController
+                                <EasemindInputController
                                     name="registerEmail"
                                     label="Digite o e-mail"
                                     placeholder="email@example.com"
@@ -164,7 +164,7 @@ const AccountAccessScreen = () => {
                                         }
                                     }}
                                 />
-                                <BytebankInputController
+                                <EasemindInputController
                                     name="registerPassword"
                                     label="Digite a senha"
                                     placeholder="********"
@@ -178,13 +178,13 @@ const AccountAccessScreen = () => {
                                         />
                                     }
                                 />
-                                <BytebankButton
+                                <EasemindButton
                                     color="primary"
                                     variant="contained"
                                     onPress={registerForm.handleSubmit(handleRegister)}
                                     disabled={isLoading || !registerForm.formState.isValid}>
-                                    {isLoading ? <ActivityIndicator color={ColorsPalette.light['lime.700']} /> : "Criar conta"}
-                                </BytebankButton>
+                                    {isLoading ? <ActivityIndicator color={ColorsPalette.light['coral.700']} /> : "Criar conta"}
+                                </EasemindButton>
                             </View>
                         </FormProvider>
                     )}

@@ -8,7 +8,7 @@ export type SelectOption = {
     value: string;
 };
 
-interface BytebankSelectProps extends Partial<PickerSelectProps> {
+interface EasemindSelectProps extends Partial<PickerSelectProps> {
     label: string;
     value?: string;
     items: SelectOption[];
@@ -18,7 +18,7 @@ interface BytebankSelectProps extends Partial<PickerSelectProps> {
     error?: boolean;
 }
 
-export const BytebankSelect = ({
+export const EasemindSelect = ({
     label,
     value,
     items,
@@ -28,7 +28,7 @@ export const BytebankSelect = ({
     placeholder,
     helperText,
     error = false,
-}: BytebankSelectProps) => {
+}: EasemindSelectProps) => {
     const helperId = helperText ? `${label}-helper` : undefined;
 
  const HelperText = () => (helperText ? (

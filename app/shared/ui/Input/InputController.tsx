@@ -1,15 +1,15 @@
 import React from "react";
 import { Control, Controller, RegisterOptions, useFormContext } from "react-hook-form";
-import { BytebankInput, BytebankInputProps } from "./Input";
+import { EasemindInput, EasemindInputProps } from "./Input";
 
-interface InputControllerProps extends BytebankInputProps{
+interface InputControllerProps extends EasemindInputProps{
   name: string;
   rules?: RegisterOptions;
   control?: Control<any>;
-  keyboardType?: BytebankInputProps["keyboardType"];
+  keyboardType?: EasemindInputProps["keyboardType"];
 }
 
-export const BytebankInputController: React.FC<InputControllerProps> = ({
+export const EasemindInputController: React.FC<InputControllerProps> = ({
   control: controlProp,
   name,
   label,
@@ -27,7 +27,7 @@ export const BytebankInputController: React.FC<InputControllerProps> = ({
 
   if (!control) {
     throw new Error(
-      "BytebankInputController deve ser usado dentro de um FormProvider ou receber a prop 'control'"
+      "EasemindInputController deve ser usado dentro de um FormProvider ou receber a prop 'control'"
     );
   }
 
@@ -37,7 +37,7 @@ export const BytebankInputController: React.FC<InputControllerProps> = ({
       rules={rules}
       control={control}
       render={({ field, fieldState: { error } }) => {
-        return <BytebankInput
+        return <EasemindInput
           {...field}
           label={label}
           type={type}

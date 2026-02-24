@@ -23,7 +23,7 @@ const ProtectedHeader = ({ title = '', hasAction = false, iconAction = '', onAct
           <View style={styles.avatarCircle}>
             {user && user.photoURL ? <Image source={{ uri: user.photoURL }} cachePolicy="disk"
               contentFit="cover"
-              transition={150} style={{ width: 50, height: 50, borderRadius: 25 }} /> : <MaterialIcons name="user" size={25} color={ColorsPalette.light['lime.800']} />}
+              transition={150} style={{ width: 50, height: 50, borderRadius: 25 }} /> : <MaterialIcons name="user" size={25} color={ColorsPalette.light['coral.800']} />}
           </View>
         </TouchableOpacity>
         <View style={styles.titleContainer}>
@@ -31,7 +31,7 @@ const ProtectedHeader = ({ title = '', hasAction = false, iconAction = '', onAct
         </View>
         {hasAction ? (
           <TouchableOpacity style={styles.rightIcon} onPress={onActionPress}>
-            <MaterialIcons name={iconAction ?? 'search'} size={28} color={ColorsPalette.light["lime.900"]} />
+            <MaterialIcons name={iconAction ?? 'search'} size={28} color={ColorsPalette.light["coral.900"]} />
           </TouchableOpacity>
         ) : (
           <View style={styles.rightIcon} />
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   avatarCircle: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: ColorsPalette.light['lime.50'],
+    backgroundColor: ColorsPalette.light['coral.50'],
     borderRadius: 25,
     width: 50,
     height: 50,

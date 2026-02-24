@@ -1,12 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface BytebankTabSelectorProps {
+interface EasemindTabSelectorProps {
     tabs: Array<{ name: string, label: string }>,
     activeTab: string,
     disabled?: boolean,
     onTabChange: (name: string) => void,
 }
-export function BytebankTabSelector({ tabs, activeTab, disabled, onTabChange }: BytebankTabSelectorProps) {
+export function EasemindTabSelector({ tabs, activeTab, disabled, onTabChange }: EasemindTabSelectorProps) {
     return (
         <View style={styles.tabSelector}>
             {

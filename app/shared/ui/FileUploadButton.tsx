@@ -47,16 +47,16 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({ label, onFin
 
   return (
     <TouchableOpacity
-      style={[styles.button, { cursor: disabled ? 'not-allowed' as any : 'pointer', backgroundColor: downloadURL ? ColorsPalette.light['grey.50'] : ColorsPalette.light['lime.100'], borderColor: downloadURL ? ColorsPalette.light['grey.200'] : ColorsPalette.light['lime.300'] }]}
+      style={[styles.button, { cursor: disabled ? 'not-allowed' as any : 'pointer', backgroundColor: downloadURL ? ColorsPalette.light['grey.50'] : ColorsPalette.light['coral.100'], borderColor: downloadURL ? ColorsPalette.light['grey.200'] : ColorsPalette.light['coral.300'] }]}
     onPress={handleDocumentPick}
       disabled={disabled}
     >
       {isProgressVisible ? (
-        <ActivityIndicator color={ColorsPalette.light['lime.700']} />
+        <ActivityIndicator color={ColorsPalette.light['coral.700']} />
       ) : (
         <>
-          <MaterialIcons name="cloud-upload" size={24} color={downloadURL ? ColorsPalette.light['grey.500'] : ColorsPalette.light['lime.700']} style={styles.icon} />
-          <Text style={[styles.buttonText, { color: downloadURL ? ColorsPalette.light['grey.500'] : ColorsPalette.light['lime.700'] }]}>
+          <MaterialIcons name="cloud-upload" size={24} color={downloadURL ? ColorsPalette.light['grey.500'] : ColorsPalette.light['coral.700']} style={styles.icon} />
+          <Text style={[styles.buttonText, { color: downloadURL ? ColorsPalette.light['grey.500'] : ColorsPalette.light['coral.700'] }]}>
             {label}
           </Text>
         </>

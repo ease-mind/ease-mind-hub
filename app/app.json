@@ -1,20 +1,20 @@
 {
   "expo": {
-    "name": "Bytebank",
-    "slug": "bytebank",
+    "name": "Easemind",
+    "slug": "easemind",
     "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "bytebank",
+    "scheme": "easemind",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "bytebank.laconicamente.com"
+      "bundleIdentifier": "easemind.laconicamente.com"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "package": "bytebank.laconicamente.com",
+      "package": "easemind.laconicamente.com",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

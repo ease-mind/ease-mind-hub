@@ -3,7 +3,7 @@ import { Button, ButtonProps, useTheme } from "react-native-paper";
 import { ColorsPalette } from "../classes/constants/Pallete";
 
 
-export interface BytebankButtonProps extends ButtonProps {
+export interface EasemindButtonProps extends ButtonProps {
     color:
     | 'primary'
     | 'secondary'
@@ -16,7 +16,7 @@ export interface BytebankButtonProps extends ButtonProps {
     labelStyles?:  StyleProp<TextStyle>;
 }
 
-export function BytebankButton({
+export function EasemindButton({
     color,
     variant = 'contained',
     borderRadius,
@@ -25,7 +25,7 @@ export function BytebankButton({
     styles = {},
     labelStyles = {},
     disabled
-}: BytebankButtonProps) {
+}: EasemindButtonProps) {
     const theme = useTheme();
 
     return (
@@ -56,7 +56,7 @@ const buttonStyles = StyleSheet.create({
         borderRadius: 30,
     },
     buttonText: {
-        color: ColorsPalette.light['lime.800'],
+        color: ColorsPalette.light['coral.800'],
         fontWeight: 'bold',
         fontSize: 18,
         display: 'flex',

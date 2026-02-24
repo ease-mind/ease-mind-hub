@@ -3,9 +3,10 @@ import { ColorsPalette } from '@/shared/classes/constants/Pallete';
 import { maskPhone } from '@/shared/helpers/maskPhone';
 import { useFeedbackAnimation } from '@/shared/hooks/useFeedbackAnimation';
 import { useUploadFile } from '@/shared/hooks/useUploadFile';
-import { BytebankButton } from '@/shared/ui/Button';
-import { BytebankInput } from '@/shared/ui/Input/Input';
-import { BytebankInputController } from '@/shared/ui/Input/InputController';
+import { EasemindButton } from '@/shared/ui/Button';
+import { EasemindInput } from '@/shared/ui/Input/Input';
+import { EasemindInputController } from '@/shared/ui/Input/InputController';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -13,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const ProfileScreen = () => {
-    const { user, updateUser } = useAuth();
+    const { user, updateUser, logout } = useAuth();
     const { showFeedback, FeedbackAnimation } = useFeedbackAnimation();
     const { UploadProgressBar, uploadFile } = useUploadFile();
     
@@ -60,6 +61,16 @@ const ProfileScreen = () => {
         setIsEditing(false);
     };
 
+    const handleLogout = async () => {
+        try {
+            await logout();
+            router.replace('/(auth)/account-access');
+        } catch (error) {
+            console.error('Erro ao fazer logout:', error);
+            showFeedback("error");
+        }
+    };
+
     return (
         <>
             <SafeAreaView style={styles.container} >
@@ -73,7 +84,7 @@ const ProfileScreen = () => {
                     <View style={styles.profileSection}>
                         <TouchableOpacity onPress={handleEditProfileImage}>
                             <View style={styles.profileImage}>
-                                {user && user.photoURL ? <Image source={{ uri: user.photoURL }} style={{ width: 120, height: 120, borderRadius: 60 }} /> : <MaterialIcons name="camera-enhance" size={50} color={ColorsPalette.light['lime.200']} />}
+                                {user && user.photoURL ? <Image source={{ uri: user.photoURL }} style={{ width: 120, height: 120, borderRadius: 60 }} /> : <MaterialIcons name="camera-enhance" size={50} color={ColorsPalette.light['coral.200']} />}
                             </View>
                         </TouchableOpacity>
                         <Text style={styles.userName}>{formMethods.watch('name')}</Text>
@@ -81,14 +92,14 @@ const ProfileScreen = () => {
 
                     <FormProvider {...formMethods}>
                         <View style={styles.formSection}>
-                            <BytebankInputController
+                            <EasemindInputController
                                 name="name"
                                 label={'Nome completo'}
                                 placeholder="Seu nome"
                                 editable={isEditing}
                                 rules={{ required: 'Nome é obrigatório' }}
                             />
-                            <BytebankInputController
+                            <EasemindInputController
                                 name="email"
                                 label={'E-mail'}
                                 placeholder="email@example.com"
@@ -105,7 +116,7 @@ const ProfileScreen = () => {
                                 control={formMethods.control}
                                 name="phone"
                                 render={({ field: { onChange, onBlur, value } }) => (
-                                    <BytebankInput
+                                    <EasemindInput
                                         label={'Telefone'}
                                         value={value}
                                         onBlur={onBlur}
@@ -122,14 +133,17 @@ const ProfileScreen = () => {
 
                     <View style={styles.actionsSection}>
                         {isEditing ? (
-                            <BytebankButton color="primary" variant="contained" onPress={formMethods.handleSubmit(handleSaveProfile)}>
+                            <EasemindButton color="primary" variant="contained" onPress={formMethods.handleSubmit(handleSaveProfile)}>
                                 Salvar alterações
-                            </BytebankButton>
+                            </EasemindButton>
                         ) : (
-                            <BytebankButton color="tertiary" variant="outlined" onPress={() => setIsEditing(true)} styles={{ borderColor: ColorsPalette.light['lime.400'], borderWidth: 0 }}>
+                            <EasemindButton color="tertiary" variant="outlined" onPress={() => setIsEditing(true)} styles={{ borderColor: ColorsPalette.light['coral.400'], borderWidth: 0 }}>
                                 Permitir edição da conta
-                            </BytebankButton>
+                            </EasemindButton>
                         )}
+                        <EasemindButton color="secondary" variant="outlined" onPress={handleLogout} styles={{ marginTop: 10 }}>
+                            Sair da conta
+                        </EasemindButton>
                     </View>
                 </ScrollView>
                 <FeedbackAnimation />
@@ -163,7 +177,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: ColorsPalette.light['lime.900'],
+        backgroundColor: ColorsPalette.light['coral.900'],
     },
     userName: {
         fontSize: 22,

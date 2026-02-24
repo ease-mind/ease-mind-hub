@@ -1,19 +1,19 @@
-## Plano de Teste de Performance – Bytebank (Tech Challenge 4)
+## Plano de Teste de Performance – Easemind (Tech Challenge 4)
 
 ### 1. Identificação do Plano
 
-- **Nome do plano**: Plano de Teste de Performance – Bytebank  
+- **Nome do plano**: Plano de Teste de Performance – Easemind  
 - **Versão**: 1.0  
 - **Responsável**: Carlos Eduardo Batista de Souza
 - **Data**: 12/2025 
-- **Aplicação**: Aplicativo Bytebank (Expo + React Native + Firebase)
+- **Aplicação**: Aplicativo Easemind (Expo + React Native + Firebase)
 
 ---
 
 ### 2. Objetivo
 
 - **Objetivo geral**  
-  Avaliar e garantir que o aplicativo Bytebank atenda aos requisitos de performance, com foco em:
+  Avaliar e garantir que o aplicativo Easemind atenda aos requisitos de performance, com foco em:
   - Tempo de carregamento da aplicação e das telas críticas.
   - Tempo de resposta das operações de dados (Firestore).
   - Responsividade e fluidez da interface (scroll, animações, interações).

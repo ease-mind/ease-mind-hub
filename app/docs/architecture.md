@@ -1,14 +1,14 @@
-# Documentação de Arquitetura – Bytebank (Tech Challenge Fase 4)
+# Documentação de Arquitetura – Easemind (Tech Challenge Fase 4)
 
 ## Introdução
 
-Este documento descreve a arquitetura do projeto **Bytebank**, desenvolvida como parte do **Tech Challenge – Fase 4** da pós-graduação em Front-end Engineering. O objetivo é detalhar como a arquitetura da aplicação foi estruturada e modificada, quais camadas e módulos foram adotados e como elas se relacionam.
+Este documento descreve a arquitetura do projeto **Easemind**, desenvolvida como parte do **Tech Challenge – Fase 4** da pós-graduação em Front-end Engineering. O objetivo é detalhar como a arquitetura da aplicação foi estruturada e modificada, quais camadas e módulos foram adotados e como elas se relacionam.
 
 ---
 
 ## Visão Geral da Arquitetura
 
-A arquitetura do Bytebank combina organização por módulos de funcionalidade (feature modules) com princípios de clean architecture, aplicada nos principais domínios do sistema (cartões, transações, usuários, etc.). De forma resumida:
+A arquitetura do Easemind combina organização por módulos de funcionalidade (feature modules) com princípios de clean architecture, aplicada nos principais domínios do sistema (cartões, transações, usuários, etc.). De forma resumida:
 
 -   **Plataforma**: aplicativo **mobile** em React Native com **Expo Router** (`app/`).
 -   **Organização principal**:
@@ -28,7 +28,7 @@ A arquitetura do Bytebank combina organização por módulos de funcionalidade (
 
 ## Organização da Arquitetura
 
-A arquitetura do Bytebank é organizada em **módulos de funcionalidade** (feature modules), onde cada módulo agrupa sua própria lógica de negócio seguindo o mesmo padrão de camadas. Isso permite que cada área do sistema (cartões, transações, usuários, etc.) evolua de forma isolada, mantendo baixo acoplamento entre features.
+A arquitetura do Easemind é organizada em **módulos de funcionalidade** (feature modules), onde cada módulo agrupa sua própria lógica de negócio seguindo o mesmo padrão de camadas. Isso permite que cada área do sistema (cartões, transações, usuários, etc.) evolua de forma isolada, mantendo baixo acoplamento entre features.
 
 ### Separação por Módulos
 
@@ -142,6 +142,6 @@ A camada de aplicação funciona como **compositor**: ela monta as telas consumi
 
 ## Considerações Finais
 
-A arquitetura adotada no Bytebank combina organização por módulos de funcionalidade com princípios de clean architecture, permitindo que cada área do sistema evolua de forma independente.
+A arquitetura adotada no Easemind combina organização por módulos de funcionalidade com princípios de clean architecture, permitindo que cada área do sistema evolua de forma independente.
 
 ---

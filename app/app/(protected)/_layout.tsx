@@ -1,5 +1,5 @@
 import { useAuth } from '@/shared/contexts';
-import { BytebankTabBar } from '@/shared/ui/TabBar';
+import { EasemindTabBar } from '@/shared/ui/TabBar';
 import { Tabs } from 'expo-router';
 import { Platform } from 'react-native';
 import 'react-native-gesture-handler';
@@ -13,7 +13,7 @@ export default function ProtectedLayout() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
         <Tabs
-            tabBar={() => <BytebankTabBar />}
+            tabBar={() => <EasemindTabBar />}
             screenOptions={{
                 headerShown: false,
                 tabBarStyle: Platform.select({

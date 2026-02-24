@@ -26,7 +26,7 @@ export const AppHeader = ({ title = '' }: { title?: string }) => {
         <SafeAreaView
             edges={['top']}
             style={{
-                backgroundColor: ColorsPalette.light['lime.900'],
+                backgroundColor: ColorsPalette.light['coral.900'],
             }}
         >
             <View style={{
@@ -37,15 +37,15 @@ export const AppHeader = ({ title = '' }: { title?: string }) => {
                 paddingVertical: 16,
             }}>
                 <TouchableOpacity>
-                    <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: ColorsPalette.light['lime.200'], borderRadius: 25, width: 50, height: 50 }}>
+                    <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: ColorsPalette.light['coral.200'], borderRadius: 25, width: 50, height: 50 }}>
                         {user && user.photoURL ? <Image source={{ uri: user.photoURL }} cachePolicy="disk"
                             contentFit="cover"
-                            transition={150} style={{ width: 50, height: 50, borderRadius: 25 }} /> : <MaterialIcons name="user" size={25} color={ColorsPalette.light['lime.800']} />}
+                            transition={150} style={{ width: 50, height: 50, borderRadius: 25 }} /> : <MaterialIcons name="user" size={25} color={ColorsPalette.light['coral.800']} />}
                     </View>
                 </TouchableOpacity>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: ColorsPalette.light['lime.50'] }}>{title}</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: ColorsPalette.light['coral.50'] }}>{title}</Text>
                 <TouchableOpacity onPress={handleLogout}>
-                    <Feather name="log-out" size={24} color={ColorsPalette.light['lime.50']} />
+                    <Feather name="log-out" size={24} color={ColorsPalette.light['coral.50']} />
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

@@ -6,9 +6,9 @@ import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyADz3kiKoiFaT7tfGxMaU9vm1--X6dLm2Q",
-  authDomain: "bytebank-5dba7.firebaseapp.com",
-  projectId: "bytebank-5dba7",
-  storageBucket: "bytebank-5dba7.firebasestorage.app",
+  authDomain: "easemind-5dba7.firebaseapp.com",
+  projectId: "easemind-5dba7",
+  storageBucket: "easemind-5dba7.firebasestorage.app",
   messagingSenderId: "597904779384",
   appId: "1:597904779384:web:63fcd93bcd5ab2c544258d",
   measurementId: "G-SS5BCYWM8M",

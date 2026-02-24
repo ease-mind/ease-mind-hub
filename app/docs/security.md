@@ -1,8 +1,8 @@
-# Segurança no Bytebank (Tech Challenge Fase 4)
+# Segurança no Easemind (Tech Challenge Fase 4)
 
 ## Introdução
 
-Este documento descreve a implementação de autenticação segura e criptografia de dados sensíveis no aplicativo **Bytebank**, desenvolvido como parte do **Tech Challenge – Fase 4** da pós-graduação em Front-end Engineering. O objetivo é detalhar as práticas adotadas para garantir a segurança dos dados do usuário, incluindo proteção de rotas, validações e criptografia.
+Este documento descreve a implementação de autenticação segura e criptografia de dados sensíveis no aplicativo **Easemind**, desenvolvido como parte do **Tech Challenge – Fase 4** da pós-graduação em Front-end Engineering. O objetivo é detalhar as práticas adotadas para garantir a segurança dos dados do usuário, incluindo proteção de rotas, validações e criptografia.
 
 ---
 
@@ -58,7 +58,7 @@ O sistema implementa isolamento de dados por usuário:
 
 ### Considerações Finais
 
-A autenticação e criptografia de dados sensíveis no Bytebank são implementadas de forma que:
+A autenticação e criptografia de dados sensíveis no Easemind são implementadas de forma que:
 
 -   Senhas sejam hasheadas automaticamente pelo Firebase Auth antes do armazenamento.
 -   Senhas nunca sejam expostas em logs, mensagens de erro ou armazenamento local.

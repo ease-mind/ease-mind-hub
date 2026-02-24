@@ -153,13 +153,8 @@ export default function ThermometerScreen() {
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logo}>e.</Text>
-          </View>
-        </View>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator size="large" color={ColorsPalette.light['lime.700']} />
+          <ActivityIndicator size="large" color={ColorsPalette.light['coral.700']} />
         </View>
       </SafeAreaView>
     );
@@ -168,11 +163,6 @@ export default function ThermometerScreen() {
   if (error) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logo}>e.</Text>
-          </View>
-        </View>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
           <MaterialIcons name="error-outline" size={64} color={ColorsPalette.light['coral.500']} />
           <Text style={{ fontSize: 16, color: '#666', marginTop: 16, textAlign: 'center' }}>{error}</Text>
@@ -186,15 +176,6 @@ export default function ThermometerScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logo}>e.</Text>
-        </View>
-        <TouchableOpacity style={styles.addButton}>
-          <Feather name="plus" size={28} color="#FFF" />
-        </TouchableOpacity>
-      </View>
-
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Como você está se sentindo?</Text>
@@ -379,41 +360,6 @@ const styles = StyleSheet.create({
   container: { 
     flex: 1, 
     backgroundColor: '#F8F9FA' 
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFF',
-  },
-  logoContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: ColorsPalette.light['coral.500'],
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logo: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#FFF',
-    fontStyle: 'italic',
-  },
-  addButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: ColorsPalette.light['coral.500'],
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 6,
   },
   content: {
     flex: 1,
@@ -605,7 +551,7 @@ const styles = StyleSheet.create({
   },
   retryButton: {
     marginTop: 20,
-    backgroundColor: ColorsPalette.light['lime.700'],
+    backgroundColor: ColorsPalette.light['coral.700'],
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,

@@ -1,6 +1,6 @@
 import React from "react";
 import { Control, Controller, RegisterOptions, useFormContext } from "react-hook-form";
-import { BytebankSelect, SelectOption } from "./Select";
+import { EasemindSelect, SelectOption } from "./Select";
 
 interface SelectControllerProps {
   name: string;
@@ -13,7 +13,7 @@ interface SelectControllerProps {
   onClose?: () => void;
 }
 
-export const BytebankSelectController: React.FC<SelectControllerProps> = ({
+export const EasemindSelectController: React.FC<SelectControllerProps> = ({
   control: controlProp,
   name,
   label,
@@ -28,7 +28,7 @@ export const BytebankSelectController: React.FC<SelectControllerProps> = ({
 
   if (!control) {
     throw new Error(
-      "BytebankSelectController deve ser usado dentro de um FormProvider ou receber a prop 'control'"
+      "EasemindSelectController deve ser usado dentro de um FormProvider ou receber a prop 'control'"
     );
   }
 
@@ -38,7 +38,7 @@ export const BytebankSelectController: React.FC<SelectControllerProps> = ({
       rules={rules}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <BytebankSelect
+        <EasemindSelect
           label={label}
           value={field.value}
           items={items}

@@ -1,6 +1,6 @@
 import { router, Stack } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
-import { BytebankButton } from '@/shared/ui/Button';
+import { EasemindButton } from '@/shared/ui/Button';
 import NotFoundSvg from '@/assets/images/not-found.svg';
 
 export default function NotFoundScreen() {
@@ -10,7 +10,7 @@ export default function NotFoundScreen() {
       <View style={styles.container}>
       <NotFoundSvg width={220} height={220} />
         <Text style={{fontSize: 18, paddingVertical: 30, textAlign: 'center'}}>Desculpe! Não encontramos o que você está procurando. Que tal voltar para a nossa página inicial ou explorar outras áreas do seu dashboard?</Text>
-          <BytebankButton color={'primary'} onPress={() => router.replace('/')}>Voltar para tela inicial</BytebankButton>
+          <EasemindButton color={'primary'} onPress={() => router.replace('/')}>Voltar para tela inicial</EasemindButton>
       </View>
     </>
   );

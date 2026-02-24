@@ -4,7 +4,7 @@ import { KeyboardTypeOptions, StyleSheet, Text, View } from "react-native";
 import MaskInput from 'react-native-mask-input';
 import { TextInput, TextInputProps, useTheme } from "react-native-paper";
 
-export type BytebankInputProps = {
+export type EasemindInputProps = {
     label: string;
     value?: string;
     type?: string;
@@ -24,7 +24,7 @@ export type BytebankInputProps = {
 } & TextInputProps;
 
 
-export function BytebankInput({
+export function EasemindInput({
     value,
     label,
     type = "text",
@@ -36,7 +36,7 @@ export function BytebankInput({
     color,
     onChangeText,
     ...props
-}: BytebankInputProps & TextInputProps) {
+}: EasemindInputProps & TextInputProps) {
     const theme = useTheme();
     const reactId = useId();
     const inputId = `input-${reactId}`;
@@ -73,7 +73,7 @@ export function BytebankInput({
         const keyboardType: KeyboardTypeOptions = 'numeric';
 
         return (
-            <View className="bytebank-input">
+            <View className="easemind-input">
                 <Text style={styles.inputLabel}>{label}</Text>
                 <MaskInput
                     value={value}
@@ -91,7 +91,7 @@ export function BytebankInput({
     }
 
     return (
-        <View className="bytebank-input">
+        <View className="easemind-input">
             <Text style={styles.inputLabel}>{label}</Text>
             <TextInput
                 {...props}

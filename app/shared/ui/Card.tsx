@@ -2,7 +2,7 @@ import { ColorsPalette } from "@/shared/classes/constants/Pallete";
 import { JSX } from "react";
 import { Card } from "react-native-paper";
 
-export interface BytebankCardProps {
+export interface EasemindCardProps {
     bgcolor?: string;
     radius?: 'sm' | 'md' | 'lg';
     mode?: "elevated" | "outlined" | 'contained' | undefined;
@@ -11,27 +11,27 @@ export interface BytebankCardProps {
     styles?: React.Attributes;
 }
 
-export enum BytebankCardRadius {
+export enum EasemindCardRadius {
     sm = '5px',
     md = '10px',
     lg = '14px',
 }
 
-export function BytebankCard({
+export function EasemindCard({
     bgcolor,
     radius = 'md',
     mode = 'outlined',
     children,
     className,
     styles
-}: BytebankCardProps): JSX.Element {
+}: EasemindCardProps): JSX.Element {
     const palette = ColorsPalette.light;
     const cardColor = bgcolor ?? palette["background.card"];
 
     return (
         <Card
             mode={mode}
-            style={{ backgroundColor: cardColor, borderRadius: BytebankCardRadius[radius], ...styles }}
+            style={{ backgroundColor: cardColor, borderRadius: EasemindCardRadius[radius], ...styles }}
             className={`${className}`}
         >
             {children}
