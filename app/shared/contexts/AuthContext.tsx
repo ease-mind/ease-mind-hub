@@ -6,9 +6,10 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  signUp: (name: string, email: string) => Promise<void>;
+  signUp: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => Promise<void>;
+  updateUserProfileImage: (file: any) => Promise<void>;
   isAuthenticated: boolean;
   reloadUser: () => Promise<void>;
 }
@@ -109,6 +110,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const updateUserProfileImage = async (file: any) => {
+    try {
+      if (!user) throw new Error('Usuário não autenticado.');
+
+      const updatedUser = await authService.updateUserProfileImage(user._id, file);
+      setUser(updatedUser);
+    } catch (error) {
+      console.error('Erro ao atualizar foto de perfil:', error);
+      throw error;
+    }
+  };
+
   const value = {
     user,
     isLoading,
@@ -116,6 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signUp,
     logout,
     updateUser,
+    updateUserProfileImage,
     isAuthenticated,
     reloadUser,
   };

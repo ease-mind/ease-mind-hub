@@ -59,11 +59,11 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
             });
         }
 
-        if (address.address) userAddress.address = address.address
-        if (address.city) userAddress.city = address.city
-        if (address.state) userAddress.state = address.state
-        if (address.code) userAddress.code = address.code
-        if (address.complement) userAddress.complement = address.complement
+        if (address?.address) userAddress.address = address.address
+        if (address?.city) userAddress.city = address.city
+        if (address?.state) userAddress.state = address.state
+        if (address?.code) userAddress.code = address.code
+        if (address?.complement) userAddress.complement = address.complement
 
         if (name) user.name = name
         if (email) user.email = email

@@ -55,7 +55,7 @@ const AccountAccessScreen = () => {
     const handleLogin = async (data: {email: string; password: string}) => {
         const startTime = performance.now();
         setIsLoading(true);
-        const success = await login(data.email, data.password);
+        const success = await login(data.email.toLocaleLowerCase(), data.password);
         const loginTime = performance.now() - startTime;
         
         console.log(`[Performance - Cenário 1] Tempo de autenticação (login): ${loginTime.toFixed(2)}ms (${(loginTime / 1000).toFixed(2)}s)`);
@@ -70,7 +70,7 @@ const AccountAccessScreen = () => {
     const handleRegister = async (data: {name: string; registerEmail: string; registerPassword: string}) => {
         setIsLoading(true);
         try {
-            await signUp(data.name, data.registerEmail, data.registerPassword);
+            await signUp(data.name, data.registerEmail.toLocaleLowerCase(), data.registerPassword);
             setActiveTab('login');
             registerForm.reset();
         } catch (_) {
@@ -100,7 +100,7 @@ const AccountAccessScreen = () => {
                         source={require('@/assets/images/logo-auth.png')}
                         style={{ width: 100, height: 111, marginTop: 20, marginBottom: 30 }}
                     />
-                    <Text style={styles.title}>Experimente mais liberdade no controle da sua saúde cognitiva.</Text>
+                    <Text style={styles.title}>Cuidando da sua saúde cognitiva.</Text>
 
                     <EasemindTabSelector tabs={[{ label: 'Login', name: 'login' }, { label: 'Crie uma conta', name: 'register' }]} activeTab={activeTab} onTabChange={handleTabChange} />
                     {activeTab === 'login' ? (

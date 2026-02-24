@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 export const API_CONFIG = {
-    BASE_URL: process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api',
+    BASE_URL: process.env.EXPO_PUBLIC_API_URL || 'http://localhost:8080/api',
     TIMEOUT: 10000,
 };
 
@@ -28,11 +28,11 @@ export const getBaseURL = (): string => {
 if (__DEV__) {
     api.interceptors.request.use(
         (config) => {
-            console.log(`📤 [API Request] ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`);
+            console.log(`[API Request] ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`);
             return config;
         },
         (error) => {
-            console.error('📤 [API Request Error]', error);
+            console.error('[API Request Error]', error);
             return Promise.reject(error);
         }
     );
@@ -44,11 +44,11 @@ if (__DEV__) {
         },
         (error) => {
             if (error.response) {
-                console.error(`📥 [API Response Error] ${error.response.status} ${error.config.url}`, error.response.data);
+                console.error(`[API Response Error] ${error.response.status} ${error.config.url}`, error.response.data);
             } else if (error.request) {
-                console.error('📥 [API No Response]', error.message);
+                console.error('[API No Response]', error.message);
             } else {
-                console.error('📥 [API Error]', error.message);
+                console.error('[API Error]', error.message);
             }
             return Promise.reject(error);
         }

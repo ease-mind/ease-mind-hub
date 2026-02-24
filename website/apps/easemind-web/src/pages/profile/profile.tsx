@@ -52,8 +52,6 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
     const handleSubmit = async (e: any) => {
         const formData = userMethods.getValues();
 
-        console.log(userMethods)
-
         const body = {
             name: formData.name,
             email: formData.email,
