@@ -1,73 +1,46 @@
 import { useAuth, symptomService, Symptom, UserSymptomRecord } from '@/shared';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Stack, useFocusEffect } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AppHeader } from '@/shared/components';
 
 export default function ThermometerScreen() {
   const { user } = useAuth();
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
-  const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [showCalmAlert, setShowCalmAlert] = useState(false);
+  const [showWarningAlert, setShowWarningAlert] = useState(false);
 
-  useEffect(() => {
-    loadSymptoms();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [user])
+  );
 
-  useEffect(() => {
-    if (user?._id) {
-      handleSelectedSymptoms();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (selectedSymptoms.length > 5) {
-      setShowAlert(true);
-    } else {
-      setShowAlert(false);
-    }
-  }, [selectedSymptoms]);
-
-  useEffect(() => {
-    if (selectedSymptoms.length > 0 && user?._id) {
-      const timer = setTimeout(() => {
-        handleSaveSymptoms();
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [selectedSymptoms, user]);
-
-  const handleSelectedSymptoms = async () => {
-    if (!user?._id) return;
-
-    const result = await symptomService.getLatestUserSymptoms(user._id);
-
-    if (result?.selectedSymptoms) {
-      setSelectedSymptoms(result.selectedSymptoms);
-    }
-  };
-
-  const loadSymptoms = async () => {
+  const loadData = async () => {
     setLoading(true);
     try {
-      const data = await symptomService.getAll();
-      setSymptoms(data);
+      const symptomsData = await symptomService.getAll();
+      setSymptoms(symptomsData);
+      
+      if (user?._id) {
+        const result = await symptomService.getLatestUserSymptoms(user._id);
+        if (result?.selectedSymptoms) {
+          setSelectedSymptoms(result.selectedSymptoms);
+        }
+      }
       setError(null);
     } catch (err: any) {
-      setError(err.message || 'Erro ao carregar sintomas');
+      setError(err.message || 'Erro ao carregar dados');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSymptomToggle = (symptomId: string) => {
-    setSelectedSymptoms((prev) =>
-      prev.includes(symptomId) ? prev.filter((id) => id !== symptomId) : [...prev, symptomId]
-    );
   };
 
   const getTemperature = () => {
@@ -108,51 +81,62 @@ export default function ThermometerScreen() {
     return selectedSymptoms.filter((id) => symptoms.find((s) => s.id === id)?.category === category).length;
   };
 
-  const handleSaveSymptoms = async () => {
-    if (!user?._id || selectedSymptoms.length === 0) return;
-
+  const handleReset = async () => {
+    if (!user?._id) return;
+    
+    setSelectedSymptoms([]);
+    
     setSaving(true);
     const data: UserSymptomRecord = {
       userId: user._id,
-      selectedSymptoms,
-      temperature: getTemperature(),
-      level: getTemperatureLevel() || 'Calmo',
+      selectedSymptoms: [],
+      temperature: 0,
+      level: 'Calmo',
       timestamp: new Date(),
       categoryCount: {
-        communication: getCategoryCount('communication'),
-        physical: getCategoryCount('physical'),
-        stereotypies: getCategoryCount('stereotypies'),
-      },
+        communication: 0,
+        physical: 0,
+        stereotypies: 0,
+      }
     };
-
+    
     try {
       await symptomService.saveUserSymptoms(data);
-    } catch (err: any) {
-      console.error('Erro ao salvar sintomas:', err);
+      await loadData();
+    } catch (err) {
+      console.error('Erro ao resetar sintomas:', err);
     } finally {
       setSaving(false);
     }
   };
 
-  const handleReset = () => {
-    Alert.alert('Resetar Sintomas', 'Deseja limpar todos os sintomas selecionados?', [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Resetar',
-        style: 'destructive',
-        onPress: () => {
-          setSelectedSymptoms([]);
-          setShowAlert(false);
-        },
-      },
-    ]);
-  };
+  useEffect(() => {
+    const temp = getTemperature();
+    
+    if (temp > 0 && temp <= 36) {
+      setShowCalmAlert(true);
+      setShowWarningAlert(false);
+    } else if (temp > 38) {
+      setShowWarningAlert(true);
+      setShowCalmAlert(false);
+    } else {
+      setShowCalmAlert(false);
+      setShowWarningAlert(false);
+    }
+  }, [selectedSymptoms]);
 
   const temperaturePercentage = symptoms.length > 0 ? (selectedSymptoms.length / symptoms.length) * 100 : 0;
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['left', 'right']}>
+        <Stack.Screen
+          options={{
+            header: () => <AppHeader onThermometerUpdate={loadData} />,
+            headerShown: true,
+            statusBarStyle: 'inverted',
+          }}
+        />
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color={ColorsPalette.light['coral.700']} />
         </View>
@@ -162,11 +146,18 @@ export default function ThermometerScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['left', 'right']}>
+        <Stack.Screen
+          options={{
+            header: () => <AppHeader onThermometerUpdate={loadData} />,
+            headerShown: true,
+            statusBarStyle: 'inverted',
+          }}
+        />
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
           <MaterialIcons name="error-outline" size={64} color={ColorsPalette.light['coral.500']} />
           <Text style={{ fontSize: 16, color: '#666', marginTop: 16, textAlign: 'center' }}>{error}</Text>
-          <TouchableOpacity onPress={loadSymptoms} style={styles.retryButton}>
+          <TouchableOpacity onPress={loadData} style={styles.retryButton}>
             <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Tentar Novamente</Text>
           </TouchableOpacity>
         </View>
@@ -175,11 +166,19 @@ export default function ThermometerScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['left', 'right']}>
+      <Stack.Screen
+        options={{
+          header: () => <AppHeader onThermometerUpdate={loadData} />,
+          headerShown: true,
+          statusBarStyle: 'inverted',
+        }}
+      />
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Como você está se sentindo?</Text>
-          <Text style={styles.subtitle}>Avalie seus sintomas e monitore seu estado emocional</Text>
+          <Text style={styles.title}>Termômetro Sensorial</Text>
+          <Text style={styles.subtitle}>Monitore seu estado emocional e identifique sinais de sobrecarga</Text>
         </View>
 
         <View style={styles.thermometerSection}>
@@ -214,141 +213,64 @@ export default function ThermometerScreen() {
           )}
 
           <Text style={styles.temperatureDescription}>
-            {getTemperature() === 0 ? 'Selecione os sintomas para avaliar' : 
+            {getTemperature() === 0 ? 'Clique no ícone no topo para fazer uma avaliação' : 
              getTemperature() <= 36 ? 'Você está em um estado tranquilo e equilibrado' :
              getTemperature() <= 38 ? 'Fique atento aos sinais de alerta' :
              'Considere fazer uma pausa e praticar técnicas de relaxamento'}
           </Text>
 
-          <Text style={styles.symptomCount}>{selectedSymptoms.length} sintomas identificados</Text>
-        </View>
-
-        {showAlert && (
-          <View style={styles.alertBanner}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-              <MaterialIcons name="warning" size={24} color="#FFC107" />
-              <Text style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 8, color: '#856404' }}>Atenção: Sinais de Alerta</Text>
-            </View>
-            <Text style={{ fontSize: 14, color: '#856404' }}>
-              Você está entrando na fase de alerta. Considere fazer uma pausa.
-            </Text>
+          <View style={styles.symptomCountContainer}>
+            <Text style={styles.symptomCount}>{selectedSymptoms.length} sintomas identificados</Text>
+            
+            {selectedSymptoms.length > 0 && (
+              <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
+                <MaterialCommunityIcons name="refresh" size={18} color="#FFF" />
+                <Text style={styles.resetButtonText}>Resetar</Text>
+              </TouchableOpacity>
+            )}
           </View>
-        )}
+        </View>
 
         <View style={styles.categoriesContainer}>
           <View style={styles.categoryCard}>
             <View style={styles.categoryHeader}>
               <MaterialIcons name="cancel" size={24} color={ColorsPalette.light['coral.500']} />
-              <Text style={styles.categoryTitle}>Falha na Comunicação</Text>
+              <View style={styles.categoryInfo}>
+                <Text style={styles.categoryTitle}>Falha na Comunicação</Text>
+                <Text style={styles.categoryDescription}>Dificuldades de expressão e compreensão</Text>
+              </View>
             </View>
-            <View style={styles.symptomsGrid}>
-              {symptoms
-                .filter((s) => s.category === 'communication')
-                .map((symptom) => (
-                  <TouchableOpacity
-                    key={symptom.id}
-                    onPress={() => handleSymptomToggle(symptom.id)}
-                    style={[
-                      styles.symptomCard,
-                      selectedSymptoms.includes(symptom.id) && styles.symptomCardSelected,
-                    ]}
-                  >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                      <View
-                        style={[
-                          styles.radio,
-                          selectedSymptoms.includes(symptom.id) && styles.radioSelected,
-                        ]}
-                      >
-                        {selectedSymptoms.includes(symptom.id) && <View style={styles.radioInner} />}
-                      </View>
-                      <Text style={styles.symptomText}>{symptom.label}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
+            <View style={styles.categoryCount}>
+              <Text style={styles.categoryCountNumber}>{getCategoryCount('communication')}</Text>
             </View>
           </View>
 
           <View style={styles.categoryCard}>
             <View style={styles.categoryHeader}>
               <Feather name="zap" size={24} color="#FFC107" />
-              <Text style={styles.categoryTitle}>Sintomas Físicos</Text>
+              <View style={styles.categoryInfo}>
+                <Text style={styles.categoryTitle}>Sintomas Físicos</Text>
+                <Text style={styles.categoryDescription}>Manifestações corporais de estresse</Text>
+              </View>
             </View>
-            <View style={styles.symptomsGrid}>
-              {symptoms
-                .filter((s) => s.category === 'physical')
-                .map((symptom) => (
-                  <TouchableOpacity
-                    key={symptom.id}
-                    onPress={() => handleSymptomToggle(symptom.id)}
-                    style={[
-                      styles.symptomCard,
-                      selectedSymptoms.includes(symptom.id) && styles.symptomCardSelected,
-                    ]}
-                  >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                      <View
-                        style={[
-                          styles.radio,
-                          selectedSymptoms.includes(symptom.id) && styles.radioSelected,
-                        ]}
-                      >
-                        {selectedSymptoms.includes(symptom.id) && <View style={styles.radioInner} />}
-                      </View>
-                      <Text style={styles.symptomText}>{symptom.label}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
+            <View style={styles.categoryCount}>
+              <Text style={styles.categoryCountNumber}>{getCategoryCount('physical')}</Text>
             </View>
           </View>
 
           <View style={styles.categoryCard}>
             <View style={styles.categoryHeader}>
               <MaterialCommunityIcons name="chart-line" size={24} color="#2196F3" />
-              <Text style={styles.categoryTitle}>Aumento de Estereotipias</Text>
+              <View style={styles.categoryInfo}>
+                <Text style={styles.categoryTitle}>Aumento de Estereotipias</Text>
+                <Text style={styles.categoryDescription}>Comportamentos repetitivos intensificados</Text>
+              </View>
             </View>
-            <View style={styles.symptomsGrid}>
-              {symptoms
-                .filter((s) => s.category === 'stereotypies')
-                .map((symptom) => (
-                  <TouchableOpacity
-                    key={symptom.id}
-                    onPress={() => handleSymptomToggle(symptom.id)}
-                    style={[
-                      styles.symptomCard,
-                      selectedSymptoms.includes(symptom.id) && styles.symptomCardSelected,
-                    ]}
-                  >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                      <View
-                        style={[
-                          styles.radio,
-                          selectedSymptoms.includes(symptom.id) && styles.radioSelected,
-                        ]}
-                      >
-                        {selectedSymptoms.includes(symptom.id) && <View style={styles.radioInner} />}
-                      </View>
-                      <Text style={styles.symptomText}>{symptom.label}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
+            <View style={styles.categoryCount}>
+              <Text style={styles.categoryCountNumber}>{getCategoryCount('stereotypies')}</Text>
             </View>
           </View>
         </View>
-
-        {selectedSymptoms.length > 0 && (
-          <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
-            <MaterialCommunityIcons name="reload" size={20} color="#FFF" />
-            <Text style={styles.resetButtonText}>Resetar Sintomas</Text>
-          </TouchableOpacity>
-        )}
-
-        {saving && (
-          <View style={styles.savingIndicator}>
-            <ActivityIndicator size="small" color={ColorsPalette.light['coral.500']} />
-            <Text style={styles.savingText}>Salvando automaticamente...</Text>
-          </View>
-        )}
 
         <View style={{ height: 40 }} />
       </ScrollView>
@@ -365,11 +287,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 20,
+    paddingBottom: 32,
   },
   titleContainer: {
     paddingHorizontal: 20,
-    paddingTop: 32,
+    paddingTop: 20,
     paddingBottom: 24,
     alignItems: 'center',
   },
@@ -456,98 +378,81 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1F2937',
   },
-  alertBanner: {
-    backgroundColor: '#FFF3CD',
-    marginHorizontal: 20,
-    marginBottom: 24,
-    padding: 16,
-    borderRadius: 12,
-    borderLeftWidth: 4,
-    borderLeftColor: '#FFC107',
+  symptomCountContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 16,
+    width: '100%',
+  },
+  resetButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: ColorsPalette.light['coral.700'],
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  resetButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+    marginLeft: 8,
   },
   categoriesContainer: {
     paddingHorizontal: 20,
     gap: 16,
+    marginBottom: 40
   },
   categoryCard: {
     backgroundColor: '#FFF',
     borderRadius: 16,
     padding: 20,
-    marginBottom: 16,
+    marginBottom: 6,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 3,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   categoryHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    marginBottom: 16,
-  },
-  categoryTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1F2937',
-  },
-  symptomsGrid: {
-    gap: 12,
-  },
-  symptomCard: {
-    padding: 16,
-    borderWidth: 2,
-    borderColor: '#E5E7EB',
-    borderRadius: 12,
-    backgroundColor: '#FFF',
-  },
-  symptomCardSelected: {
-    borderColor: ColorsPalette.light['coral.500'],
-    backgroundColor: '#FFF1F2',
-  },
-  symptomText: {
-    fontSize: 15,
-    color: '#374151',
     flex: 1,
   },
-  radio: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 2,
-    borderColor: '#D1D5DB',
-    justifyContent: 'center',
-    alignItems: 'center',
+  categoryInfo: {
+    flex: 1,
   },
-  radioSelected: {
-    borderColor: ColorsPalette.light['coral.500'],
-  },
-  radioInner: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: ColorsPalette.light['coral.500'],
-  },
-  resetButton: {
-    backgroundColor: ColorsPalette.light['coral.500'],
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 20,
-    marginTop: 8,
-    paddingVertical: 16,
-    borderRadius: 12,
-    gap: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  resetButtonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
+  categoryTitle: {
     fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1F2937',
+    marginBottom: 4,
+  },
+  categoryDescription: {
+    fontSize: 13,
+    color: '#6B7280',
+  },
+  categoryCount: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F3F4F6',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  categoryCountNumber: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: ColorsPalette.light['coral.500'],
+  },
+  categoryCountLabel: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: 2,
   },
   retryButton: {
     marginTop: 20,
@@ -555,16 +460,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
-  },
-  savingIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 16,
-    gap: 8,
-  },
-  savingText: {
-    fontSize: 14,
-    color: '#6B7280',
   },
 });
