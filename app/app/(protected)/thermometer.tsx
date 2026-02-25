@@ -309,6 +309,7 @@ const styles = StyleSheet.create({
   },
   thermometerSection: {
     alignItems: 'center',
+    marginTop: 20,
     paddingVertical: 32,
     paddingHorizontal: 20,
   },

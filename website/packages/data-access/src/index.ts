@@ -4,3 +4,6 @@ export * from './api/addressService';
 export * from './api/authService';
 export * from './api/userService';
 export * from './api/symptomService';
+export * from './contexts/user.context';
+export * from './contexts/auth.context';
+export * from './contexts/financial-data.context';
