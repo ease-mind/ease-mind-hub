@@ -2,13 +2,12 @@ import { createModuleFederationConfig } from "@module-federation/rsbuild-plugin"
 import pkg from "./package.json";
 const { dependencies } = pkg;
 
-const TASKS_APP_URL = process.env.PUBLIC_TASKS_APP_URL;
-
 export default createModuleFederationConfig({
-  name: "easemind-web",
-  remotes: {
-    tasks: `tasks@${TASKS_APP_URL}/remoteEntry.js`,
+  name: "tasks",
+  exposes: {
+    "./components": "./src/components/index.ts",
   },
+  filename: "remoteEntry.js",
   shared: {
     react: {
       singleton: true,
@@ -24,10 +23,6 @@ export default createModuleFederationConfig({
       singleton: true,
       requiredVersion: dependencies["@mui/material"],
       eager: true,
-    },
-    "react-hook-form": {
-      singleton: true,
-      requiredVersion: dependencies["react-hook-form"],
     },
     "@emotion/react": {
       singleton: true,

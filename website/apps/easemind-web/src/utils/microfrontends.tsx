@@ -1,4 +1,11 @@
-// Este arquivo não é mais necessário pois os microfrontends foram removidos
-// Caso precise adicionar novos microfrontends no futuro, configure-os aqui
+import { FC, lazy } from 'react';
 
-export {};
+const TaskList: FC = lazy(() =>
+    // @ts-ignore
+    import('tasks/components').then((module) => ({default: module.TaskList})).catch((error) => {
+      console.error('Erro ao carregar TaskList:', error)
+      return { default: () => <div>Erro ao carregar o componente de Tasks</div> }
+    })
+  );
+
+export { TaskList };

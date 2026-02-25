@@ -237,7 +237,6 @@ export default function ThermometerScreen() {
               <MaterialIcons name="cancel" size={24} color={ColorsPalette.light['coral.500']} />
               <View style={styles.categoryInfo}>
                 <Text style={styles.categoryTitle}>Falha na Comunicação</Text>
-                <Text style={styles.categoryDescription}>Dificuldades de expressão e compreensão</Text>
               </View>
             </View>
             <View style={styles.categoryCount}>
@@ -250,7 +249,6 @@ export default function ThermometerScreen() {
               <Feather name="zap" size={24} color="#FFC107" />
               <View style={styles.categoryInfo}>
                 <Text style={styles.categoryTitle}>Sintomas Físicos</Text>
-                <Text style={styles.categoryDescription}>Manifestações corporais de estresse</Text>
               </View>
             </View>
             <View style={styles.categoryCount}>
@@ -263,7 +261,6 @@ export default function ThermometerScreen() {
               <MaterialCommunityIcons name="chart-line" size={24} color="#2196F3" />
               <View style={styles.categoryInfo}>
                 <Text style={styles.categoryTitle}>Aumento de Estereotipias</Text>
-                <Text style={styles.categoryDescription}>Comportamentos repetitivos intensificados</Text>
               </View>
             </View>
             <View style={styles.categoryCount}>

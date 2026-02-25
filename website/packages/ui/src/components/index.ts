@@ -14,9 +14,7 @@ export * from "./linear-progress/linear-progress";
 export * from "./chip/chip";
 export * from "./file-upload/file-upload";
 export * from "./auto-complete";
-export * from "./card-bank/card-bank";
 export * from "./navigation/navigation"
-export * from "./card-widget/card-widget"
 export * from "./drawer/drawer";
 export * from "./datepicker";
 export * from "./pagination";
