@@ -363,7 +363,7 @@ function CognitiveSettingsPage() {
 							/>
 						</Box>
 						<Box mt={2} p={2} borderRadius={2} sx={{ background: alertExampleBg }}>
-							<Box display="flex" alignItems="center" gap={0.75} mb={0.5}>
+							<Box display="flex" alignItems="center" gap="6px" mb="4px">
 								<AlarmExampleIcon sx={{ color: "#dc2626", fontSize: "1.1rem" }} />
 								<Typography variant="body2" fontWeight={600} color="#dc2626">
 									Exemplo de Alerta

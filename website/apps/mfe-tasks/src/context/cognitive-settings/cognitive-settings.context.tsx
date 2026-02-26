@@ -70,14 +70,6 @@ export function CognitiveSettingsProvider({ children }: { children: ReactNode })
 		resetRemoteSettings().catch(() => {});
 	}, []);
 
-	useEffect(() => {
-		const root = document.documentElement;
-		root.style.setProperty("--space-base", `${settings.spacing}px`);
-		root.style.setProperty("--font-base", `${settings.fontSize}px`);
-		root.setAttribute("data-contrast", settings.contrast);
-		root.setAttribute("data-complexity", settings.complexity);
-	}, [settings.spacing, settings.fontSize, settings.contrast, settings.complexity]);
-
 	const value = useMemo(
 		() => ({ settings, updateSettings, resetSettings }),
 		[settings, updateSettings, resetSettings]

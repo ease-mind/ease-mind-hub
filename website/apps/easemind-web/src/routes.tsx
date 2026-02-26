@@ -5,7 +5,6 @@ import CognitiveSettingsPage from "./pages/cognitive-settings/cognitive-settings
 import EaseMindHomePage from "./pages/home/home";
 import NotFound from "./pages/not-found/not-found";
 import Profile from "./pages/profile/profile";
-import TaskOrganizerPage from "./pages/task-organizer/task-organizer";
 import { TasksPage } from "./pages/tasks";
 import EaseMindDashboardPage from "./pages/thermometer/thermometer";
 
@@ -16,10 +15,7 @@ const AppRoutes = () => (
 		<Route path="/termometro" element={<AuthGuard component={EaseMindDashboardPage} />} />
 		<Route path="/minha-conta" element={<AuthGuard component={Profile} />} />
 		<Route path="/configuracoes" element={<AuthGuard component={CognitiveSettingsPage} />} />
-		<Route path="/tarefas" element={<AuthGuard component={TaskOrganizerPage} />} />
-
-		{/* TODO */}
-		<Route path="/tarefas-mfe" element={<AuthGuard component={TasksPage} />} />
+		<Route path="/tarefas" element={<AuthGuard component={TasksPage} />} />
 	</Routes>
 );
 

@@ -1,6 +1,5 @@
 import {
 	CheckCircle as CheckCircleIcon,
-	DeleteOutline as DeleteIcon,
 	TrackChanges as FocusBadgeIcon,
 	ViewKanban as KanbanIcon,
 	Timer as TimerIcon,
@@ -346,6 +345,21 @@ function TaskOrganizerPage() {
 							<EaseMindButton
 								variant="outlined"
 								color="secondary"
+								label="Excluir"
+								onClick={handleDeleteTask}
+								borderRadius="8px"
+								sx={{
+									borderColor: isDarkMode ? "rgba(220,38,38,0.5)" : "#fca5a5",
+									color: "#dc2626",
+									"&:hover": {
+										borderColor: "#dc2626",
+										background: "rgba(220,38,38,0.08)"
+									}
+								}}
+							/>
+							<EaseMindButton
+								variant="outlined"
+								color="secondary"
 								label="Ver todas as tarefas"
 								onClick={handleExitFocus}
 								borderRadius="8px"
@@ -369,22 +383,6 @@ function TaskOrganizerPage() {
 									flex: 1,
 									background: "linear-gradient(90deg, #FF4353 0%, #FF4353 100%)",
 									color: "#fff !important"
-								}}
-							/>
-							<EaseMindButton
-								variant="outlined"
-								color="secondary"
-								label="Excluir"
-								onClick={handleDeleteTask}
-								startIcon={<DeleteIcon />}
-								borderRadius="8px"
-								sx={{
-									borderColor: isDarkMode ? "rgba(220,38,38,0.5)" : "#fca5a5",
-									color: "#dc2626",
-									"&:hover": {
-										borderColor: "#dc2626",
-										background: "rgba(220,38,38,0.08)"
-									}
 								}}
 							/>
 						</Box>
