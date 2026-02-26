@@ -1,7 +1,6 @@
 import { api } from "@repo/data-access";
 import { Task, TaskRepository } from "./task.model";
 
-// TODO: REPLACE LOCAL STORAGE WITH BACK
 export class ApiTaskRepository implements TaskRepository {
 	async getAll(): Promise<Task[]> {
 		const { data } = await api.get<Task[]>("/tasks");

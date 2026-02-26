@@ -1,4 +1,9 @@
 import {
+	getCognitiveSettings as fetchSettings,
+	resetCognitiveSettings as resetRemoteSettings,
+	updateCognitiveSettings as saveSettings
+} from "@repo/data-access";
+import {
 	createContext,
 	useCallback,
 	useContext,
@@ -28,8 +33,6 @@ export interface CognitiveSettingsContextProps {
 	resetSettings: () => void;
 }
 
-const STORAGE_KEY = "easemind:cognitiveSettings:v1";
-
 export const DEFAULT_SETTINGS: CognitiveSettings = {
 	complexity: "complete",
 	contrast: "normal",
@@ -39,38 +42,30 @@ export const DEFAULT_SETTINGS: CognitiveSettings = {
 	alertIntervalMinutes: 30
 };
 
-function loadSettings(): CognitiveSettings {
-	try {
-		const raw = localStorage.getItem(STORAGE_KEY);
-		if (raw) {
-			return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
-		}
-	} catch {}
-	return { ...DEFAULT_SETTINGS };
-}
-
-function persistSettings(settings: CognitiveSettings): void {
-	localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-}
-
 const CognitiveSettingsContext = createContext<CognitiveSettingsContextProps | undefined>(
 	undefined
 );
 
 export function CognitiveSettingsProvider({ children }: { children: ReactNode }) {
-	const [settings, setSettings] = useState<CognitiveSettings>(loadSettings);
+	const [settings, setSettings] = useState<CognitiveSettings>({ ...DEFAULT_SETTINGS });
+
+	useEffect(() => {
+		fetchSettings()
+			.then(data => setSettings(prev => ({ ...prev, ...data })))
+			.catch(() => {});
+	}, []);
 
 	const updateSettings = useCallback((patch: Partial<CognitiveSettings>) => {
 		setSettings(prev => {
 			const next = { ...prev, ...patch };
-			persistSettings(next);
+			saveSettings(next).catch(() => {});
 			return next;
 		});
 	}, []);
 
 	const resetSettings = useCallback(() => {
 		setSettings({ ...DEFAULT_SETTINGS });
-		persistSettings(DEFAULT_SETTINGS);
+		resetRemoteSettings().catch(() => {});
 	}, []);
 
 	useEffect(() => {

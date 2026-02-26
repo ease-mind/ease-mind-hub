@@ -1,13 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-	LocalStorageTaskRepository,
-	Task,
-	TaskRepository,
-	TaskStatus
-} from "../../repositories/tasks";
+import { ApiTaskRepository, Task, TaskRepository, TaskStatus } from "../../repositories/tasks";
 
-// TODO: REPLACE LOCAL STORAGE WITH BACK
-const repo: TaskRepository = new LocalStorageTaskRepository();
+const repo: TaskRepository = new ApiTaskRepository();
 
 export function useTasks() {
 	const [tasks, setTasks] = useState<Task[]>([]);

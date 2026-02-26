@@ -2,7 +2,29 @@ import "@testing-library/jest-dom";
 import { act, render, screen } from "@testing-library/react";
 import { CognitiveSettingsProvider, useCognitiveSettings } from "./cognitive-settings.context";
 
-const STORAGE_KEY = "easemind:cognitiveSettings:v1";
+const mockGetSettings = jest.fn().mockResolvedValue({
+	complexity: "complete",
+	contrast: "normal",
+	spacing: 18,
+	fontSize: 18,
+	alertsEnabled: true,
+	alertIntervalMinutes: 30
+});
+const mockUpdateSettings = jest.fn().mockResolvedValue({});
+const mockResetSettings = jest.fn().mockResolvedValue({
+	complexity: "complete",
+	contrast: "normal",
+	spacing: 18,
+	fontSize: 18,
+	alertsEnabled: true,
+	alertIntervalMinutes: 30
+});
+
+jest.mock("@repo/data-access", () => ({
+	getCognitiveSettings: (...args: any[]) => mockGetSettings(...args),
+	updateCognitiveSettings: (...args: any[]) => mockUpdateSettings(...args),
+	resetCognitiveSettings: (...args: any[]) => mockResetSettings(...args)
+}));
 
 function TestConsumer() {
 	const { settings, updateSettings, resetSettings } = useCognitiveSettings();
@@ -32,12 +54,12 @@ function renderWithProvider() {
 
 describe("CognitiveSettingsContext", () => {
 	beforeEach(() => {
-		localStorage.clear();
+		jest.clearAllMocks();
 		document.documentElement.removeAttribute("data-contrast");
 		document.documentElement.removeAttribute("data-complexity");
 	});
 
-	test("deve carregar valores padrão quando não há storage", () => {
+	test("deve carregar valores padrão inicialmente", () => {
 		renderWithProvider();
 
 		expect(screen.getByTestId("complexity")).toHaveTextContent("complete");
@@ -48,21 +70,22 @@ describe("CognitiveSettingsContext", () => {
 		expect(screen.getByTestId("alertInterval")).toHaveTextContent("30");
 	});
 
-	test("deve carregar valores do localStorage quando existem", () => {
-		localStorage.setItem(
-			STORAGE_KEY,
-			JSON.stringify({ complexity: "simple", contrast: "high", spacing: 24 })
-		);
+	test("deve buscar configurações da API ao montar", async () => {
+		mockGetSettings.mockResolvedValue({
+			complexity: "simple",
+			contrast: "high",
+			spacing: 24,
+			fontSize: 18,
+			alertsEnabled: true,
+			alertIntervalMinutes: 30
+		});
 
 		renderWithProvider();
 
-		expect(screen.getByTestId("complexity")).toHaveTextContent("simple");
-		expect(screen.getByTestId("contrast")).toHaveTextContent("high");
-		expect(screen.getByTestId("spacing")).toHaveTextContent("24");
-		expect(screen.getByTestId("fontSize")).toHaveTextContent("18");
+		expect(mockGetSettings).toHaveBeenCalledTimes(1);
 	});
 
-	test("deve atualizar settings e persistir no localStorage", () => {
+	test("deve atualizar settings e chamar API", () => {
 		renderWithProvider();
 
 		act(() => {
@@ -70,18 +93,17 @@ describe("CognitiveSettingsContext", () => {
 		});
 
 		expect(screen.getByTestId("complexity")).toHaveTextContent("simple");
-
-		const stored = JSON.parse(localStorage.getItem(STORAGE_KEY)!);
-		expect(stored.complexity).toBe("simple");
+		expect(mockUpdateSettings).toHaveBeenCalledWith(
+			expect.objectContaining({ complexity: "simple" })
+		);
 	});
 
-	test("deve resetar para valores padrão", () => {
-		localStorage.setItem(
-			STORAGE_KEY,
-			JSON.stringify({ complexity: "simple", contrast: "high" })
-		);
-
+	test("deve resetar para valores padrão e chamar API", () => {
 		renderWithProvider();
+
+		act(() => {
+			screen.getByText("set-simple").click();
+		});
 
 		expect(screen.getByTestId("complexity")).toHaveTextContent("simple");
 
@@ -91,9 +113,7 @@ describe("CognitiveSettingsContext", () => {
 
 		expect(screen.getByTestId("complexity")).toHaveTextContent("complete");
 		expect(screen.getByTestId("contrast")).toHaveTextContent("normal");
-
-		const stored = JSON.parse(localStorage.getItem(STORAGE_KEY)!);
-		expect(stored.complexity).toBe("complete");
+		expect(mockResetSettings).toHaveBeenCalledTimes(1);
 	});
 
 	test("deve aplicar CSS custom properties no documento", () => {
