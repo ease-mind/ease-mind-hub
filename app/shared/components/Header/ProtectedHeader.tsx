@@ -21,7 +21,7 @@ const ProtectedHeader = ({ title = '', hasAction = false, iconAction = '', onAct
       <View style={styles.headerContent}>
         <TouchableOpacity style={styles.leftIcon}>
           <View style={styles.avatarCircle}>
-            {user && user.photoURL ? <Image source={{ uri: user.photoURL }} cachePolicy="disk"
+            {user && user.image ? <Image source={{ uri: user.image }} cachePolicy="disk"
               contentFit="cover"
               transition={150} style={{ width: 50, height: 50, borderRadius: 25 }} /> : <MaterialIcons name="user" size={25} color={ColorsPalette.light['coral.800']} />}
           </View>

@@ -1,11 +1,12 @@
 import { useAuth, symptomService, Symptom, UserSymptomRecord } from '@/shared';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
+import { ScreenHeader } from '@/shared/components';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { Stack, useFocusEffect } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AppHeader } from '@/shared/components';
+import { ThermometerModal } from '@/shared/components/ThermometerModal';
 
 export default function ThermometerScreen() {
   const { user } = useAuth();
@@ -16,6 +17,7 @@ export default function ThermometerScreen() {
   const [saving, setSaving] = useState(false);
   const [showCalmAlert, setShowCalmAlert] = useState(false);
   const [showWarningAlert, setShowWarningAlert] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -127,14 +129,25 @@ export default function ThermometerScreen() {
 
   const temperaturePercentage = symptoms.length > 0 ? (selectedSymptoms.length / symptoms.length) * 100 : 0;
 
+  const ThermometerHeader = () => (
+    <ScreenHeader
+      title="Termômetro Sensorial"
+      subtitle="Monitore seu estado emocional"
+      rightElement={
+        <TouchableOpacity onPress={() => setModalVisible(true)} hitSlop={12}>
+          <Feather name="plus-circle" size={24} color={ColorsPalette.light['coral.700']} />
+        </TouchableOpacity>
+      }
+    />
+  );
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container} edges={['left', 'right']}>
         <Stack.Screen
           options={{
-            header: () => <AppHeader onThermometerUpdate={loadData} />,
+            header: () => <ThermometerHeader />,
             headerShown: true,
-            statusBarStyle: 'inverted',
           }}
         />
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -149,9 +162,8 @@ export default function ThermometerScreen() {
       <SafeAreaView style={styles.container} edges={['left', 'right']}>
         <Stack.Screen
           options={{
-            header: () => <AppHeader onThermometerUpdate={loadData} />,
+            header: () => <ThermometerHeader />,
             headerShown: true,
-            statusBarStyle: 'inverted',
           }}
         />
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
@@ -169,9 +181,8 @@ export default function ThermometerScreen() {
     <SafeAreaView style={styles.container} edges={['left', 'right']}>
       <Stack.Screen
         options={{
-          header: () => <AppHeader onThermometerUpdate={loadData} />,
+          header: () => <ThermometerHeader />,
           headerShown: true,
-          statusBarStyle: 'inverted',
         }}
       />
 
@@ -274,6 +285,7 @@ export default function ThermometerScreen() {
 
         <View style={{ height: 40 }} />
       </ScrollView>
+      <ThermometerModal visible={modalVisible} onClose={() => setModalVisible(false)} onSave={loadData} />
     </SafeAreaView>
   );
 }

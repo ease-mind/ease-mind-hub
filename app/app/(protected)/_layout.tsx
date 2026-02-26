@@ -12,40 +12,20 @@ export default function ProtectedLayout() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-        <Tabs
-            tabBar={() => <EasemindTabBar />}
-            screenOptions={{
-                headerShown: false,
-                tabBarStyle: Platform.select({
-                    ios: { position: 'absolute' },
-                    default: {},
-                }),
-            }}>
-            <Tabs.Screen
-                name="dashboard"
-                options={{
-                    title: 'Início',
-                }}
-            />
-            <Tabs.Screen
-                name="transactions"
-                options={{
-                    title: 'Transações',
-                }}
-            />
-            <Tabs.Screen
-                name="cards"
-                options={{
-                    title: 'Cartões',
-                }}
-            />
-            <Tabs.Screen
-                name="profile"
-                options={{
-                    title: 'Perfil',
-                }}
-            />
-        </Tabs>
+            <Tabs
+                tabBar={() => <EasemindTabBar />}
+                screenOptions={{
+                    headerShown: false,
+                    tabBarStyle: Platform.select({
+                        ios: { position: 'absolute' },
+                        default: {},
+                    }),
+                }}>
+                <Tabs.Screen name="thermometer" options={{ title: 'Termômetro' }} />
+                <Tabs.Screen name="tasks" options={{ title: 'Tarefas' }} />
+                <Tabs.Screen name="config" options={{ title: 'Configurações' }} />
+                <Tabs.Screen name="profile" options={{ title: 'Perfil' }} />
+            </Tabs>
         </GestureHandlerRootView>
     );
 }

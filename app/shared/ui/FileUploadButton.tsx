@@ -24,7 +24,7 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({ label, onFin
     }
 
     try {
-      const downloadURL = await uploadFile('file', `users/${user?.uid}`);
+      const downloadURL = await uploadFile('file', `users/${user?._id}`);
       if (!downloadURL) return;
 
       setDownloadURL(downloadURL);
