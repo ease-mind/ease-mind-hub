@@ -1,0 +1,189 @@
+﻿:root {
+	--space-base: 18px;
+	--font-base: 18px;
+}
+
+[data-contrast="low"] {
+	--cog-bg: #fffcfb;
+	--cog-card-bg: #ffffff;
+	--cog-text: #6b7280;
+	--cog-text-secondary: #9ca3af;
+	--cog-border: transparent;
+	--cog-border-dark: transparent;
+	--cog-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+	--cog-divider: transparent;
+	--cog-card-border: none;
+	--cog-task-border-width: 1px;
+	--cog-task-border-color: #f3e8e6;
+	--cog-option-border-width: 1px;
+}
+
+[data-contrast="normal"] {
+	--cog-bg: #fef3f1;
+	--cog-card-bg: #ffffff;
+	--cog-text: #111827;
+	--cog-text-secondary: #4b5563;
+	--cog-border: #e5e7eb;
+	--cog-border-dark: rgba(255, 255, 255, 0.1);
+	--cog-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+	--cog-divider: #f3f4f6;
+	--cog-card-border: 1px solid #e5e7eb;
+	--cog-task-border-width: 1px;
+	--cog-task-border-color: #e5e7eb;
+	--cog-option-border-width: 2px;
+}
+
+[data-contrast="high"] {
+	--cog-bg: #fce8e6;
+	--cog-card-bg: #ffffff;
+	--cog-text: #000000;
+	--cog-text-secondary: #1f2937;
+	--cog-border: #9ca3af;
+	--cog-border-dark: rgba(255, 255, 255, 0.25);
+	--cog-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+	--cog-divider: #d1d5db;
+	--cog-card-border: 2px solid #9ca3af;
+	--cog-task-border-width: 2px;
+	--cog-task-border-color: #6b7280;
+	--cog-option-border-width: 3px;
+}
+
+
+.cog-settings-page,
+.task-page {
+	font-size: var(--font-base);
+
+	.MuiTypography-root {
+		font-size: inherit;
+	}
+
+	.MuiTypography-h4 {
+		font-size: calc(var(--font-base) * 1.65);
+		line-height: 1.25;
+	}
+
+	.MuiTypography-h5 {
+		font-size: calc(var(--font-base) * 1.35);
+		line-height: 1.3;
+	}
+
+	.MuiTypography-h6 {
+		font-size: calc(var(--font-base) * 1.15);
+		line-height: 1.35;
+	}
+
+	.MuiTypography-subtitle1 {
+		font-size: calc(var(--font-base) * 1.05);
+	}
+
+	.MuiTypography-subtitle2 {
+		font-size: calc(var(--font-base) * 0.95);
+	}
+
+	.MuiTypography-body1 {
+		font-size: var(--font-base);
+	}
+
+	.MuiTypography-body2 {
+		font-size: calc(var(--font-base) * 0.88);
+	}
+
+	.MuiTypography-caption {
+		font-size: calc(var(--font-base) * 0.72);
+	}
+
+	.MuiButton-root {
+		font-size: calc(var(--font-base) * 0.88) !important;
+	}
+
+	.MuiChip-label {
+		font-size: calc(var(--font-base) * 0.75);
+	}
+}
+
+
+.cog-settings-page .cog-section-card,
+.cog-settings-page .cog-sidebar,
+.task-page .task-kanban-wrapper,
+.task-page .timer-panel,
+.task-page .tips-panel,
+.task-page .stats-panel,
+.task-page .focus-task-card,
+.task-page .task-progress-badge {
+	box-shadow: var(--cog-shadow);
+}
+
+
+[data-contrast="high"] .cog-settings-page,
+[data-contrast="high"] .task-page {
+	font-weight: 500;
+
+	.MuiTypography-root {
+		font-weight: inherit;
+	}
+
+	.MuiTypography-h4,
+	.MuiTypography-h5,
+	.MuiTypography-h6 {
+		font-weight: 700;
+	}
+}
+
+[data-contrast="high"] .task-card {
+	border-width: var(--cog-task-border-width);
+	border-color: var(--cog-task-border-color);
+}
+
+[data-contrast="high"] .cog-option-card {
+	border-width: var(--cog-option-border-width);
+}
+
+[data-contrast="high"] .cog-sidebar-item--active {
+	box-shadow: 0 0 0 2px #ff4353;
+}
+
+[data-contrast="high"] .cog-section-card,
+[data-contrast="high"] .cog-sidebar,
+[data-contrast="high"] .task-kanban-wrapper,
+[data-contrast="high"] .timer-panel,
+[data-contrast="high"] .tips-panel,
+[data-contrast="high"] .stats-panel,
+[data-contrast="high"] .focus-task-card,
+[data-contrast="high"] .task-progress-badge {
+	border: var(--cog-card-border) !important;
+}
+
+
+[data-contrast="normal"] .cog-section-card,
+[data-contrast="normal"] .cog-sidebar,
+[data-contrast="normal"] .task-kanban-wrapper,
+[data-contrast="normal"] .timer-panel,
+[data-contrast="normal"] .tips-panel,
+[data-contrast="normal"] .stats-panel,
+[data-contrast="normal"] .focus-task-card,
+[data-contrast="normal"] .task-progress-badge {
+	border: var(--cog-card-border);
+}
+
+
+[data-contrast="low"] .task-card {
+	box-shadow: none;
+	border-color: transparent;
+}
+
+[data-contrast="low"] .cog-option-card {
+	border-color: #f3e8e6;
+	border-width: 1px;
+}
+
+[data-contrast="low"] .cog-section-card,
+[data-contrast="low"] .cog-sidebar,
+[data-contrast="low"] .task-kanban-wrapper,
+[data-contrast="low"] .timer-panel,
+[data-contrast="low"] .tips-panel,
+[data-contrast="low"] .stats-panel,
+[data-contrast="low"] .focus-task-card,
+[data-contrast="low"] .task-progress-badge {
+	border: none !important;
+	box-shadow: var(--cog-shadow);
+}

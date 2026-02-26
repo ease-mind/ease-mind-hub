@@ -1,0 +1,32 @@
+.new-task-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	width: 100%;
+	min-width: 28rem;
+}
+
+.new-task-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.new-task-row {
+	display: flex;
+	gap: 1rem;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+
+.new-task-actions {
+	display: flex;
+	gap: 1rem;
+	margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+	.new-task-row {
+		flex-direction: column;
+	}
+}

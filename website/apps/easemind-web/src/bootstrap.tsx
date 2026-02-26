@@ -1,30 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { EaseMindWrapper } from './components/wrapper/wrapper';
-import { FinancialDataProvider, UserProvider } from '@repo/data-access';
-import ErrorBoundary from './error-boundary';
+import { FinancialDataProvider, UserProvider } from "@repo/data-access";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
+import App from "./App";
+import { EaseMindWrapper } from "./components/wrapper/wrapper";
+import { CognitiveSettingsProvider } from "./context/cognitive-settings/cognitive-settings.context";
+import ErrorBoundary from "./error-boundary";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <UserProvider>
-      <FinancialDataProvider>
-        <Router>
-          <EaseMindWrapper>
-            <ErrorBoundary>
-              <App />
-            </ErrorBoundary>
-          </EaseMindWrapper>
-        </Router>
-      </FinancialDataProvider>
-    </UserProvider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<UserProvider>
+			<FinancialDataProvider>
+				<CognitiveSettingsProvider>
+					<Router>
+						<EaseMindWrapper>
+							<ErrorBoundary>
+								<App />
+							</ErrorBoundary>
+						</EaseMindWrapper>
+					</Router>
+				</CognitiveSettingsProvider>
+			</FinancialDataProvider>
+		</UserProvider>
+	</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
