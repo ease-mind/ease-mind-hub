@@ -12,6 +12,8 @@ interface AuthContextType {
   updateUserProfileImage: (file: any) => Promise<void>;
   isAuthenticated: boolean;
   reloadUser: () => Promise<void>;
+  /** Apenas em __DEV__: entra nas telas protegidas com usuário mock (sem API) para visualizar o front. */
+  enterPreviewMode?: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -122,6 +124,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  /** Modo apenas visualização (dev): usuário mock para ver as 4 telas sem API. */
+  const enterPreviewMode = () => {
+    if (!__DEV__) return;
+    const mockUser: User = {
+      _id: 'preview-user',
+      name: 'Usuário Preview',
+      email: 'preview@easemind.app',
+      document: '000.000.000-00',
+    };
+    setUser(mockUser);
+    setIsAuthenticated(true);
+  };
+
   const value = {
     user,
     isLoading,
@@ -132,6 +147,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     updateUserProfileImage,
     isAuthenticated,
     reloadUser,
+    ...(__DEV__ ? { enterPreviewMode } : {}),
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

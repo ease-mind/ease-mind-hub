@@ -1,4 +1,5 @@
 import { useAuth } from '@/shared/contexts';
+import { ScreenHeader } from '@/shared/components';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
 import { maskDocument } from '@/shared/helpers/maskDocument';
 import { useFeedbackAnimation } from '@/shared/hooks/useFeedbackAnimation';
@@ -107,10 +108,8 @@ const ProfileScreen = () => {
 
     return (
         <>
-            <SafeAreaView style={styles.container} >
-                <View style={styles.header}>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#333', textAlign: 'center' }}>Perfil</Text>
-                </View>
+            <ScreenHeader title="Meu Perfil" subtitle="Configure suas informações" />
+            <SafeAreaView style={styles.container} edges={['left', 'right']}>
                 <ScrollView
                     keyboardShouldPersistTaps="handled"
                 >
