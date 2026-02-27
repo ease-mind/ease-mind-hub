@@ -1,28 +1,39 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
-export const validateToken = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
-  const token = req.headers.authorization;
+export interface AuthPayload {
+	id: string;
+	email: string;
+}
 
-  if (!token) {
-    res.status(401).json({ message: "Token não informado." });
-  }
+declare global {
+	namespace Express {
+		interface Request {
+			userId?: string;
+		}
+	}
+}
 
-  const accessToken = token?.split(" ")[1];
+export const validateToken = (req: Request, res: Response, next: NextFunction): void => {
+	const token = req.headers.authorization;
 
-  try {
-    if (accessToken) {
-      verify(accessToken, process.env.JWT_SECRET || "");
+	if (!token) {
+		res.status(401).json({ message: "Token não informado." });
+		return;
+	}
 
-      next();
-    } else {
-      res.status(401).json({ message: "Token não encontrado." });
-    }
-  } catch (error) {
-    res.status(401).json({ message: "Usuário não autorizado." });
-  }
+	const accessToken = token?.split(" ")[1];
+
+	try {
+		if (accessToken) {
+			const decoded = verify(accessToken, process.env.JWT_SECRET || "") as AuthPayload;
+			req.userId = decoded.id;
+
+			next();
+		} else {
+			res.status(401).json({ message: "Token não encontrado." });
+		}
+	} catch (error) {
+		res.status(401).json({ message: "Usuário não autorizado." });
+	}
 };

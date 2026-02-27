@@ -1,1 +1,2 @@
-export * from './TaskList';
+export * from "./TaskList";
+export { TaskOrganizerPage } from "./TaskOrganizerPage";
