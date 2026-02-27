@@ -17,13 +17,14 @@ import {
     ScrollView,
     StyleSheet,
     Text,
+    TouchableOpacity,
     TouchableWithoutFeedback,
     View
 } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 const AccountAccessScreen = () => {
-    const { login, signUp, user, isLoading: authLoading } = useAuth();
+    const { login, signUp, user, isLoading: authLoading, enterPreviewMode } = useAuth();
     const [activeTab, setActiveTab] = useState('login');
     const [showPassword, setShowPassword] = useState(false);
     const [showRegisterPassword, setShowRegisterPassword] = useState(false);
@@ -140,6 +141,18 @@ const AccountAccessScreen = () => {
                                     disabled={isLoading || !loginForm.formState.isValid}>
                                     {isLoading ? <ActivityIndicator color="#fff" /> : "Entrar"}
                                 </EasemindButton>
+                                {__DEV__ && enterPreviewMode && (
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            enterPreviewMode();
+                                            router.replace('/(protected)/thermometer');
+                                        }}
+                                        style={styles.previewButton}
+                                        activeOpacity={0.7}
+                                    >
+                                        <Text style={styles.previewButtonText}>Apenas visualizar telas (sem login)</Text>
+                                    </TouchableOpacity>
+                                )}
                             </View>
                         </FormProvider>
                     ) : (
@@ -212,6 +225,18 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         width: '100%',
+    },
+    previewButton: {
+        marginTop: 16,
+        paddingVertical: 12,
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: ColorsPalette.light['coral.300'],
+        borderRadius: 8,
+    },
+    previewButtonText: {
+        fontSize: 14,
+        color: ColorsPalette.light['coral.600'],
     },
 });
 
