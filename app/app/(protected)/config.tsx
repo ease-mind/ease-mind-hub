@@ -266,13 +266,6 @@ export default function ConfigScreen() {
             </Text>
           </View>
         </SettingsCard>
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Versão 1.0.0</Text>
-          <Text style={styles.footerText}>
-            © 2024 Ease Mind - Todos os direitos reservados.
-          </Text>
-        </View>
       </ScrollView>
     </>
   );

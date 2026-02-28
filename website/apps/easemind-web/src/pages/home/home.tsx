@@ -89,7 +89,7 @@ const EaseMindHomePage = () => {
       footer.style.backgroundColor = colors["coral.dark"];
       footerText.style.color = colors["coral.100"];
       document.body.style.background =
-        "radial-gradient(100% 244.46% at 0% 0%, rgb(255 67 83) 0%, rgb(255 210 148) 100%) 0% 0% / 120% 120%, radial-gradient(50% 122.23% at 50% 50%, rgb(230 57 70) 0%, rgb(255 140 126) 100%), radial-gradient(100.45% 245.58% at 0% 0%, rgb(255 138 126) 0%, rgb(255 181 173) 100%), linear-gradient(127.43deg, rgb(204 47 60) 0%, rgb(255 107 119) 100%)";
+        "radial-gradient(100% 244.46% at 0% 0%, rgb(255 177 184 / 75%) 0%, rgb(255, 210, 148) 100%) 0% 0% / 135% 130%, radial-gradient(50% 122.23%, rgb(230, 57, 70) 0%, rgb(255, 140, 126) 100%), radial-gradient(100.45% 245.58% at 0% 0%, rgb(255, 138, 126) 0%, rgb(255, 181, 173) 100%), linear-gradient(127.43deg, rgb(204, 47, 60) 0%, rgb(255, 107, 119) 100%)";
       document.body.style.backgroundBlendMode =
         "lighten, color-burn, color-dodge, difference, normal";
       document.body.style.backgroundSize = "135% 130%";
