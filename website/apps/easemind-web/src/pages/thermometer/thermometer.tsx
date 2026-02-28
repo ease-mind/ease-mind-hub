@@ -93,11 +93,11 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
 
   const getTemperatureColor = () => {
     const temp = getTemperature();
-    if (temp === 0) return '#E0E0E0';
-    if (temp <= 36) return '#4CAF50';
+    if (temp === 0) return 'rgb(16, 185, 129)';
+    if (temp <= 36) return 'rgb(16, 185, 129)';
     if (temp <= 38) return '#FFC107';
-    if (temp >= 39) return '#FF9800';
-    return '#FF4353';
+    if (temp >= 39) return '#F44336';
+    return '#F44336';
   };
 
   const getTemperatureLevel = () => {
@@ -106,6 +106,13 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
     if (temp <= 36) return 'Calmo';
     if (temp <= 38) return 'Alerta';
     if (temp >= 39) return 'Sobrecarga';
+  };
+
+  const getThermometerIcon = () => {
+    const temp = getTemperature();
+    if (temp === 0 || temp <= 36) return '/images/icone-calmo.svg';
+    if (temp <= 38) return '/images/icone-alerta.svg';
+    return '/images/icone-sobrecarregado.svg';
   };
 
   const getCategoryCount = (category: string) => {
@@ -232,69 +239,6 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                   <Box
                     position="absolute"
                     left="50%"
-                    top="30px"
-                    sx={{ 
-                      transform: 'translateX(-50%)',
-                      zIndex: 2
-                    }}
-                    textAlign="center"
-                  >
-                    <Typography 
-                      variant="caption" 
-                      sx={{ 
-                        fontWeight: 'bold',
-                        fontSize: '11px'
-                      }}
-                    >
-                      Sobrecarga
-                    </Typography>
-                  </Box>
-
-                  <Box
-                    position="absolute"
-                    left="50%"
-                    top="50%"
-                    sx={{ 
-                      transform: 'translate(-50%, -50%)',
-                      zIndex: 2
-                    }}
-                    textAlign="center"
-                  >
-                    <Typography 
-                      variant="caption" 
-                      sx={{ 
-                        fontWeight: 'bold',
-                        fontSize: '11px'
-                      }}
-                    >
-                      Alerta
-                    </Typography>
-                  </Box>
-
-                  <Box
-                    position="absolute"
-                    left="50%"
-                    bottom="130px"
-                    sx={{ 
-                      transform: 'translateX(-50%)',
-                      zIndex: 2
-                    }}
-                    textAlign="center"
-                  >
-                    <Typography 
-                      variant="caption" 
-                      sx={{ 
-                        fontWeight: 'bold',
-                        fontSize: '11px'
-                      }}
-                    >
-                      Calmo
-                    </Typography>
-                  </Box>
-
-                  <Box
-                    position="absolute"
-                    left="50%"
                     bottom="0"
                     sx={{ 
                       transform: 'translateX(-50%)',
@@ -313,16 +257,14 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                       border={`3px solid ${getTemperatureColor()}`}
                     >
                       <Box
-                        fontSize="48px"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        {selectedSymptoms.length === 0 ? '😊' :
-                         getTemperature() <= 36 ? '😊' : 
-                         getTemperature() <= 38 ? '😐' : 
-                         getTemperature() <= 40 ? '😰' : '😟'}
-                      </Box>
+                        component="img"
+                        src={getThermometerIcon()}
+                        alt={getTemperatureLevel() || 'Termômetro'}
+                        sx={{
+                          width: '60px',
+                          height: '60px',
+                        }}
+                      />
                     </Box>
                   </Box>
                 </Box>

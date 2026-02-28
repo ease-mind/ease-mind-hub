@@ -9,10 +9,6 @@ type ScreenHeaderProps = {
   rightElement?: React.ReactNode;
 };
 
-/**
- * Barra superior no estilo do projeto antigo: logo à esquerda, título e subtítulo, slot opcional à direita.
- * Usado em termômetro, perfil, tarefas e configurações.
- */
 export function ScreenHeader({ title, subtitle, rightElement }: ScreenHeaderProps) {
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
@@ -26,7 +22,11 @@ export function ScreenHeader({ title, subtitle, rightElement }: ScreenHeaderProp
           <Text style={styles.title}>{title}</Text>
           {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         </View>
-        {rightElement ? <View style={styles.right}>{rightElement}</View> : null}
+        {rightElement ? (
+          <View style={styles.rightIcon}>{rightElement}</View>
+        ) : (
+          <View style={styles.rightIcon} />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -64,5 +64,10 @@ const styles = StyleSheet.create({
   },
   right: {
     marginLeft: 8,
+  },
+  rightIcon: {
+    width: 56,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
 });

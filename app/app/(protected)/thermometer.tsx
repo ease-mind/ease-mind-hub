@@ -8,6 +8,12 @@ import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThermometerModal } from '@/shared/components/ThermometerModal';
 
+import IconCalm from '@/assets/images/icone-calmo.svg';
+import IconAlert from '@/assets/images/icone-alerta.svg';
+import IconOverload from '@/assets/images/icone-sobrecarregado.svg';
+
+const AddIcon = require('@/assets/images/add.svg').default;
+
 export default function ThermometerScreen() {
   const { user } = useAuth();
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
@@ -15,8 +21,6 @@ export default function ThermometerScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const [showCalmAlert, setShowCalmAlert] = useState(false);
-  const [showWarningAlert, setShowWarningAlert] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   useFocusEffect(
@@ -56,27 +60,26 @@ export default function ThermometerScreen() {
 
   const getTemperatureColor = () => {
     const temp = getTemperature();
-    if (temp === 0) return '#E0E0E0';
-    if (temp <= 36) return '#4CAF50';
+    if (temp === 0) return 'rgb(16, 185, 129)';
+    if (temp <= 36) return 'rgb(16, 185, 129)';
     if (temp <= 38) return '#FFC107';
-    if (temp >= 39) return '#FF9800';
-    return '#FF4353';
+    if (temp >= 39) return '#F44336';
+    return '#F44336';
   };
 
   const getTemperatureLevel = () => {
     const temp = getTemperature();
-    if (temp === 0) return '';
+    if (temp === 0) return 'Calmo';
     if (temp <= 36) return 'Calmo';
     if (temp <= 38) return 'Alerta';
     if (temp >= 39) return 'Sobrecarga';
   };
 
-  const getEmoji = () => {
-    if (selectedSymptoms.length === 0) return '😊';
-    if (getTemperature() <= 36) return '😊';
-    if (getTemperature() <= 38) return '😐';
-    if (getTemperature() <= 40) return '😰';
-    return '😟';
+  const getThermometerIcon = () => {
+    const temp = getTemperature();
+    if (temp === 0 || temp <= 36) return IconCalm;
+    if (temp <= 38) return IconAlert;
+    return IconOverload;
   };
 
   const getCategoryCount = (category: string) => {
@@ -112,21 +115,6 @@ export default function ThermometerScreen() {
     }
   };
 
-  useEffect(() => {
-    const temp = getTemperature();
-    
-    if (temp > 0 && temp <= 36) {
-      setShowCalmAlert(true);
-      setShowWarningAlert(false);
-    } else if (temp > 38) {
-      setShowWarningAlert(true);
-      setShowCalmAlert(false);
-    } else {
-      setShowCalmAlert(false);
-      setShowWarningAlert(false);
-    }
-  }, [selectedSymptoms]);
-
   const temperaturePercentage = symptoms.length > 0 ? (selectedSymptoms.length / symptoms.length) * 100 : 0;
 
   const ThermometerHeader = () => (
@@ -134,8 +122,11 @@ export default function ThermometerScreen() {
       title="Termômetro Sensorial"
       subtitle="Monitore seu estado emocional"
       rightElement={
-        <TouchableOpacity onPress={() => setModalVisible(true)} hitSlop={12}>
-          <Feather name="plus-circle" size={24} color={ColorsPalette.light['coral.700']} />
+        <TouchableOpacity
+          onPress={() => setModalVisible(true)}
+          activeOpacity={0.9}
+        >
+          <AddIcon width={56} height={56} />
         </TouchableOpacity>
       }
     />
@@ -187,11 +178,6 @@ export default function ThermometerScreen() {
       />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Termômetro Sensorial</Text>
-          <Text style={styles.subtitle}>Monitore seu estado emocional e identifique sinais de sobrecarga</Text>
-        </View>
-
         <View style={styles.thermometerSection}>
           <View style={styles.thermometerContainer}>
             <View style={styles.thermometerBackground} />
@@ -206,16 +192,11 @@ export default function ThermometerScreen() {
               ]}
             />
 
-            <View style={[styles.thermometerLabel, { top: 40 }]}>
-              <Text style={styles.thermometerLabelText}>Sobrecarga</Text>
-            </View>
-
-            <View style={[styles.thermometerLabel, { top: '50%' }]}>
-              <Text style={styles.thermometerLabelText}>Alerta</Text>
-            </View>
-
             <View style={[styles.thermometerBulb, { borderColor: getTemperatureColor() }]}>
-              <Text style={{ fontSize: 48 }}>{getEmoji()}</Text>
+              {(() => {
+                const IconComponent = getThermometerIcon();
+                return <IconComponent width={60} height={60} />;
+              })()}
             </View>
           </View>
 
@@ -297,12 +278,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 32,
-  },
-  titleContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 24,
-    alignItems: 'center',
   },
   title: {
     fontSize: 28,
