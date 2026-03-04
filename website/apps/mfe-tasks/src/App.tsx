@@ -1,7 +1,7 @@
 import { EaseMindThemeProvider } from "@repo/utils";
 import "./App.scss";
-import { CognitiveSettingsProvider } from "./context/cognitive-settings/cognitive-settings.context";
 import TaskOrganizerPage from "./pages/task-organizer/task-organizer";
+import { CognitiveSettingsProvider } from "@repo/data-access";
 
 function App() {
 	return (

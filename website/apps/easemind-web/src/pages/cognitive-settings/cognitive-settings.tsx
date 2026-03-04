@@ -16,17 +16,11 @@ import type { SnackbarData } from "@repo/ui";
 import { EaseMindButton, EaseMindSnackbar } from "@repo/ui";
 import { useTheme } from "@repo/utils";
 import React, { useState } from "react";
-import {
-	CognitiveSettings,
-	ContrastLevel,
-	FontSizeValue,
-	SpacingValue,
-	useCognitiveSettings
-} from "../../context/cognitive-settings/cognitive-settings.context";
 import "./cognitive-settings.scss";
 import { OptionCard, SectionCard } from "./components";
 import { SECTIONS } from "./constants/sections";
 import { SectionId } from "./types";
+import { CognitiveSettings, ContrastLevel, FontSizeValue, SpacingValue, useCognitiveSettings } from "@repo/data-access";
 
 function CognitiveSettingsPage() {
 	const { settings, updateSettings } = useCognitiveSettings();
