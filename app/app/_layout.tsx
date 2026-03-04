@@ -1,4 +1,5 @@
 import { AuthProvider } from '@/shared/contexts';
+import { CognitiveSettingsProvider } from '@/shared';
 import { PaperDarkTheme, PaperLightTheme } from '@/shared/classes/constants/Colors';
 import { useColorScheme } from '@/shared/hooks/useColorScheme';
 import '@/shared/i18n/datePickerLocale';
@@ -37,6 +38,7 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
+      <CognitiveSettingsProvider>
         <PaperProvider theme={colorScheme === 'dark' ? PaperDarkTheme : PaperLightTheme}>
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -45,6 +47,7 @@ export default function RootLayout() {
             <Stack.Screen name="+not-found" />
           </Stack>
         </PaperProvider>
+      </CognitiveSettingsProvider>
     </AuthProvider>
   );
 }

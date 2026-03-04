@@ -1,2 +1,2 @@
-export { AuthProvider, useAuth } from './AuthContext';
-export type { User } from '../services/authService';
+export * from './AuthContext';
+export * from './CognitiveSettingsContext';

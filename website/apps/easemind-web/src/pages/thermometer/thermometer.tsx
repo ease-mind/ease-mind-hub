@@ -12,6 +12,7 @@ import {
   useUser,
   useCognitiveSettings
 } from '@repo/data-access';
+import './thermometer.scss';
 
 interface EaseMindThermometerProps { }
 
@@ -183,14 +184,20 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
     }
   };
 
+  const spacing = {
+    card: settings.spacing === 24 ? 4 : settings.spacing === 18 ? 3 : 2,
+    gap: settings.spacing === 24 ? 3 : settings.spacing === 18 ? 2 : 1.5,
+    small: settings.spacing === 24 ? 2 : settings.spacing === 18 ? 1.5 : 1
+  };
+
   const renderSimpleStepContent = () => {
     const category = categories[currentStep];
     const categorySymptoms = symptoms.filter(s => s.category === category.key);
 
     return (
       <EaseMindCard>
-        <Box p={3}>
-          <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Box p={spacing.card}>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={spacing.gap}>
             <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1}>
               {category.icon} {category.title}
             </Typography>
@@ -199,13 +206,13 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
             </Typography>
           </Box>
           
-          <Box display="flex" flexDirection="column" gap={2}>
+          <Box display="flex" flexDirection="column" gap={spacing.gap}>
             {categorySymptoms.map((symptom) => (
               <Box 
                 key={symptom.id}
                 onClick={() => handleSymptomToggle(symptom.id)}
                 sx={{
-                  p: 2,
+                  p: spacing.gap,
                   border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
                   borderRadius: 2,
                   cursor: 'pointer',
@@ -225,7 +232,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
             ))}
           </Box>
 
-          <Box display="flex" justifyContent="space-between" mt={3} gap={2}>
+          <Box display="flex" justifyContent="space-between" mt={spacing.gap} gap={spacing.gap}>
             <Button
               variant="outlined"
               startIcon={<ArrowBack />}
@@ -268,7 +275,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
             )}
           </Box>
 
-          <Box display="flex" justifyContent="center" gap={1} mt={2}>
+          <Box display="flex" justifyContent="center" gap={1} mt={spacing.gap}>
             {categories.map((_, index) => (
               <Box
                 key={index}
@@ -291,17 +298,17 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
     return (
       <>
         <EaseMindCard>
-          <Box p={3}>
-            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={2}>
+          <Box p={spacing.card}>
+            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={spacing.gap}>
               <Cancel sx={{ color: colors['coral.500'] }} /> Falha na Comunicação
             </Typography>
-            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={spacing.gap}>
               {symptoms.filter(s => s.category === 'communication').map((symptom) => (
                 <Box 
                   key={symptom.id}
                   onClick={() => handleSymptomToggle(symptom.id)}
                   sx={{
-                    p: 2,
+                    p: spacing.gap,
                     border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
                     borderRadius: 2,
                     cursor: 'pointer',
@@ -324,17 +331,17 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
         </EaseMindCard>
 
         <EaseMindCard>
-          <Box p={3}>
-            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={2}>
+          <Box p={spacing.card}>
+            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={spacing.gap}>
               <Lightbulb sx={{ color: '#FFC107' }} /> Sintomas Físicos
             </Typography>
-            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={spacing.gap}>
               {symptoms.filter(s => s.category === 'physical').map((symptom) => (
                 <Box 
                   key={symptom.id}
                   onClick={() => handleSymptomToggle(symptom.id)}
                   sx={{
-                    p: 2,
+                    p: spacing.gap,
                     border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
                     borderRadius: 2,
                     cursor: 'pointer',
@@ -357,17 +364,17 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
         </EaseMindCard>
 
         <EaseMindCard>
-          <Box p={3}>
-            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={2}>
+          <Box p={spacing.card}>
+            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={spacing.gap}>
               <TrendingUp sx={{ color: '#2196F3' }} /> Aumento de Estereotipias
             </Typography>
-            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={spacing.gap}>
               {symptoms.filter(s => s.category === 'stereotypies').map((symptom) => (
                 <Box 
                   key={symptom.id}
                   onClick={() => handleSymptomToggle(symptom.id)}
                   sx={{
-                    p: 2,
+                    p: spacing.gap,
                     border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
                     borderRadius: 2,
                     cursor: 'pointer',
@@ -394,7 +401,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
 
   if (error) {
     return (
-      <Box p={3}>
+      <Box p={spacing.card}>
         <Alert severity="error" action={
           <Button color="inherit" size="small" onClick={loadSymptoms}>
             Tentar Novamente
@@ -407,8 +414,8 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   }
 
   return (
-    <>
-      <Box width={'100%'} px={{xs: 2, sm: 3, md: 4}} py={3} display={'flex'} flexDirection={'column'} gap={3}>
+    <Box className="thermometer-page">
+      <Box width={'100%'} px={{xs: 2, sm: 3, md: 4}} py={spacing.card} display={'flex'} flexDirection={'column'} gap={spacing.gap}>
         <Box>
           <Typography variant="h4" fontWeight="bold" display="flex" alignItems="center" gap={1}>
           Termômetro Sensorial
@@ -440,10 +447,10 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
           </Alert>
         )}
 
-        <Box display="grid" gridTemplateColumns="1fr 2fr" gap={3} sx={{ gridTemplateColumns: { xs: '1fr', sm: '1fr', md: '1fr 2fr' }}}>
+        <Box display="grid" gridTemplateColumns="1fr 2fr" gap={spacing.gap} sx={{ gridTemplateColumns: { xs: '1fr', sm: '1fr', md: '1fr 2fr' }}}>
           <Box>
             <EaseMindCard>
-              <Box p={3} display="flex" flexDirection="column" alignItems="center" gap={2}>
+              <Box p={spacing.card} display="flex" flexDirection="column" alignItems="center" gap={spacing.gap}>
                 <Box position="relative" width="200px" height="450px">
                   <Box
                     position="absolute"
@@ -529,8 +536,8 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                 </Box>
 
                 {!isSimple && (
-                  <Box width="100%" mt={2}>
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                  <Box width="100%" mt={spacing.gap}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={spacing.small}>
                       <Typography variant="body2">Comunicação</Typography>
                       <Box 
                         bgcolor={colors['coral.500']} 
@@ -543,7 +550,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                         {getCategoryCount('communication')}
                       </Box>
                     </Box>
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={spacing.small}>
                       <Typography variant="body2">Físicos</Typography>
                       <Box 
                         bgcolor={colors['coral.500']} 
@@ -572,7 +579,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                   </Box>
                 )}
 
-                <Box width="100%" mt={2}>
+                <Box width="100%" mt={spacing.gap}>
                   <Typography variant="body2" fontWeight="bold" mb={1}>
                     Sintomas identificados: {selectedSymptoms.length}
                   </Typography>
@@ -593,12 +600,12 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
             </EaseMindCard>
           </Box>
 
-          <Box display="flex" flexDirection="column" gap={2}>
+          <Box display="flex" flexDirection="column" gap={spacing.gap}>
             {isSimple ? renderSimpleStepContent() : renderComplexContent()}
           </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
