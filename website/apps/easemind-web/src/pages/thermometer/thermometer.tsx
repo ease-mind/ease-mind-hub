@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import { Box, Typography, Radio, Button, Alert, CircularProgress } from '@mui/material';
-import { Warning, Cancel, Lightbulb, TrendingUp, Loop } from '@mui/icons-material';
+import { Box, Typography, Radio, Button, Alert, CircularProgress, Chip } from '@mui/material';
+import { Warning, Cancel, Lightbulb, TrendingUp, Loop, ArrowBack, ArrowForward } from '@mui/icons-material';
 import { EaseMindCard } from '@repo/ui';
 import { useTheme } from '@repo/utils';
 import { 
@@ -9,7 +9,8 @@ import {
   getLatestUserSymptoms,
   Symptom, 
   UserSymptomRecord,
-  useUser
+  useUser,
+  useCognitiveSettings
 } from '@repo/data-access';
 
 interface EaseMindThermometerProps { }
@@ -17,12 +18,15 @@ interface EaseMindThermometerProps { }
 const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   const { colors } = useTheme();
   const { user } = useUser();
+  const { settings } = useCognitiveSettings();
+  const isSimple = settings.complexity === 'simple';
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     loadSymptoms();
@@ -144,9 +148,249 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   const handleReset = () => {
     setSelectedSymptoms([]);
     setShowAlert(false);
+    setCurrentStep(0);
   };
 
   const temperaturePercentage = symptoms.length > 0 ? (selectedSymptoms.length / symptoms.length) * 100 : 0;
+
+  const categories = [
+    { 
+      key: 'communication', 
+      title: 'Falha na Comunicação', 
+      icon: <Cancel sx={{ color: colors['coral.500'] }} />
+    },
+    { 
+      key: 'physical', 
+      title: 'Sintomas Físicos', 
+      icon: <Lightbulb sx={{ color: '#FFC107' }} />
+    },
+    { 
+      key: 'stereotypies', 
+      title: 'Aumento de Estereotipias', 
+      icon: <TrendingUp sx={{ color: '#2196F3' }} />
+    }
+  ];
+
+  const handleNextStep = () => {
+    if (currentStep < categories.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const renderSimpleStepContent = () => {
+    const category = categories[currentStep];
+    const categorySymptoms = symptoms.filter(s => s.category === category.key);
+
+    return (
+      <EaseMindCard>
+        <Box p={3}>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1}>
+              {category.icon} {category.title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Etapa {currentStep + 1} de {categories.length}
+            </Typography>
+          </Box>
+          
+          <Box display="flex" flexDirection="column" gap={2}>
+            {categorySymptoms.map((symptom) => (
+              <Box 
+                key={symptom.id}
+                onClick={() => handleSymptomToggle(symptom.id)}
+                sx={{
+                  p: 2,
+                  border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
+                  borderRadius: 2,
+                  cursor: 'pointer',
+                  bgcolor: selectedSymptoms.includes(symptom.id) ? `${colors['coral.500']}10` : 'transparent',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    borderColor: colors['coral.500'],
+                    bgcolor: `${colors['coral.500']}05`,
+                  }
+                }}
+              >
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Radio checked={selectedSymptoms.includes(symptom.id)} />
+                  <Typography variant="body2">{symptom.label}</Typography>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+
+          <Box display="flex" justifyContent="space-between" mt={3} gap={2}>
+            <Button
+              variant="outlined"
+              startIcon={<ArrowBack />}
+              onClick={handlePreviousStep}
+              disabled={currentStep === 0}
+              sx={{ 
+                borderColor: colors['coral.500'],
+                color: colors['coral.500'],
+                '&:hover': { 
+                  borderColor: colors['coral.600'],
+                  bgcolor: `${colors['coral.500']}05`
+                }
+              }}
+            >
+              Anterior
+            </Button>
+            {currentStep < categories.length - 1 ? (
+              <Button
+                variant="contained"
+                endIcon={<ArrowForward />}
+                onClick={handleNextStep}
+                sx={{ 
+                  bgcolor: colors['coral.500'],
+                  '&:hover': { bgcolor: colors['coral.600'] }
+                }}
+              >
+                Próximo
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={() => {}}
+                sx={{ 
+                  bgcolor: colors['coral.500'],
+                  '&:hover': { bgcolor: colors['coral.600'] }
+                }}
+              >
+                Concluir
+              </Button>
+            )}
+          </Box>
+
+          <Box display="flex" justifyContent="center" gap={1} mt={2}>
+            {categories.map((_, index) => (
+              <Box
+                key={index}
+                sx={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: '50%',
+                  bgcolor: index === currentStep ? colors['coral.500'] : colors['grey.200'],
+                  transition: 'all 0.3s ease'
+                }}
+              />
+            ))}
+          </Box>
+        </Box>
+      </EaseMindCard>
+    );
+  };
+
+  const renderComplexContent = () => {
+    return (
+      <>
+        <EaseMindCard>
+          <Box p={3}>
+            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={2}>
+              <Cancel sx={{ color: colors['coral.500'] }} /> Falha na Comunicação
+            </Typography>
+            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+              {symptoms.filter(s => s.category === 'communication').map((symptom) => (
+                <Box 
+                  key={symptom.id}
+                  onClick={() => handleSymptomToggle(symptom.id)}
+                  sx={{
+                    p: 2,
+                    border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
+                    borderRadius: 2,
+                    cursor: 'pointer',
+                    bgcolor: selectedSymptoms.includes(symptom.id) ? `${colors['coral.500']}10` : 'transparent',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      borderColor: colors['coral.500'],
+                      bgcolor: `${colors['coral.500']}05`,
+                    }
+                  }}
+                >
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Radio checked={selectedSymptoms.includes(symptom.id)} />
+                    <Typography variant="body2">{symptom.label}</Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </EaseMindCard>
+
+        <EaseMindCard>
+          <Box p={3}>
+            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={2}>
+              <Lightbulb sx={{ color: '#FFC107' }} /> Sintomas Físicos
+            </Typography>
+            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+              {symptoms.filter(s => s.category === 'physical').map((symptom) => (
+                <Box 
+                  key={symptom.id}
+                  onClick={() => handleSymptomToggle(symptom.id)}
+                  sx={{
+                    p: 2,
+                    border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
+                    borderRadius: 2,
+                    cursor: 'pointer',
+                    bgcolor: selectedSymptoms.includes(symptom.id) ? `${colors['coral.500']}10` : 'transparent',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      borderColor: colors['coral.500'],
+                      bgcolor: `${colors['coral.500']}05`,
+                    }
+                  }}
+                >
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Radio checked={selectedSymptoms.includes(symptom.id)} />
+                    <Typography variant="body2">{symptom.label}</Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </EaseMindCard>
+
+        <EaseMindCard>
+          <Box p={3}>
+            <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={2}>
+              <TrendingUp sx={{ color: '#2196F3' }} /> Aumento de Estereotipias
+            </Typography>
+            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+              {symptoms.filter(s => s.category === 'stereotypies').map((symptom) => (
+                <Box 
+                  key={symptom.id}
+                  onClick={() => handleSymptomToggle(symptom.id)}
+                  sx={{
+                    p: 2,
+                    border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
+                    borderRadius: 2,
+                    cursor: 'pointer',
+                    bgcolor: selectedSymptoms.includes(symptom.id) ? `${colors['coral.500']}10` : 'transparent',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      borderColor: colors['coral.500'],
+                      bgcolor: `${colors['coral.500']}05`,
+                    }
+                  }}
+                >
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Radio checked={selectedSymptoms.includes(symptom.id)} />
+                    <Typography variant="body2">{symptom.label}</Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </EaseMindCard>
+      </>
+    );
+  };
 
   if (error) {
     return (
@@ -284,47 +528,49 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                   )}
                 </Box>
 
-                <Box width="100%" mt={2}>
-                  <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                    <Typography variant="body2">Comunicação</Typography>
-                    <Box 
-                      bgcolor={colors['coral.500']} 
-                      color="white" 
-                      sx={{ px: 2, py: 1 }}
-                      borderRadius={1}
-                      minWidth="30px"
-                      textAlign="center"
-                    >
-                      {getCategoryCount('communication')}
+                {!isSimple && (
+                  <Box width="100%" mt={2}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                      <Typography variant="body2">Comunicação</Typography>
+                      <Box 
+                        bgcolor={colors['coral.500']} 
+                        color="white" 
+                        sx={{ px: 2, py: 1 }}
+                        borderRadius={1}
+                        minWidth="30px"
+                        textAlign="center"
+                      >
+                        {getCategoryCount('communication')}
+                      </Box>
+                    </Box>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                      <Typography variant="body2">Físicos</Typography>
+                      <Box 
+                        bgcolor={colors['coral.500']} 
+                        color="white" 
+                        sx={{ px: 2, py: 1 }}
+                        borderRadius={1}
+                        minWidth="30px"
+                        textAlign="center"
+                      >
+                        {getCategoryCount('physical')}
+                      </Box>
+                    </Box>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                      <Typography variant="body2">Estereotipias</Typography>
+                      <Box 
+                        bgcolor={colors['coral.500']} 
+                        color="white" 
+                        sx={{ px: 2, py: 1 }}
+                        borderRadius={1}
+                        minWidth="30px"
+                        textAlign="center"
+                      >
+                        {getCategoryCount('stereotypies')}
+                      </Box>
                     </Box>
                   </Box>
-                  <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                    <Typography variant="body2">Físicos</Typography>
-                    <Box 
-                      bgcolor={colors['coral.500']} 
-                      color="white" 
-                      sx={{ px: 2, py: 1 }}
-                      borderRadius={1}
-                      minWidth="30px"
-                      textAlign="center"
-                    >
-                      {getCategoryCount('physical')}
-                    </Box>
-                  </Box>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="body2">Estereotipias</Typography>
-                    <Box 
-                      bgcolor={colors['coral.500']} 
-                      color="white" 
-                      sx={{ px: 2, py: 1 }}
-                      borderRadius={1}
-                      minWidth="30px"
-                      textAlign="center"
-                    >
-                      {getCategoryCount('stereotypies')}
-                    </Box>
-                  </Box>
-                </Box>
+                )}
 
                 <Box width="100%" mt={2}>
                   <Typography variant="body2" fontWeight="bold" mb={1}>
@@ -348,104 +594,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
           </Box>
 
           <Box display="flex" flexDirection="column" gap={2}>
-            <EaseMindCard>
-              <Box p={3}>
-                <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={2}>
-                  <Cancel sx={{ color: colors['coral.500'] }} /> Falha na Comunicação
-                </Typography>
-                <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
-                  {symptoms.filter(s => s.category === 'communication').map((symptom) => (
-                    <Box 
-                      key={symptom.id}
-                      onClick={() => handleSymptomToggle(symptom.id)}
-                      sx={{
-                        p: 2,
-                        border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
-                        borderRadius: 2,
-                        cursor: 'pointer',
-                        bgcolor: selectedSymptoms.includes(symptom.id) ? `${colors['coral.500']}10` : 'transparent',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          borderColor: colors['coral.500'],
-                          bgcolor: `${colors['coral.500']}05`,
-                        }
-                      }}
-                    >
-                      <Box display="flex" alignItems="center" gap={1}>
-                        <Radio checked={selectedSymptoms.includes(symptom.id)} />
-                        <Typography variant="body2">{symptom.label}</Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            </EaseMindCard>
-
-            <EaseMindCard>
-              <Box p={3}>
-                <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={2}>
-                  <Lightbulb sx={{ color: '#FFC107' }} /> Sintomas Físicos
-                </Typography>
-                <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
-                  {symptoms.filter(s => s.category === 'physical').map((symptom) => (
-                    <Box 
-                      key={symptom.id}
-                      onClick={() => handleSymptomToggle(symptom.id)}
-                      sx={{
-                        p: 2,
-                        border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
-                        borderRadius: 2,
-                        cursor: 'pointer',
-                        bgcolor: selectedSymptoms.includes(symptom.id) ? `${colors['coral.500']}10` : 'transparent',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          borderColor: colors['coral.500'],
-                          bgcolor: `${colors['coral.500']}05`,
-                        }
-                      }}
-                    >
-                      <Box display="flex" alignItems="center" gap={1}>
-                        <Radio checked={selectedSymptoms.includes(symptom.id)} />
-                        <Typography variant="body2">{symptom.label}</Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            </EaseMindCard>
-
-            <EaseMindCard>
-              <Box p={3}>
-                <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={2}>
-                  <TrendingUp sx={{ color: '#2196F3' }} /> Aumento de Estereotipias
-                </Typography>
-                <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
-                  {symptoms.filter(s => s.category === 'stereotypies').map((symptom) => (
-                    <Box 
-                      key={symptom.id}
-                      onClick={() => handleSymptomToggle(symptom.id)}
-                      sx={{
-                        p: 2,
-                        border: `2px solid ${selectedSymptoms.includes(symptom.id) ? colors['coral.500'] : colors['grey.200']}`,
-                        borderRadius: 2,
-                        cursor: 'pointer',
-                        bgcolor: selectedSymptoms.includes(symptom.id) ? `${colors['coral.500']}10` : 'transparent',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          borderColor: colors['coral.500'],
-                          bgcolor: `${colors['coral.500']}05`,
-                        }
-                      }}
-                    >
-                      <Box display="flex" alignItems="center" gap={1}>
-                        <Radio checked={selectedSymptoms.includes(symptom.id)} />
-                        <Typography variant="body2">{symptom.label}</Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            </EaseMindCard>
+            {isSimple ? renderSimpleStepContent() : renderComplexContent()}
           </Box>
         </Box>
       </Box>
