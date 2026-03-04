@@ -5,6 +5,5 @@ export * from "./api/symptomService";
 export * from "./api/userService";
 export * from "./classes";
 export * from "./contexts/auth.context";
-export * from "./contexts/financial-data.context";
 export * from "./contexts/user.context";
 export * from "./helpers/api";
