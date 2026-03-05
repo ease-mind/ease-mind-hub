@@ -75,10 +75,6 @@ export const getLatestUserSymptoms = async (req: Request, res: Response): Promis
             .sort({ timestamp: -1 })
             .lean();
 
-        if (!latest) {
-            return res.status(404).json({ message: 'Nenhum registro encontrado' });
-        }
-
         return res.status(200).json(latest);
     } catch (error) {
         console.error('Erro ao buscar último registro:', error);

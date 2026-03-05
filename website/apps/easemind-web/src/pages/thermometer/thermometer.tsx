@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Box, Typography, Radio, Button, Alert, CircularProgress, Chip } from '@mui/material';
 import { Warning, Cancel, Lightbulb, TrendingUp, Loop, ArrowBack, ArrowForward } from '@mui/icons-material';
-import { EaseMindCard } from '@repo/ui';
+import { EaseMindCard, EaseMindText } from '@repo/ui';
 import { useTheme } from '@repo/utils';
 import { 
   getAllSymptoms, 
@@ -414,7 +414,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   }
 
   return (
-    <Box className="thermometer-page">
+    <Box className="thermometer-page" width={'100%'}>
       <Box width={'100%'} px={{xs: 2, sm: 3, md: 4}} py={spacing.card} display={'flex'} flexDirection={'column'} gap={spacing.gap}>
         <Box>
           <Typography variant="h4" fontWeight="bold" display="flex" alignItems="center" gap={1}>
@@ -537,7 +537,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
 
                 {!isSimple && (
                   <Box width="100%" mt={spacing.gap}>
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={spacing.small}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={spacing.small} pb={2}>
                       <Typography variant="body2">Comunicação</Typography>
                       <Box 
                         bgcolor={colors['coral.500']} 
@@ -547,10 +547,10 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                         minWidth="30px"
                         textAlign="center"
                       >
-                        {getCategoryCount('communication')}
+                        <EaseMindText color={colors['coral.100']}>{getCategoryCount('communication')}</EaseMindText>
                       </Box>
                     </Box>
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={spacing.small}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={spacing.small} pb={2}>
                       <Typography variant="body2">Físicos</Typography>
                       <Box 
                         bgcolor={colors['coral.500']} 
@@ -560,20 +560,19 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                         minWidth="30px"
                         textAlign="center"
                       >
-                        {getCategoryCount('physical')}
+                        <EaseMindText color={colors['coral.100']}>{getCategoryCount('physical')}</EaseMindText>
                       </Box>
                     </Box>
-                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <Box display="flex" justifyContent="space-between" alignItems="center" pb={2}>
                       <Typography variant="body2">Estereotipias</Typography>
                       <Box 
                         bgcolor={colors['coral.500']} 
-                        color="white" 
                         sx={{ px: 2, py: 1 }}
                         borderRadius={1}
                         minWidth="30px"
                         textAlign="center"
                       >
-                        {getCategoryCount('stereotypies')}
+                        <EaseMindText color={colors['coral.100']}>{getCategoryCount('stereotypies')}</EaseMindText>
                       </Box>
                     </Box>
                   </Box>

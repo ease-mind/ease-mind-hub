@@ -132,6 +132,7 @@ export default function ThermometerScreen() {
       }
     />
   );
+
   const getSpacing = () => {
     switch (settings.spacing) {
       case 24: return { base: 24, large: 32, small: 16, card: 24 };
@@ -194,7 +195,7 @@ export default function ThermometerScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['left', 'right']}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
       <Stack.Screen
         options={{
           header: () => <ThermometerHeader />,
@@ -202,7 +203,7 @@ export default function ThermometerScreen() {
         }}
       />
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scrollContent, { paddingBottom: spacing.large }]}>
+      <ScrollView style={styles.content}  bounces={true} showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scrollContent, { paddingBottom: spacing.large }]}>
         <View style={[styles.thermometerSection, { paddingVertical: spacing.large, paddingHorizontal: spacing.base }]}>
           <View style={styles.thermometerContainer}>
             <View style={styles.thermometerBackground} />
