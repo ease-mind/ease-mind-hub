@@ -8,6 +8,7 @@ type TaskCardProps = {
   task: Task;
   onToggleComplete: (taskId: string) => void;
   onClickDetails: (task: Task) => void;
+  onEdit?: (task: Task) => void;
 };
 
 const priorityBg: Record<string, string> = {
@@ -16,7 +17,7 @@ const priorityBg: Record<string, string> = {
   baixa: '#D1FAE5',
 };
 
-export function TaskCard({ task, onToggleComplete, onClickDetails }: TaskCardProps) {
+export function TaskCard({ task, onToggleComplete, onClickDetails, onEdit }: TaskCardProps) {
   const { complexity, themeColors, fontSize, spacing, contrast } = useCognitiveSettings();
   const isSimple = complexity === 'simple';
 
@@ -45,7 +46,7 @@ export function TaskCard({ task, onToggleComplete, onClickDetails }: TaskCardPro
         checkboxBorderWidth: 1,
       };
     }
-    // normal contrast
+
     return {
       borderWidth: 1,
       borderColor: '#E5E7EB',

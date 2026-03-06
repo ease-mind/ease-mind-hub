@@ -529,7 +529,6 @@ export function TaskDetailsModal({
                   onPress={() => onOpen(task.id)}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.reabrirIcon}>✕</Text>
                   <Text style={styles.reabrirText}>Reabrir</Text>
                 </TouchableOpacity>
               )}

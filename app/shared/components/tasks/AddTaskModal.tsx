@@ -303,7 +303,7 @@ export function AddTaskModal({ visible, onClose, onAdd, editingTask }: AddTaskMo
                 onPress={handleAdd}
                 activeOpacity={0.8}
               >
-                <Text style={styles.addBtnText}>{editingTask ? 'Salvar' : 'Adicionar Tarefa'}</Text>
+                <Text style={styles.addBtnText}>{editingTask ? 'Salvar' : 'Adicionar tarefa'}</Text>
               </TouchableOpacity>
             </ScrollView>
           </View>

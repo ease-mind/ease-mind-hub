@@ -230,7 +230,7 @@ export default function TasksScreen() {
     [patchTaskRemote, tasks],
   );
 
-  const handleReabrir = useCallback(
+  const handleOpen = useCallback(
     async (taskId: string) => {
       setTasks((prev) =>
         prev.map((t) => (t.id === taskId ? { ...t, completed: false } : t)),
@@ -432,7 +432,7 @@ export default function TasksScreen() {
           onToggleTaskComplete={handleToggleComplete}
           onToggleSubtask={handleToggleSubtask}
           onAddSubtask={handleAddSubtask}
-          onReabrir={handleReabrir}
+          onOpen={handleOpen}
           onEdit={handleEdit}
         />
       </View>
