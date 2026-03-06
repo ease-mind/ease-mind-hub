@@ -43,7 +43,10 @@ export const authService = {
                 const message = error.response.data?.message || `Erro ${error.response.status}: ${error.response.statusText}`;
                 throw new Error(message);
             } else if (error.request) {
-                throw new Error('Não foi possível conectar ao servidor. Verifique sua conexão.');
+                const hint = __DEV__
+                    ? ' Verifique se a API está rodando e se EXPO_PUBLIC_API_URL no .env está com o IP correto do seu PC (e reinicie o Expo após alterar o .env).'
+                    : '';
+                throw new Error('Não foi possível conectar ao servidor.' + hint);
             } else {
                 throw new Error(error.message || 'Erro ao realizar login');
             }
@@ -58,7 +61,10 @@ export const authService = {
                 const message = error.response.data?.message || `Erro ${error.response.status}: ${error.response.statusText}`;
                 throw new Error(message);
             } else if (error.request) {
-                throw new Error('Não foi possível conectar ao servidor. Verifique sua conexão.');
+                const hint = __DEV__
+                    ? ' Verifique se a API está rodando e se EXPO_PUBLIC_API_URL no .env está com o IP correto do seu PC (e reinicie o Expo após alterar o .env).'
+                    : '';
+                throw new Error('Não foi possível conectar ao servidor.' + hint);
             } else {
                 throw new Error(error.message || 'Erro ao realizar cadastro');
             }

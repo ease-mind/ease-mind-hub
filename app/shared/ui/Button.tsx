@@ -53,13 +53,14 @@ export function EasemindButton({
 
 const buttonStyles = StyleSheet.create({
     button: {
-        borderRadius: 30,
+        borderRadius: 24,
     },
     buttonText: {
         color: ColorsPalette.light['coral.800'],
         fontWeight: 'bold',
         fontSize: 18,
         display: 'flex',
-        padding: 8
+        paddingVertical: 4,
+        paddingHorizontal: 8,
     },
 });

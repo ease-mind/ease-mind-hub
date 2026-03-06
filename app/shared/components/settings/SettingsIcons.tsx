@@ -1,35 +1,39 @@
-import { themeColors } from '@/shared/classes/constants/themeColors';
+import { useCognitiveSettings } from '@/shared/contexts';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export function IconDocument1() {
+  const { themeColors } = useCognitiveSettings();
   return (
     <View style={styles.docWrap}>
-      <View style={[styles.docLine, { width: 10 }]} />
+      <View style={[styles.docLine, { width: 10, backgroundColor: themeColors.textSecondary }]} />
     </View>
   );
 }
 
 export function IconDocument2() {
+  const { themeColors } = useCognitiveSettings();
   return (
     <View style={styles.docWrap}>
-      <View style={[styles.docLine, { width: 10 }]} />
-      <View style={[styles.docLine, { width: 8 }]} />
+      <View style={[styles.docLine, { width: 10, backgroundColor: themeColors.textSecondary }]} />
+      <View style={[styles.docLine, { width: 8, backgroundColor: themeColors.textSecondary }]} />
     </View>
   );
 }
 
 export function IconDocument3() {
+  const { themeColors } = useCognitiveSettings();
   return (
     <View style={styles.docWrap}>
-      <View style={[styles.docLine, { width: 10 }]} />
-      <View style={[styles.docLine, { width: 8 }]} />
-      <View style={[styles.docLine, { width: 6 }]} />
+      <View style={[styles.docLine, { width: 10, backgroundColor: themeColors.textSecondary }]} />
+      <View style={[styles.docLine, { width: 8, backgroundColor: themeColors.textSecondary }]} />
+      <View style={[styles.docLine, { width: 6, backgroundColor: themeColors.textSecondary }]} />
     </View>
   );
 }
 
 export function IconContrastLow() {
+  const { themeColors } = useCognitiveSettings();
   return (
     <View
       style={[
@@ -45,6 +49,7 @@ export function IconContrastLow() {
 }
 
 export function IconContrastNormal() {
+  const { themeColors } = useCognitiveSettings();
   return (
     <View style={[styles.circle, { backgroundColor: themeColors.accentOrange }]}>
       <View style={styles.circleInner} />
@@ -59,6 +64,7 @@ export function IconContrastHigh() {
 }
 
 export function IconLightbulb() {
+  const { themeColors } = useCognitiveSettings();
   return (
     <Text style={[styles.icon, { color: themeColors.textPrimary }]}>💡</Text>
   );
@@ -70,7 +76,6 @@ const styles = StyleSheet.create({
   },
   docLine: {
     height: 2,
-    backgroundColor: themeColors.textSecondary,
     borderRadius: 1,
   },
   circle: {

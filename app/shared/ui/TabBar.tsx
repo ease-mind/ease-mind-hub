@@ -1,8 +1,16 @@
-import { themeColors } from '@/shared/classes/constants/themeColors';
+import { useCognitiveSettings } from '@/shared/contexts';
 import { Href, useRouter, useSegments } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const springConfig = { damping: 15, stiffness: 150 };
 
 const SIZE = 24;
 
@@ -18,28 +26,96 @@ const tabs: { name: `/${string}`; label: string; Icon: React.ComponentType<{ wid
   { name: '/profile', label: 'Perfil', Icon: PerfilIcon },
 ];
 
-function TabIcon({ focused, Icon }: { focused: boolean; Icon: React.ComponentType<{ width: number; height: number; color: string }> }) {
+function TabIcon({
+  focused,
+  Icon,
+  themeColors,
+}: {
+  focused: boolean;
+  Icon: React.ComponentType<{ width: number; height: number; color: string }>;
+  themeColors: { bottomBarInactive: string };
+}) {
   const color = focused ? '#FFFFFF' : themeColors.bottomBarInactive;
+  const scale = useSharedValue(1);
+  useEffect(() => {
+    scale.value = withSpring(focused ? 1.05 : 1, springConfig);
+  }, [focused]);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
   return (
-    <View style={styles.tabIconWrap}>
+    <Animated.View style={[styles.tabIconWrap, animatedStyle]}>
       <Icon width={SIZE} height={SIZE} color={color} />
-    </View>
+    </Animated.View>
   );
 }
 
-function TabBarLabel({ focused, children }: { focused: boolean; children: string }) {
+function TabBarLabel({
+  focused,
+  children,
+  themeColors,
+  fontSize,
+}: {
+  focused: boolean;
+  children: string;
+  themeColors: { bottomBarInactive: string };
+  fontSize: number;
+}) {
   const textColor = focused ? '#FFFFFF' : themeColors.bottomBarInactive;
+  const opacity = useSharedValue(1);
+  useEffect(() => {
+    opacity.value = withTiming(focused ? 1 : 0.85, { duration: 200 });
+  }, [focused]);
+  const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
   return (
-    <Text
-      style={[styles.tabLabelBase, { color: textColor, textAlign: 'center' }, focused && styles.tabLabelActive]}
-      numberOfLines={2}
+    <Animated.View style={animatedStyle}>
+      <Text
+        style={[styles.tabLabelBase, { color: textColor, textAlign: 'center', fontSize: Math.max(9, Math.min(12, fontSize - 3)) }, focused && styles.tabLabelActive]}
+        numberOfLines={2}
+      >
+        {children}
+      </Text>
+    </Animated.View>
+  );
+}
+
+function TabItemWrapper({
+  children,
+  isFocused,
+  onPress,
+  style,
+  activeStyle,
+}: {
+  children: React.ReactNode;
+  isFocused: boolean;
+  onPress: () => void;
+  style: object;
+  activeStyle: object;
+}) {
+  const scale = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+  return (
+    <Pressable
+      onPressIn={() => {
+        scale.value = withSpring(0.96, springConfig);
+      }}
+      onPressOut={() => {
+        scale.value = withSpring(1, springConfig);
+      }}
+      onPress={onPress}
+      style={[styles.tabItem, style, isFocused && activeStyle]}
     >
-      {children}
-    </Text>
+      <Animated.View style={[{ flex: 1, alignItems: 'center', justifyContent: 'center' }, animatedStyle]}>
+        {children}
+      </Animated.View>
+    </Pressable>
   );
 }
 
 export function EasemindTabBar() {
+  const { themeColors, spacing, fontSize } = useCognitiveSettings();
   const router = useRouter();
   const segments = useSegments();
   const insets = useSafeAreaInsets();
@@ -47,18 +123,20 @@ export function EasemindTabBar() {
   const activeTab = '/' + (segments[1] ?? 'thermometer');
 
   return (
-    <View style={[styles.tabBar, { paddingBottom: tabBarPaddingBottom, height: 64 + tabBarPaddingBottom }]}>
+    <View style={[styles.tabBar, { paddingBottom: tabBarPaddingBottom, paddingTop: spacing, height: 64 + tabBarPaddingBottom, backgroundColor: themeColors.background, borderTopWidth: themeColors.borderDividerWidth, borderTopColor: themeColors.borderDivider }]}>
       {tabs.map((tab) => {
         const isFocused = tab.name === activeTab;
         return (
-          <Pressable
+          <TabItemWrapper
             key={tab.name}
-            style={[styles.tabItem, isFocused && styles.tabItemActiveBg]}
+            isFocused={isFocused}
             onPress={() => router.replace(tab.name as Href)}
+            style={{ paddingVertical: spacing / 2, paddingHorizontal: spacing / 2 }}
+            activeStyle={[styles.tabItemActiveBg, { backgroundColor: themeColors.bottomBarActive, paddingVertical: spacing, paddingHorizontal: spacing }]}
           >
-            <TabIcon focused={isFocused} Icon={tab.Icon} />
-            <TabBarLabel focused={isFocused}>{tab.label}</TabBarLabel>
-          </Pressable>
+            <TabIcon focused={isFocused} Icon={tab.Icon} themeColors={themeColors} />
+            <TabBarLabel focused={isFocused} themeColors={themeColors} fontSize={fontSize}>{tab.label}</TabBarLabel>
+          </TabItemWrapper>
         );
       })}
     </View>
@@ -71,9 +149,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
     paddingTop: 8,
     flexDirection: 'row',
     elevation: 0,
@@ -87,7 +162,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabItemActiveBg: {
-    backgroundColor: themeColors.bottomBarActive,
     borderRadius: 10,
     marginHorizontal: 4,
     marginVertical: 2,
@@ -96,7 +170,6 @@ const styles = StyleSheet.create({
     minHeight: 52,
   },
   tabLabelBase: {
-    fontSize: 9,
     fontWeight: '500',
     textAlign: 'center',
   },

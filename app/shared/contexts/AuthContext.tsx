@@ -5,14 +5,13 @@ import { setAuthToken } from '../config/api';
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
-  signUp: (name: string, email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  signUp: (name: string, email: string, password: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => Promise<void>;
   updateUserProfileImage: (file: any) => Promise<void>;
   isAuthenticated: boolean;
   reloadUser: () => Promise<void>;
-  /** Apenas em __DEV__: entra nas telas protegidas com usuário mock (sem API) para visualizar o front. */
   enterPreviewMode?: () => void;
 }
 
@@ -48,30 +47,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
     try {
       setIsLoading(true);
       const response = await authService.login({ email, password });
-      
+
       setUser(response.user);
       setIsAuthenticated(true);
-      
-      return true;
+
+      return { success: true };
     } catch (error) {
-      console.error('Erro de login:', error);
-      return false;
+      const message = error instanceof Error ? error.message : 'Erro ao realizar login. Tente novamente.';
+      return { success: false, message };
     } finally {
       setIsLoading(false);
     }
   };
 
-  const signUp = async (name: string, email: string, password: string): Promise<void> => {
+  const signUp = async (name: string, email: string, password: string): Promise<{ success: boolean; message?: string }> => {
     try {
       setIsLoading(true);
       await authService.register({ name, email, password });
+      return { success: true, message: 'Cadastro realizado com sucesso!' };
     } catch (error) {
-      console.error('Erro de cadastro:', error);
-      throw error;
+      const message = error instanceof Error ? error.message : 'Erro ao realizar cadastro. Tente novamente.';
+      return { success: false, message };
     } finally {
       setIsLoading(false);
     }
@@ -124,7 +124,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  /** Modo apenas visualização (dev): usuário mock para ver as 4 telas sem API. */
   const enterPreviewMode = () => {
     if (!__DEV__) return;
     const mockUser: User = {

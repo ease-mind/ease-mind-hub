@@ -10,6 +10,7 @@ function toTaskResponse(doc: any) {
 		id: doc.id,
 		title: doc.title,
 		description: doc.description,
+		category: doc.category ?? "Rotina",
 		priority: doc.priority,
 		status: doc.status,
 		estimatedMinutes: doc.estimatedMinutes,
@@ -57,7 +58,7 @@ export const createTask = async (req: Request, res: Response): Promise<any> => {
 		if (!userId) {
 			return res.status(401).json({ message: "Usuário não autenticado" });
 		}
-		const { title, description, priority, status, estimatedMinutes, subtasks } = req.body;
+		const { title, description, category, priority, status, estimatedMinutes, subtasks } = req.body;
 		if (!title) {
 			return res.status(400).json({ message: "Título da tarefa é obrigatório" });
 		}
@@ -67,6 +68,7 @@ export const createTask = async (req: Request, res: Response): Promise<any> => {
 			id: generateId(),
 			title,
 			description: description || "",
+			category: category ?? "Rotina",
 			priority: priority || "medium",
 			status: status || "todo",
 			estimatedMinutes: estimatedMinutes || 0,
@@ -92,9 +94,10 @@ export const updateTask = async (req: Request, res: Response): Promise<any> => {
 		if (!task) {
 			return res.status(404).json({ message: "Tarefa não encontrada" });
 		}
-		const { title, description, priority, status, estimatedMinutes, subtasks } = req.body;
+		const { title, description, category, priority, status, estimatedMinutes, subtasks } = req.body;
 		if (title !== undefined) task.title = title;
 		if (description !== undefined) task.description = description;
+		if (category !== undefined) task.category = category;
 		if (priority !== undefined) task.priority = priority;
 		if (status !== undefined) task.status = status;
 		if (estimatedMinutes !== undefined) task.estimatedMinutes = estimatedMinutes;

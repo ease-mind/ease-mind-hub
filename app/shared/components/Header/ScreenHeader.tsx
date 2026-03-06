@@ -1,4 +1,4 @@
-import { ColorsPalette } from '@/shared/classes/constants/Pallete';
+import { useCognitiveSettings } from '@/shared/contexts';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,17 +10,18 @@ type ScreenHeaderProps = {
 };
 
 export function ScreenHeader({ title, subtitle, rightElement }: ScreenHeaderProps) {
+  const { themeColors, spacing, fontSize } = useCognitiveSettings();
   return (
-    <SafeAreaView edges={['top']} style={styles.safe}>
-      <View style={styles.header}>
+    <SafeAreaView edges={['top']} style={[styles.safe, { backgroundColor: themeColors.background, borderBottomWidth: themeColors.borderDividerWidth, borderBottomColor: themeColors.borderDivider }]}>
+      <View style={[styles.header, { paddingHorizontal: spacing, paddingVertical: spacing }]}>
         <Image
           source={require('@/assets/images/logo-auth.png')}
           style={styles.logo}
           resizeMode="contain"
         />
-        <View style={styles.headerText}>
-          <Text style={styles.title}>{title}</Text>
-          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+        <View style={[styles.headerText, { marginLeft: spacing }]}>
+          <Text style={[styles.title, { color: themeColors.textPrimary, fontSize: Math.max(20, fontSize + 6), lineHeight: fontSize + spacing + 6 }]}>{title}</Text>
+          {subtitle ? <Text style={[styles.subtitle, { color: themeColors.textSecondary, fontSize, marginTop: spacing / 2, lineHeight: fontSize + spacing }]}>{subtitle}</Text> : null}
         </View>
         {rightElement ? (
           <View style={styles.rightIcon}>{rightElement}</View>
@@ -33,35 +34,22 @@ export function ScreenHeader({ title, subtitle, rightElement }: ScreenHeaderProp
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    backgroundColor: ColorsPalette.light['white.main'],
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
-  },
+  safe: {},
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
   },
   logo: {
     width: 40,
     height: 34,
   },
   headerText: {
-    marginLeft: 12,
     flex: 1,
   },
   title: {
-    fontSize: 22,
     fontWeight: '700',
-    color: ColorsPalette.light['grey.900'],
   },
-  subtitle: {
-    fontSize: 14,
-    color: ColorsPalette.light['grey.500'],
-    marginTop: 2,
-  },
+  subtitle: {},
   right: {
     marginLeft: 8,
   },

@@ -1,4 +1,4 @@
-import { themeColors } from '@/shared/classes/constants/themeColors';
+import { useCognitiveSettings } from '@/shared/contexts';
 import React from 'react';
 import { Platform, StyleSheet, Switch, Text, View } from 'react-native';
 
@@ -17,11 +17,12 @@ export function ToggleRow({
   onValueChange,
   description,
 }: ToggleRowProps) {
+  const { themeColors, spacing, fontSize } = useCognitiveSettings();
   return (
-    <View style={styles.wrap}>
+    <View style={[styles.wrap, { marginBottom: spacing }]}>
       <View style={styles.row}>
-        <View style={styles.iconWrap}>{icon}</View>
-        <Text style={styles.label}>{label}</Text>
+        <View style={[styles.iconWrap, { marginRight: spacing }]}>{icon}</View>
+        <Text style={[styles.label, { color: themeColors.textPrimary, fontSize, lineHeight: fontSize + spacing }]}>{label}</Text>
         <Switch
           value={value}
           onValueChange={onValueChange}
@@ -35,16 +36,14 @@ export function ToggleRow({
         />
       </View>
       {description ? (
-        <Text style={styles.description}>{description}</Text>
+        <Text style={[styles.description, { color: themeColors.textMuted, marginTop: spacing / 2, marginLeft: 36, fontSize: Math.max(12, fontSize - 2), lineHeight: fontSize + spacing / 2 }]}>{description}</Text>
       ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: {
-    marginBottom: 12,
-  },
+  wrap: {},
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -54,20 +53,12 @@ const styles = StyleSheet.create({
     height: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
   },
   label: {
     flex: 1,
-    fontSize: 15,
-    color: themeColors.textPrimary,
   },
   switch: {
     ...(Platform.OS === 'android' && { transform: [{ scale: 0.9 }] }),
   },
-  description: {
-    fontSize: 13,
-    color: themeColors.textMuted,
-    marginTop: 4,
-    marginLeft: 36,
-  },
+  description: {},
 });

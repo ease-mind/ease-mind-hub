@@ -1,35 +1,83 @@
-import { ScreenHeader } from '@/shared/components';
-import {
-  AddTaskModal,
-  NewTaskForm,
-  TaskCard,
-  TaskDetailsModal,
-} from '@/shared/components/tasks';
-import { themeColors } from '@/shared/classes/constants/themeColors';
-import { Task, TaskFilter } from '@/shared/types/tasks';
+import { ScreenHeader, ScreenFadeIn } from '@/shared/components';
+import { AddTaskModal, NewTaskForm, TaskCard, TaskDetailsModal } from '@/shared/components/tasks';
+import { useCognitiveSettings } from '@/shared/contexts';
+import { Priority, Task, TaskFilter } from '@/shared/types/tasks';
 import { Stack } from 'expo-router';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  TaskDto,
+  TaskPriority,
+  TaskStatus,
+  createTask,
+  getAllTasks,
+  updateTask,
+} from '@/shared/services/taskService';
 
 const AddIcon = require('@/assets/images/add.svg').default;
 
-function genId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2);
-}
+const mapPriorityFromBackend = (priority: TaskPriority): Priority => {
+  if (priority === 'high') return 'alta';
+  if (priority === 'medium') return 'media';
+  return 'baixa';
+};
+
+const mapPriorityToBackend = (priority: Priority): TaskPriority => {
+  if (priority === 'alta') return 'high';
+  if (priority === 'media') return 'medium';
+  return 'low';
+};
+
+const minutesFromEstimatedTime = (value: string): number => {
+  const parsed = parseInt(value.replace(/\D/g, ''), 10);
+  if (Number.isNaN(parsed)) {
+    return 0;
+  }
+  return parsed;
+};
+
+const estimatedTimeFromMinutes = (minutes: number): string => {
+  if (!minutes || minutes <= 0) return '0 min';
+  return `${minutes} min`;
+};
+
+const mapFromBackend = (dto: TaskDto): Task => {
+  const createdAtTime =
+    typeof dto.createdAt === 'string' ? new Date(dto.createdAt).getTime() : Date.now();
+  const completed = dto.status === 'done';
+
+  return {
+    id: dto.id,
+    title: dto.title,
+    category: dto.category ?? 'Rotina',
+    priority: mapPriorityFromBackend(dto.priority),
+    estimatedTime: estimatedTimeFromMinutes(dto.estimatedMinutes),
+    description: dto.description,
+    completed,
+    subtasks: dto.subtasks,
+    createdAt: createdAtTime,
+  };
+};
+
+const statusFromCompleted = (completed: boolean): TaskStatus => (completed ? 'done' : 'todo');
 
 export default function TasksScreen() {
   const insets = useSafeAreaInsets();
+  const { themeColors, fontSize, spacing } = useCognitiveSettings();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<TaskFilter>('todas');
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const pendingCount = tasks.filter((t) => !t.completed).length;
   const completedCount = tasks.filter((t) => t.completed).length;
@@ -40,81 +88,164 @@ export default function TasksScreen() {
     return true;
   });
 
-  const handleAddTask = useCallback((form: NewTaskForm) => {
-    const task: Task = {
-      id: genId(),
-      title: form.title,
-      category: form.category,
-      priority: form.priority,
-      estimatedTime: form.estimatedTime,
-      description: '',
-      completed: false,
-      subtasks: [],
-      createdAt: Date.now(),
-    };
-    setTasks((prev) => [task, ...prev]);
+  const loadTasks = useCallback(async () => {
+    try {
+      const data = await getAllTasks();
+      setTasks(data.map(mapFromBackend));
+    } catch {
+      Alert.alert(
+        'Erro ao carregar tarefas',
+        'Não foi possível carregar suas tarefas. Tente novamente mais tarde.',
+      );
+    } finally {
+      setRefreshing(false);
+    }
   }, []);
 
-  const handleToggleComplete = useCallback((taskId: string) => {
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.id === taskId ? { ...t, completed: !t.completed } : t
-      )
-    );
-    setSelectedTask((t) =>
-      t && t.id === taskId ? { ...t, completed: !t.completed } : t
-    );
+  useEffect(() => {
+    loadTasks();
+  }, [loadTasks]);
+
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    loadTasks();
+  }, [loadTasks]);
+
+  const handleAddTask = useCallback(async (form: NewTaskForm) => {
+    try {
+      const payload: Omit<TaskDto, 'id' | 'createdAt' | 'updatedAt'> = {
+        title: form.title,
+        description: '',
+        category: form.category,
+        priority: mapPriorityToBackend(form.priority),
+        status: 'todo',
+        estimatedMinutes: minutesFromEstimatedTime(form.estimatedTime),
+        subtasks: [],
+      };
+      const created = await createTask(payload);
+      setTasks((prev) => [mapFromBackend(created), ...prev]);
+    } catch {
+      Alert.alert('Erro ao criar tarefa', 'Não foi possível criar a tarefa. Tente novamente.');
+    }
   }, []);
 
-  const handleToggleSubtask = useCallback((taskId: string, subtaskId: string) => {
-    setTasks((prev) =>
-      prev.map((t) => {
-        if (t.id !== taskId) return t;
+  const patchTaskRemote = useCallback(
+    async (task: Task) => {
+      try {
+        await updateTask(task.id, {
+          title: task.title,
+          description: task.description,
+          category: task.category,
+          priority: mapPriorityToBackend(task.priority),
+          status: statusFromCompleted(task.completed),
+          estimatedMinutes: minutesFromEstimatedTime(task.estimatedTime),
+          subtasks: task.subtasks,
+        });
+      } catch {
+        Alert.alert('Erro ao atualizar tarefa', 'Não foi possível atualizar a tarefa.');
+        loadTasks();
+      }
+    },
+    [loadTasks],
+  );
+
+  const handleToggleComplete = useCallback(
+    async (taskId: string) => {
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, completed: !t.completed } : t)),
+      );
+      setSelectedTask((t) =>
+        t && t.id === taskId ? { ...t, completed: !t.completed } : t,
+      );
+
+      const current = tasks.find((t) => t.id === taskId);
+      if (current) {
+        const toggled: Task = { ...current, completed: !current.completed };
+        await patchTaskRemote(toggled);
+      }
+    },
+    [patchTaskRemote, tasks],
+  );
+
+  const handleToggleSubtask = useCallback(
+    async (taskId: string, subtaskId: string) => {
+      setTasks((prev) =>
+        prev.map((t) => {
+          if (t.id !== taskId) return t;
+          return {
+            ...t,
+            subtasks: t.subtasks.map((s) =>
+              s.id === subtaskId ? { ...s, completed: !s.completed } : s,
+            ),
+          };
+        }),
+      );
+      setSelectedTask((t) => {
+        if (!t || t.id !== taskId) return t;
         return {
           ...t,
           subtasks: t.subtasks.map((s) =>
-            s.id === subtaskId ? { ...s, completed: !s.completed } : s
+            s.id === subtaskId ? { ...s, completed: !s.completed } : s,
           ),
         };
-      })
-    );
-    setSelectedTask((t) => {
-      if (!t || t.id !== taskId) return t;
-      return {
-        ...t,
-        subtasks: t.subtasks.map((s) =>
-          s.id === subtaskId ? { ...s, completed: !s.completed } : s
-        ),
+      });
+
+      const current = tasks.find((t) => t.id === taskId);
+      if (current) {
+        const updated: Task = {
+          ...current,
+          subtasks: current.subtasks.map((s) =>
+            s.id === subtaskId ? { ...s, completed: !s.completed } : s,
+          ),
+        };
+        await patchTaskRemote(updated);
+      }
+    },
+    [patchTaskRemote, tasks],
+  );
+
+  const handleReabrir = useCallback(
+    async (taskId: string) => {
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, completed: false } : t)),
+      );
+      setSelectedTask((t) => (t && t.id === taskId ? { ...t, completed: false } : t));
+
+      const current = tasks.find((t) => t.id === taskId);
+      if (current) {
+        const reopened: Task = { ...current, completed: false };
+        await patchTaskRemote(reopened);
+      }
+    },
+    [patchTaskRemote, tasks],
+  );
+
+  const handleAddSubtask = useCallback(
+    async (taskId: string, title: string) => {
+      const newSubtask = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+        title: title.trim(),
+        completed: false,
       };
-    });
-  }, []);
-
-  const handleReabrir = useCallback((taskId: string) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, completed: false } : t))
-    );
-    setSelectedTask((t) =>
-      t && t.id === taskId ? { ...t, completed: false } : t
-    );
-  }, []);
-
-  const handleAddSubtask = useCallback((taskId: string, title: string) => {
-    const newSubtask = {
-      id: genId(),
-      title: title.trim(),
-      completed: false,
-    };
-    setTasks((prev) =>
-      prev.map((t) => {
-        if (t.id !== taskId) return t;
+      setTasks((prev) =>
+        prev.map((t) => {
+          if (t.id !== taskId) return t;
+          return { ...t, subtasks: [...t.subtasks, newSubtask] };
+        }),
+      );
+      setSelectedTask((t) => {
+        if (!t || t.id !== taskId) return t;
         return { ...t, subtasks: [...t.subtasks, newSubtask] };
-      })
-    );
-    setSelectedTask((t) => {
-      if (!t || t.id !== taskId) return t;
-      return { ...t, subtasks: [...t.subtasks, newSubtask] };
-    });
-  }, []);
+      });
+
+      const current = tasks.find((t) => t.id === taskId);
+      if (current) {
+        const updated: Task = { ...current, subtasks: [...current.subtasks, newSubtask] };
+        await patchTaskRemote(updated);
+      }
+    },
+    [patchTaskRemote, tasks],
+  );
 
   const tabs: { value: TaskFilter; label: string; count: number }[] = [
     { value: 'todas', label: 'Todas', count: tasks.length },
@@ -136,7 +267,7 @@ export default function TasksScreen() {
                   onPress={() => setAddModalVisible(true)}
                   activeOpacity={0.9}
                 >
-                  <AddIcon width={48} height={48} />
+                  <AddIcon width={56} height={56} />
                 </TouchableOpacity>
               }
             />
@@ -144,8 +275,9 @@ export default function TasksScreen() {
           headerShown: true,
         }}
       />
-      <View style={styles.container}>
-        <View style={styles.tabsRow}>
+      <ScreenFadeIn>
+        <View style={[styles.container, { backgroundColor: themeColors.background }]}>
+        <View style={[styles.tabsRow, { backgroundColor: themeColors.background, paddingVertical: spacing }]}>
           {tabs.map((tab, index) => {
               const selected = filter === tab.value;
               const isFirst = index === 0;
@@ -155,7 +287,7 @@ export default function TasksScreen() {
                   key={tab.value}
                   style={[
                     styles.tab,
-                    selected && styles.tabSelected,
+                    selected && [styles.tabSelected, { backgroundColor: themeColors.segmentedSelected, borderColor: themeColors.segmentedBorder }],
                     isFirst && styles.tabFirst,
                     isLast && styles.tabLast,
                   ]}
@@ -165,7 +297,8 @@ export default function TasksScreen() {
                   <Text
                     style={[
                       styles.tabLabel,
-                      selected && styles.tabLabelSelected,
+                      { fontSize, color: themeColors.textSecondary },
+                      selected && { color: themeColors.accent },
                     ]}
                   >
                     {tab.label}
@@ -173,7 +306,8 @@ export default function TasksScreen() {
                   <Text
                     style={[
                       styles.tabCount,
-                      selected && styles.tabCountSelected,
+                      { fontSize: Math.max(12, fontSize - 2), color: themeColors.textMuted },
+                      selected && { color: themeColors.accent },
                     ]}
                   >
                     ({tab.count})
@@ -195,16 +329,19 @@ export default function TasksScreen() {
           )}
           contentContainerStyle={[
             styles.listContent,
-            { paddingBottom: insets.bottom + 80 },
+            { paddingBottom: 64 + insets.bottom + 24, paddingTop: spacing },
           ]}
           ListEmptyComponent={
-            <View style={styles.empty}>
-              <Text style={styles.emptyText}>
+            <View style={[styles.empty, { paddingVertical: spacing * 2 }]}>
+              <Text style={[styles.emptyText, { fontSize, color: themeColors.textMuted, lineHeight: fontSize + spacing }]}>
                 Nenhuma tarefa ainda. Toque no + para adicionar.
               </Text>
             </View>
           }
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
         />
 
         <AddTaskModal
@@ -223,6 +360,7 @@ export default function TasksScreen() {
           onReabrir={handleReabrir}
         />
       </View>
+      </ScreenFadeIn>
     </>
   );
 }
@@ -230,14 +368,10 @@ export default function TasksScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
   },
   tabsRow: {
     flexDirection: 'row',
     paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 8,
-    backgroundColor: themeColors.background,
     gap: 0,
   },
   tab: {
@@ -259,37 +393,20 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
   },
-  tabSelected: {
-    backgroundColor: themeColors.segmentedSelected,
-    borderColor: themeColors.segmentedBorder,
-  },
+  tabSelected: {},
   tabLabel: {
-    fontSize: 14,
     fontWeight: '600',
-    color: themeColors.textSecondary,
-  },
-  tabLabelSelected: {
-    color: themeColors.accent,
   },
   tabCount: {
-    fontSize: 13,
-    color: themeColors.textMuted,
     marginLeft: 2,
-  },
-  tabCountSelected: {
-    color: themeColors.accent,
   },
   listContent: {
     paddingHorizontal: 20,
-    paddingTop: 16,
   },
   empty: {
-    paddingVertical: 48,
     alignItems: 'center',
   },
   emptyText: {
-    fontSize: 15,
-    color: themeColors.textMuted,
     textAlign: 'center',
   },
   fab: {

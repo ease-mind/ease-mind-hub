@@ -1,6 +1,5 @@
 import { AuthProvider } from '@/shared/contexts';
-import { PaperDarkTheme, PaperLightTheme } from '@/shared/classes/constants/Colors';
-import { useColorScheme } from '@/shared/hooks/useColorScheme';
+import { PaperLightTheme } from '@/shared/classes/constants/Colors';
 import '@/shared/i18n/datePickerLocale';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
@@ -11,7 +10,6 @@ import 'react-native-reanimated';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const startTimeRef = useRef<number>(performance.now());
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -37,14 +35,14 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-        <PaperProvider theme={colorScheme === 'dark' ? PaperDarkTheme : PaperLightTheme}>
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)/account-access" options={{ headerShown: false }} />
-            <Stack.Screen name="(protected)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </PaperProvider>
+      <PaperProvider theme={PaperLightTheme}>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)/account-access" options={{ headerShown: false }} />
+          <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </PaperProvider>
     </AuthProvider>
   );
 }

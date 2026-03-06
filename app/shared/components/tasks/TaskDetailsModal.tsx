@@ -1,7 +1,7 @@
-import { themeColors } from '@/shared/classes/constants/themeColors';
+import { useCognitiveSettings } from '@/shared/contexts';
 import { Subtask, Task, PRIORITY_LABELS } from '@/shared/types/tasks';
 import { Feather } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Modal,
   ScrollView,
@@ -27,11 +27,6 @@ const priorityBg: Record<string, string> = {
   media: '#FEF9C3',
   baixa: '#D1FAE5',
 };
-const priorityText: Record<string, string> = {
-  alta: themeColors.accent,
-  media: '#854D0E',
-  baixa: '#065F46',
-};
 
 export function TaskDetailsModal({
   visible,
@@ -42,7 +37,316 @@ export function TaskDetailsModal({
   onAddSubtask,
   onReabrir,
 }: TaskDetailsModalProps) {
+  const { themeColors, spacing, fontSize } = useCognitiveSettings();
+  const priorityText: Record<string, string> = useMemo(
+    () => ({
+      alta: themeColors.accent,
+      media: '#854D0E',
+      baixa: '#065F46',
+    }),
+    [themeColors.accent],
+  );
   const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        overlay: {
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          justifyContent: 'flex-end',
+        },
+        modal: {
+          backgroundColor: '#FFFFFF',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          paddingTop: spacing,
+          paddingHorizontal: spacing,
+          paddingBottom: spacing * 2,
+          maxHeight: '90%',
+        },
+        header: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: spacing,
+        },
+        headerTitle: {
+          fontSize: Math.max(18, fontSize + 4),
+          fontWeight: '700',
+          color: themeColors.textPrimary,
+          lineHeight: fontSize + spacing + 4,
+        },
+        closeBtn: {
+          width: 36,
+          height: 36,
+          borderRadius: 18,
+          backgroundColor: '#F3F4F6',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        closeText: {
+          fontSize: Math.max(16, fontSize + 2),
+          color: themeColors.textSecondary,
+          fontWeight: '600',
+        },
+        scroll: { maxHeight: 500 },
+        scrollContent: { paddingBottom: spacing * 2 },
+        taskTitleRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: spacing,
+        },
+        checkbox: {
+          width: 28,
+          height: 28,
+          borderRadius: 8,
+          borderWidth: 2,
+          borderColor: '#D1D5DB',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: spacing,
+        },
+        checkboxChecked: {
+          backgroundColor: '#10B981',
+          borderColor: '#10B981',
+        },
+        checkMark: {
+          color: '#FFFFFF',
+          fontSize: 16,
+          fontWeight: '700',
+        },
+        taskTitle: {
+          flex: 1,
+          fontSize: Math.max(16, fontSize + 2),
+          fontWeight: '600',
+          color: themeColors.textPrimary,
+          lineHeight: fontSize + spacing,
+        },
+        taskTitleStrike: {
+          textDecorationLine: 'line-through',
+          color: themeColors.textSecondary,
+        },
+        pillsRow: {
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: spacing / 2,
+          marginBottom: spacing,
+        },
+        pill: {
+          paddingHorizontal: spacing,
+          paddingVertical: spacing / 2,
+          borderRadius: 8,
+        },
+        pillText: { fontSize: Math.max(12, fontSize - 2), fontWeight: '600', lineHeight: fontSize + spacing },
+        pillCategory: {
+          backgroundColor: '#F3F4F6',
+          paddingHorizontal: spacing,
+          paddingVertical: spacing / 2,
+          borderRadius: 8,
+        },
+        pillCategoryText: {
+          fontSize: Math.max(12, fontSize - 2),
+          color: themeColors.textSecondary,
+          fontWeight: '500',
+          lineHeight: fontSize + spacing / 2,
+        },
+        pillTime: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: spacing / 2,
+          backgroundColor: '#DBEAFE',
+          paddingHorizontal: spacing,
+          paddingVertical: spacing / 2,
+          borderRadius: 8,
+        },
+        pillTimeText: {
+          fontSize: Math.max(12, fontSize - 2),
+          color: '#1D4ED8',
+          fontWeight: '500',
+        },
+        sectionTitle: {
+          fontSize: Math.max(14, fontSize + 2),
+          fontWeight: '700',
+          color: themeColors.textPrimary,
+          marginBottom: spacing / 2,
+          lineHeight: fontSize + spacing,
+        },
+        descriptionBox: {
+          backgroundColor: '#F9FAFB',
+          borderRadius: 10,
+          padding: spacing,
+          marginBottom: spacing,
+        },
+        descriptionText: {
+          fontSize,
+          color: themeColors.textPrimary,
+          lineHeight: fontSize + spacing,
+        },
+        subtasksProgress: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: spacing,
+          marginBottom: spacing,
+        },
+        progressBarBg: {
+          flex: 1,
+          height: 6,
+          backgroundColor: '#E5E7EB',
+          borderRadius: 3,
+          overflow: 'hidden',
+        },
+        progressBarFill: {
+          height: '100%',
+          backgroundColor: themeColors.accent,
+          borderRadius: 3,
+        },
+        progressLabel: {
+          fontSize: Math.max(12, fontSize - 2),
+          color: themeColors.textSecondary,
+          fontWeight: '600',
+          minWidth: 28,
+        },
+        subtaskRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#F9FAFB',
+          borderRadius: 10,
+          padding: spacing,
+          marginBottom: spacing / 2,
+        },
+        subtaskCheckbox: {
+          width: 22,
+          height: 22,
+          borderRadius: 6,
+          borderWidth: 2,
+          borderColor: '#D1D5DB',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: spacing,
+        },
+        subtaskCheckboxChecked: {
+          backgroundColor: '#10B981',
+          borderColor: '#10B981',
+        },
+        subtaskCheckMark: {
+          color: '#FFFFFF',
+          fontSize: Math.max(12, fontSize - 2),
+          fontWeight: '700',
+        },
+        subtaskTitle: {
+          flex: 1,
+          fontSize,
+          color: themeColors.textPrimary,
+          lineHeight: fontSize + spacing,
+        },
+        subtaskTitleStrike: {
+          textDecorationLine: 'line-through',
+          color: themeColors.textSecondary,
+        },
+        addSubtaskRow: {
+          flexDirection: 'row',
+          gap: spacing / 2,
+          marginTop: spacing / 2,
+        },
+        addSubtaskInput: {
+          flex: 1,
+          borderWidth: 1,
+          borderColor: '#E5E7EB',
+          borderRadius: 10,
+          paddingHorizontal: spacing,
+          paddingVertical: spacing,
+          fontSize,
+          color: themeColors.textPrimary,
+        },
+        addSubtaskBtn: {
+          backgroundColor: themeColors.accent,
+          borderRadius: 10,
+          paddingHorizontal: spacing,
+          justifyContent: 'center',
+          paddingVertical: spacing / 2,
+        },
+        addSubtaskBtnText: {
+          fontSize,
+          fontWeight: '600',
+          color: '#FFFFFF',
+        },
+        cardsRow: {
+          flexDirection: 'row',
+          gap: spacing,
+          marginTop: spacing,
+          marginBottom: spacing,
+        },
+        summaryCardProgress: {
+          flex: 1,
+          backgroundColor: '#FFE4E6',
+          borderRadius: 12,
+          padding: spacing,
+        },
+        summaryCardTime: {
+          flex: 1,
+          backgroundColor: '#D1FAE5',
+          borderRadius: 12,
+          padding: spacing,
+        },
+        summaryCardLabelRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: spacing / 2,
+          marginBottom: spacing / 2,
+        },
+        summaryCardLabel: {
+          fontSize: Math.max(12, fontSize - 2),
+          color: themeColors.textSecondary,
+          lineHeight: fontSize + spacing / 2,
+        },
+        summaryCardValueProgress: {
+          fontSize: Math.max(18, fontSize + 4),
+          fontWeight: '700',
+          color: themeColors.accent,
+        },
+        summaryCardValueTime: {
+          fontSize: Math.max(18, fontSize + 4),
+          fontWeight: '700',
+          color: '#065F46',
+        },
+        actionsRow: { flexDirection: 'row', gap: spacing },
+        editarBtn: {
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#F3F4F6',
+          borderRadius: 10,
+          paddingVertical: spacing,
+          gap: spacing / 2,
+        },
+        editarText: {
+          fontSize: Math.max(14, fontSize),
+          fontWeight: '600',
+          color: themeColors.textPrimary,
+          lineHeight: fontSize + spacing,
+        },
+        reabrirBtn: {
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: themeColors.accent,
+          borderRadius: 10,
+          paddingVertical: spacing,
+          gap: spacing / 2,
+        },
+        reabrirIcon: { fontSize: Math.max(14, fontSize), color: '#FFFFFF' },
+        reabrirText: {
+          fontSize: Math.max(14, fontSize),
+          fontWeight: '600',
+          color: '#FFFFFF',
+          lineHeight: fontSize + spacing,
+        },
+      }),
+    [themeColors, spacing, fontSize],
+  );
 
   if (!task) return null;
 
@@ -234,303 +538,3 @@ export function TaskDetailsModal({
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
-  modal: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    paddingBottom: 32,
-    maxHeight: '90%',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: themeColors.textPrimary,
-  },
-  closeBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#F3F4F6',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  closeText: {
-    fontSize: 18,
-    color: themeColors.textSecondary,
-    fontWeight: '600',
-  },
-  scroll: {
-    maxHeight: 500,
-  },
-  scrollContent: {
-    paddingBottom: 24,
-  },
-  taskTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  checkbox: {
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#D1D5DB',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  checkboxChecked: {
-    backgroundColor: '#10B981',
-    borderColor: '#10B981',
-  },
-  checkMark: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  taskTitle: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: '600',
-    color: themeColors.textPrimary,
-  },
-  taskTitleStrike: {
-    textDecorationLine: 'line-through',
-    color: themeColors.textSecondary,
-  },
-  pillsRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 16,
-  },
-  pill: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
-  },
-  pillText: {
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  pillCategory: {
-    backgroundColor: '#F3F4F6',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
-  },
-  pillCategoryText: {
-    fontSize: 13,
-    color: themeColors.textSecondary,
-    fontWeight: '500',
-  },
-  pillTime: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: '#DBEAFE',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
-  },
-  pillTimeText: {
-    fontSize: 13,
-    color: '#1D4ED8',
-    fontWeight: '500',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: themeColors.textPrimary,
-    marginBottom: 8,
-  },
-  descriptionBox: {
-    backgroundColor: '#F9FAFB',
-    borderRadius: 10,
-    padding: 14,
-    marginBottom: 20,
-  },
-  descriptionText: {
-    fontSize: 14,
-    color: themeColors.textPrimary,
-    lineHeight: 20,
-  },
-  subtasksProgress: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 12,
-  },
-  progressBarBg: {
-    flex: 1,
-    height: 6,
-    backgroundColor: '#E5E7EB',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  progressBarFill: {
-    height: '100%',
-    backgroundColor: themeColors.accent,
-    borderRadius: 3,
-  },
-  progressLabel: {
-    fontSize: 13,
-    color: themeColors.textSecondary,
-    fontWeight: '600',
-    minWidth: 28,
-  },
-  subtaskRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F9FAFB',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 8,
-  },
-  subtaskCheckbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#D1D5DB',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-  subtaskCheckboxChecked: {
-    backgroundColor: '#10B981',
-    borderColor: '#10B981',
-  },
-  subtaskCheckMark: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700',
-  },
-  subtaskTitle: {
-    flex: 1,
-    fontSize: 14,
-    color: themeColors.textPrimary,
-  },
-  subtaskTitleStrike: {
-    textDecorationLine: 'line-through',
-    color: themeColors.textSecondary,
-  },
-  addSubtaskRow: {
-    flexDirection: 'row',
-    gap: 8,
-    marginTop: 8,
-  },
-  addSubtaskInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    fontSize: 14,
-    color: themeColors.textPrimary,
-  },
-  addSubtaskBtn: {
-    backgroundColor: themeColors.accent,
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    justifyContent: 'center',
-  },
-  addSubtaskBtnText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
-  cardsRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 16,
-    marginBottom: 20,
-  },
-  summaryCardProgress: {
-    flex: 1,
-    backgroundColor: '#FFE4E6',
-    borderRadius: 12,
-    padding: 14,
-  },
-  summaryCardTime: {
-    flex: 1,
-    backgroundColor: '#D1FAE5',
-    borderRadius: 12,
-    padding: 14,
-  },
-  summaryCardLabelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginBottom: 4,
-  },
-  summaryCardLabel: {
-    fontSize: 13,
-    color: themeColors.textSecondary,
-  },
-  summaryCardValueProgress: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: themeColors.accent,
-  },
-  summaryCardValueTime: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#065F46',
-  },
-  actionsRow: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  editarBtn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F3F4F6',
-    borderRadius: 10,
-    paddingVertical: 12,
-    gap: 6,
-  },
-  editarText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: themeColors.textPrimary,
-  },
-  reabrirBtn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: themeColors.accent,
-    borderRadius: 10,
-    paddingVertical: 12,
-    gap: 6,
-  },
-  reabrirIcon: {
-    fontSize: 16,
-    color: '#FFFFFF',
-  },
-  reabrirText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
-});

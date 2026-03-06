@@ -1,4 +1,4 @@
-import { themeColors } from '@/shared/classes/constants/themeColors';
+import { useCognitiveSettings } from '@/shared/contexts';
 import Slider from '@react-native-community/slider';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -26,13 +26,14 @@ export function SliderRow({
   markers = [],
   valueToLabel,
 }: SliderRowProps) {
+  const { themeColors, spacing, fontSize } = useCognitiveSettings();
   return (
-    <View style={styles.wrap}>
-      <View style={styles.labels}>
-        <Text style={styles.labelLeft}>
+    <View style={[styles.wrap, { marginBottom: spacing }]}>
+      <View style={[styles.labels, { marginBottom: spacing / 2 }]}>
+        <Text style={[styles.labelLeft, { color: themeColors.textPrimary, fontSize, lineHeight: fontSize + spacing }]}>
           {valueToLabel ? valueToLabel(value) : labelLeft}
         </Text>
-        <Text style={styles.labelRight}>{labelRight}</Text>
+        <Text style={[styles.labelRight, { color: themeColors.textSecondary, fontSize, lineHeight: fontSize + spacing }]}>{labelRight}</Text>
       </View>
       <Slider
         value={value}
@@ -46,9 +47,9 @@ export function SliderRow({
         style={styles.slider}
       />
       {markers.length > 0 ? (
-        <View style={styles.markers}>
+        <View style={[styles.markers, { marginTop: spacing / 2 }]}>
           {markers.map((m, i) => (
-            <Text key={i} style={styles.marker}>
+            <Text key={i} style={[styles.marker, { color: themeColors.textMuted, fontSize: Math.max(11, fontSize - 3) }]}>
               {m}
             </Text>
           ))}
@@ -59,22 +60,13 @@ export function SliderRow({
 }
 
 const styles = StyleSheet.create({
-  wrap: {
-    marginBottom: 8,
-  },
+  wrap: {},
   labels: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 4,
   },
-  labelLeft: {
-    fontSize: 14,
-    color: themeColors.textPrimary,
-  },
-  labelRight: {
-    fontSize: 14,
-    color: themeColors.textSecondary,
-  },
+  labelLeft: {},
+  labelRight: {},
   slider: {
     width: '100%',
     height: 32,
@@ -82,11 +74,7 @@ const styles = StyleSheet.create({
   markers: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 4,
     paddingHorizontal: 4,
   },
-  marker: {
-    fontSize: 11,
-    color: themeColors.textMuted,
-  },
+  marker: {},
 });

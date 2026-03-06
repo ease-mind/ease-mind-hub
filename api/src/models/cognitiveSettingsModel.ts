@@ -4,8 +4,8 @@ export interface ICognitiveSettings {
 	userId: string;
 	complexity: "simple" | "complete";
 	contrast: "low" | "normal" | "high";
-	spacing: 12 | 18 | 24;
-	fontSize: 12 | 18 | 24;
+	spacing: 12 | 14 | 18;
+	fontSize: 12 | 14 | 18;
 	alertsEnabled: boolean;
 	alertIntervalMinutes: number;
 }
@@ -25,13 +25,13 @@ const cognitiveSettingsSchema = new Schema<ICognitiveSettings>(
 		},
 		spacing: {
 			type: Number,
-			enum: [12, 18, 24],
-			default: 18
+			enum: [12, 14, 18],
+			default: 12
 		},
 		fontSize: {
 			type: Number,
-			enum: [12, 18, 24],
-			default: 18
+			enum: [12, 14, 18],
+			default: 14
 		},
 		alertsEnabled: { type: Boolean, default: true },
 		alertIntervalMinutes: { type: Number, default: 30 }

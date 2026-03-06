@@ -1,4 +1,4 @@
-import { useAuth } from '@/shared/contexts';
+import { CognitiveSettingsProvider, useAuth } from '@/shared/contexts';
 import { EasemindTabBar } from '@/shared/ui/TabBar';
 import { Tabs } from 'expo-router';
 import { Platform } from 'react-native';
@@ -11,6 +11,7 @@ export default function ProtectedLayout() {
     if (!isAuthenticated) return null;
 
     return (
+        <CognitiveSettingsProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
             <Tabs
                 tabBar={() => <EasemindTabBar />}
@@ -27,5 +28,6 @@ export default function ProtectedLayout() {
                 <Tabs.Screen name="profile" options={{ title: 'Perfil' }} />
             </Tabs>
         </GestureHandlerRootView>
+        </CognitiveSettingsProvider>
     );
 }

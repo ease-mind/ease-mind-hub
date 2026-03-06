@@ -1,4 +1,4 @@
-import { themeColors } from '@/shared/classes/constants/themeColors';
+import { useCognitiveSettings } from '@/shared/contexts';
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 
@@ -17,14 +17,15 @@ export function SettingsCard({
   children,
   style,
 }: SettingsCardProps) {
+  const { themeColors, spacing, fontSize } = useCognitiveSettings();
   return (
-    <View style={[styles.card, style]}>
-      <View style={styles.header}>
-        <View style={styles.iconWrap}>{icon}</View>
+    <View style={[styles.card, { backgroundColor: themeColors.cardBackground, padding: spacing, marginBottom: spacing }, style]}>
+      <View style={[styles.header, { marginBottom: spacing }]}>
+        <View style={[styles.iconWrap, { marginRight: spacing }]}>{icon}</View>
         <View style={styles.headerText}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={[styles.title, { color: themeColors.textPrimary, fontSize: Math.max(14, fontSize + 2) }]}>{title}</Text>
           {subtitle ? (
-            <Text style={styles.subtitle}>{subtitle}</Text>
+            <Text style={[styles.subtitle, { color: themeColors.textSecondary, marginTop: spacing / 2, fontSize, lineHeight: fontSize + spacing }]}>{subtitle}</Text>
           ) : null}
         </View>
       </View>
@@ -35,10 +36,7 @@ export function SettingsCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: themeColors.cardBackground,
     borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.06,
@@ -48,7 +46,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 16,
   },
   iconWrap: {
     width: 32,
@@ -56,19 +53,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
   },
   headerText: {
     flex: 1,
   },
   title: {
-    fontSize: 16,
     fontWeight: '700',
-    color: themeColors.textPrimary,
   },
-  subtitle: {
-    fontSize: 13,
-    color: themeColors.textSecondary,
-    marginTop: 4,
-  },
+  subtitle: {},
 });

@@ -1,11 +1,12 @@
 import { useAuth, symptomService, Symptom, UserSymptomRecord } from '@/shared';
+import { useCognitiveSettings } from '@/shared/contexts';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
-import { ScreenHeader } from '@/shared/components';
+import { ScreenHeader, ScreenFadeIn } from '@/shared/components';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { Stack, useFocusEffect } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThermometerModal } from '@/shared/components/ThermometerModal';
 
 import IconCalm from '@/assets/images/icone-calmo.svg';
@@ -14,8 +15,12 @@ import IconOverload from '@/assets/images/icone-sobrecarregado.svg';
 
 const AddIcon = require('@/assets/images/add.svg').default;
 
+const TAB_BAR_HEIGHT = 64 + 24;
+
 export default function ThermometerScreen() {
+  const insets = useSafeAreaInsets();
   const { user } = useAuth();
+  const { themeColors, spacing, fontSize } = useCognitiveSettings();
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -134,7 +139,7 @@ export default function ThermometerScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container} edges={['left', 'right']}>
+      <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]} edges={['left', 'right']}>
         <Stack.Screen
           options={{
             header: () => <ThermometerHeader />,
@@ -150,16 +155,16 @@ export default function ThermometerScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={styles.container} edges={['left', 'right']}>
+      <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]} edges={['left', 'right']}>
         <Stack.Screen
           options={{
             header: () => <ThermometerHeader />,
             headerShown: true,
           }}
         />
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-          <MaterialIcons name="error-outline" size={64} color={ColorsPalette.light['coral.500']} />
-          <Text style={{ fontSize: 16, color: '#666', marginTop: 16, textAlign: 'center' }}>{error}</Text>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing * 2 }}>
+          <MaterialIcons name="error-outline" size={64} color={themeColors.accent} />
+          <Text style={{ fontSize, color: themeColors.textSecondary, marginTop: spacing, textAlign: 'center', lineHeight: fontSize + spacing }}>{error}</Text>
           <TouchableOpacity onPress={loadData} style={styles.retryButton}>
             <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Tentar Novamente</Text>
           </TouchableOpacity>
@@ -169,18 +174,18 @@ export default function ThermometerScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['left', 'right']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]} edges={['left', 'right']}>
       <Stack.Screen
         options={{
           header: () => <ThermometerHeader />,
           headerShown: true,
         }}
       />
-
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.thermometerSection}>
-          <View style={styles.thermometerContainer}>
-            <View style={styles.thermometerBackground} />
+      <ScreenFadeIn>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scrollContent, { paddingBottom: TAB_BAR_HEIGHT + insets.bottom + 24 }]}>
+        <View style={[styles.thermometerSection, { marginTop: spacing * 2, paddingVertical: spacing * 2, paddingHorizontal: spacing * 2 }]}>
+          <View style={[styles.thermometerContainer, { marginBottom: spacing }]}>
+            <View style={[styles.thermometerBackground, { backgroundColor: themeColors.sliderTrack }]} />
 
             <View
               style={[
@@ -195,74 +200,75 @@ export default function ThermometerScreen() {
             <View style={[styles.thermometerBulb, { borderColor: getTemperatureColor() }]}>
               {(() => {
                 const IconComponent = getThermometerIcon();
-                return <IconComponent width={60} height={60} />;
+                return <IconComponent width={48} height={48} />;
               })()}
             </View>
           </View>
 
           {getTemperatureLevel() && (
-            <Text style={[styles.temperatureLevel, { color: getTemperatureColor() }]}>{getTemperatureLevel()}</Text>
+            <Text style={[styles.temperatureLevel, { color: getTemperatureColor(), fontSize: fontSize + 18, marginBottom: spacing }]}>{getTemperatureLevel()}</Text>
           )}
 
-          <Text style={styles.temperatureDescription}>
+          <Text style={[styles.temperatureDescription, { fontSize, color: themeColors.textSecondary, marginBottom: spacing, lineHeight: fontSize + spacing }]}>
             {getTemperature() === 0 ? 'Clique no ícone no topo para fazer uma avaliação' : 
              getTemperature() <= 36 ? 'Você está em um estado tranquilo e equilibrado' :
              getTemperature() <= 38 ? 'Fique atento aos sinais de alerta' :
              'Considere fazer uma pausa e praticar técnicas de relaxamento'}
           </Text>
 
-          <View style={styles.symptomCountContainer}>
-            <Text style={styles.symptomCount}>{selectedSymptoms.length} sintomas identificados</Text>
+          <View style={[styles.symptomCountContainer, { marginTop: spacing }]}>
+            <Text style={[styles.symptomCount, { fontSize, color: themeColors.textPrimary, lineHeight: fontSize + spacing }]}>{selectedSymptoms.length} sintomas identificados</Text>
             
             {selectedSymptoms.length > 0 && (
               <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
-                <MaterialCommunityIcons name="refresh" size={18} color="#FFF" />
-                <Text style={styles.resetButtonText}>Resetar</Text>
+                <MaterialCommunityIcons name="refresh" size={fontSize} color="#FFF" />
+                <Text style={[styles.resetButtonText, { fontSize, marginLeft: spacing / 2 }]}>Resetar</Text>
               </TouchableOpacity>
             )}
           </View>
         </View>
 
-        <View style={styles.categoriesContainer}>
-          <View style={styles.categoryCard}>
-            <View style={styles.categoryHeader}>
-              <MaterialIcons name="cancel" size={24} color={ColorsPalette.light['coral.500']} />
+        <View style={[styles.categoriesContainer, { paddingHorizontal: spacing * 2, gap: spacing, marginBottom: spacing * 2 }]}>
+          <View style={[styles.categoryCard, { backgroundColor: themeColors.cardBackground, padding: spacing * 2, marginBottom: spacing / 2 }]}>
+            <View style={[styles.categoryHeader, { gap: spacing }]}>
+              <MaterialIcons name="cancel" size={24} color={themeColors.accent} />
               <View style={styles.categoryInfo}>
-                <Text style={styles.categoryTitle}>Falha na Comunicação</Text>
+                <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing }]}>Falha na Comunicação</Text>
               </View>
             </View>
-            <View style={styles.categoryCount}>
-              <Text style={styles.categoryCountNumber}>{getCategoryCount('communication')}</Text>
+            <View style={[styles.categoryCount, { backgroundColor: themeColors.sliderTrack, paddingHorizontal: spacing, paddingVertical: spacing }]}>
+              <Text style={[styles.categoryCountNumber, { fontSize: fontSize + 8, color: themeColors.accent }]}>{getCategoryCount('communication')}</Text>
             </View>
           </View>
 
-          <View style={styles.categoryCard}>
-            <View style={styles.categoryHeader}>
+          <View style={[styles.categoryCard, { backgroundColor: themeColors.cardBackground, padding: spacing * 2, marginBottom: spacing / 2 }]}>
+            <View style={[styles.categoryHeader, { gap: spacing }]}>
               <Feather name="zap" size={24} color="#FFC107" />
               <View style={styles.categoryInfo}>
-                <Text style={styles.categoryTitle}>Sintomas Físicos</Text>
+                <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing }]}>Sintomas Físicos</Text>
               </View>
             </View>
-            <View style={styles.categoryCount}>
-              <Text style={styles.categoryCountNumber}>{getCategoryCount('physical')}</Text>
+            <View style={[styles.categoryCount, { backgroundColor: themeColors.sliderTrack, paddingHorizontal: spacing, paddingVertical: spacing }]}>
+              <Text style={[styles.categoryCountNumber, { fontSize: fontSize + 8, color: themeColors.accent }]}>{getCategoryCount('physical')}</Text>
             </View>
           </View>
 
-          <View style={styles.categoryCard}>
-            <View style={styles.categoryHeader}>
+          <View style={[styles.categoryCard, { backgroundColor: themeColors.cardBackground, padding: spacing * 2, marginBottom: spacing / 2 }]}>
+            <View style={[styles.categoryHeader, { gap: spacing }]}>
               <MaterialCommunityIcons name="chart-line" size={24} color="#2196F3" />
               <View style={styles.categoryInfo}>
-                <Text style={styles.categoryTitle}>Aumento de Estereotipias</Text>
+                <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing }]}>Aumento de Estereotipias</Text>
               </View>
             </View>
-            <View style={styles.categoryCount}>
-              <Text style={styles.categoryCountNumber}>{getCategoryCount('stereotypies')}</Text>
+            <View style={[styles.categoryCount, { backgroundColor: themeColors.sliderTrack, paddingHorizontal: spacing, paddingVertical: spacing }]}>
+              <Text style={[styles.categoryCountNumber, { fontSize: fontSize + 8, color: themeColors.accent }]}>{getCategoryCount('stereotypies')}</Text>
             </View>
           </View>
         </View>
 
         <View style={{ height: 40 }} />
       </ScrollView>
+      </ScreenFadeIn>
       <ThermometerModal visible={modalVisible} onClose={() => setModalVisible(false)} onSave={loadData} />
     </SafeAreaView>
   );
@@ -276,9 +282,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
-  scrollContent: {
-    paddingBottom: 32,
-  },
+  scrollContent: {},
   title: {
     fontSize: 28,
     fontWeight: 'bold',
@@ -299,26 +303,26 @@ const styles = StyleSheet.create({
   },
   thermometerContainer: {
     position: 'relative',
-    width: 200,
-    height: 380,
+    width: 140,
+    height: 400,
     alignItems: 'center',
     marginBottom: 24,
   },
   thermometerBackground: {
     position: 'absolute',
-    width: 180,
+    width: 120,
     height: 280,
     backgroundColor: '#E5E7EB',
-    borderRadius: 90,
+    borderRadius: 60,
     borderWidth: 0,
     top: 0,
   },
   thermometerFill: {
     position: 'absolute',
-    width: 180,
+    width: 120,
     height: 0,
-    borderRadius: 90,
-    bottom: 100,
+    borderRadius: 60,
+    bottom: 120,
     opacity: 0.9,
   },
   thermometerLabel: {
@@ -333,9 +337,9 @@ const styles = StyleSheet.create({
   thermometerBulb: {
     position: 'absolute',
     bottom: 0,
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     backgroundColor: '#FFF',
     borderWidth: 4,
     justifyContent: 'center',

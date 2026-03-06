@@ -53,31 +53,44 @@ const AccountAccessScreen = () => {
         }
     }, [user, authLoading]);
 
-    const handleLogin = async (data: {email: string; password: string}) => {
+    const handleLogin = async (data: { email: string; password: string }) => {
         const startTime = performance.now();
         setIsLoading(true);
-        const success = await login(data.email.toLocaleLowerCase(), data.password);
+        const result = await login(data.email.toLowerCase().trim(), data.password);
         const loginTime = performance.now() - startTime;
-        
-        console.log(`[Performance - Cenário 1] Tempo de autenticação (login): ${loginTime.toFixed(2)}ms (${(loginTime / 1000).toFixed(2)}s)`);
-        
+
+        if (__DEV__) {
+            console.log(`[Performance - Cenário 1] Tempo de autenticação (login): ${loginTime.toFixed(2)}ms (${(loginTime / 1000).toFixed(2)}s)`);
+        }
+
         setIsLoading(false);
 
-        if (!success) {
-            Alert.alert("Erro de Login", "Verifique seu e-mail e senha e tente novamente.");
+        if (!result.success) {
+            Alert.alert(
+                'Erro de login',
+                result.message || 'Verifique seu e-mail e senha e tente novamente.',
+            );
         }
     };
 
-    const handleRegister = async (data: {name: string; registerEmail: string; registerPassword: string}) => {
+    const handleRegister = async (data: { name: string; registerEmail: string; registerPassword: string }) => {
         setIsLoading(true);
-        try {
-            await signUp(data.name, data.registerEmail.toLocaleLowerCase(), data.registerPassword);
+        const result = await signUp(
+            data.name.trim(),
+            data.registerEmail.toLowerCase().trim(),
+            data.registerPassword,
+        );
+        setIsLoading(false);
+
+        if (result.success) {
             setActiveTab('login');
             registerForm.reset();
-        } catch (_) {
-            Alert.alert("Ocorreu um erro", "Verifique os dados e tente novamente.");
-        } finally {
-            setIsLoading(false);
+            Alert.alert('Conta criada', result.message || 'Cadastro realizado com sucesso! Faça login para continuar.');
+        } else {
+            Alert.alert(
+                'Erro ao cadastrar',
+                result.message || 'Verifique os dados e tente novamente.',
+            );
         }
     };
 

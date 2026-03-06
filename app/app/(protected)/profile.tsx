@@ -1,5 +1,5 @@
-import { useAuth } from '@/shared/contexts';
-import { ScreenHeader } from '@/shared/components';
+import { useAuth, useCognitiveSettings } from '@/shared/contexts';
+import { ScreenHeader, ScreenFadeIn } from '@/shared/components';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
 import { maskDocument } from '@/shared/helpers/maskDocument';
 import { useFeedbackAnimation } from '@/shared/hooks/useFeedbackAnimation';
@@ -10,12 +10,16 @@ import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
 
+const TAB_BAR_HEIGHT = 64 + 24;
+
 const ProfileScreen = () => {
+    const insets = useSafeAreaInsets();
     const { user, updateUser, updateUserProfileImage, logout } = useAuth();
+    const { themeColors, spacing, fontSize } = useCognitiveSettings();
     const { showFeedback, FeedbackAnimation } = useFeedbackAnimation();
     
     const [isEditing, setIsEditing] = useState(false);
@@ -42,14 +46,12 @@ const ProfileScreen = () => {
         try {
             setIsUploadingImage(true);
 
-            // Solicitar permissão
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
                 showFeedback("error");
                 return;
             }
 
-            // Selecionar imagem
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: 'images',
                 quality: 0.8,
@@ -69,7 +71,6 @@ const ProfileScreen = () => {
                 return;
             }
 
-            // Preparar o arquivo para envio
             const file = {
                 uri: selectedImage.uri,
                 type: selectedImage.type || 'image/jpeg',
@@ -109,27 +110,29 @@ const ProfileScreen = () => {
     return (
         <>
             <ScreenHeader title="Meu Perfil" subtitle="Configure suas informações" />
-            <SafeAreaView style={styles.container} edges={['left', 'right']}>
+            <ScreenFadeIn>
+            <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]} edges={['left', 'right']}>
                 <ScrollView
                     keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ paddingBottom: TAB_BAR_HEIGHT + insets.bottom + 24 }}
                 >
-                    <View style={styles.profileSection}>
+                    <View style={[styles.profileSection, { marginVertical: spacing * 2 }]}>
                         <TouchableOpacity onPress={handleEditProfileImage} disabled={isUploadingImage}>
                             <View style={styles.profileImage}>
                                 {isUploadingImage ? (
-                                    <ActivityIndicator size="large" color={ColorsPalette.light['coral.400']} />
+                                    <ActivityIndicator size="large" color={themeColors.accent} />
                                 ) : user && user.image ? (
                                     <Image source={{ uri: user.image }} style={{ width: 120, height: 120, borderRadius: 60 }} />
                                 ) : (
-                                    <MaterialIcons name="camera-enhance" size={50} color={ColorsPalette.light['coral.200']} />
+                                    <MaterialIcons name="camera-enhance" size={50} color="#FFFFFF" />
                                 )}
                             </View>
                         </TouchableOpacity>
-                        <Text style={styles.userName}>{formMethods.watch('name')}</Text>
+                        <Text style={[styles.userName, { fontSize: fontSize + 8, marginTop: spacing, color: themeColors.textPrimary, lineHeight: fontSize + spacing + 8 }]}>{formMethods.watch('name')}</Text>
                     </View>
 
                     <FormProvider {...formMethods}>
-                        <View style={styles.formSection}>
+                        <View style={[styles.formSection, { paddingHorizontal: spacing * 2 }]}>
                             <EasemindInputController
                                 name="name"
                                 label={'Nome completo'}
@@ -169,23 +172,24 @@ const ProfileScreen = () => {
                         </View>
                     </FormProvider>
 
-                    <View style={styles.actionsSection}>
+                    <View style={[styles.actionsSection, { padding: spacing / 2, gap: spacing / 2 }]}>
                         {isEditing ? (
-                            <EasemindButton color="primary" variant="contained" onPress={formMethods.handleSubmit(handleSaveProfile)}>
+                            <EasemindButton color="primary" variant="contained" onPress={formMethods.handleSubmit(handleSaveProfile)} styles={{ paddingVertical: spacing / 2, paddingHorizontal: spacing, borderRadius: 24 }} labelStyles={{ paddingVertical: 2, fontSize, lineHeight: fontSize + spacing }}>
                                 Salvar alterações
                             </EasemindButton>
                         ) : (
-                            <EasemindButton color="tertiary" variant="outlined" onPress={() => setIsEditing(true)} styles={{ borderColor: ColorsPalette.light['coral.400'], borderWidth: 0 }}>
+                            <EasemindButton color="tertiary" variant="outlined" onPress={() => setIsEditing(true)} styles={{ borderColor: 'transparent', borderWidth: 0, paddingVertical: spacing / 2, paddingHorizontal: spacing, borderRadius: 24 }} labelStyles={{ color: '#FF4353', fontSize, lineHeight: fontSize + spacing }}>
                                 Permitir edição da conta
                             </EasemindButton>
                         )}
-                        <EasemindButton color="secondary" variant="outlined" onPress={handleLogout} styles={{ marginTop: 10 }}>
-                            Sair da conta
-                        </EasemindButton>
+                        <EasemindButton color="secondary" variant="outlined" onPress={handleLogout} styles={{ paddingVertical: spacing / 2, paddingHorizontal: spacing, borderRadius: 24 }} labelStyles={{ color: '#FF4353', paddingVertical: 2, fontSize, lineHeight: fontSize + spacing }}>
+                                Sair da conta
+                            </EasemindButton>
                     </View>
                 </ScrollView>
                 <FeedbackAnimation />
             </SafeAreaView>
+            </ScreenFadeIn>
         </>
     );
 };
@@ -206,7 +210,7 @@ const styles = StyleSheet.create({
     },
     profileSection: {
         alignItems: 'center',
-        marginVertical: 30,
+        marginVertical: 24,
     },
     profileImage: {
         width: 120,
@@ -215,7 +219,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: ColorsPalette.light['coral.900'],
+        backgroundColor: '#FF4353',
     },
     userName: {
         fontSize: 22,
@@ -228,7 +232,6 @@ const styles = StyleSheet.create({
         gap: 0,
     },
     actionsSection: {
-        padding: 20,
         marginTop: 'auto',
     },
 });

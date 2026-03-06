@@ -1,7 +1,14 @@
 import axios, { AxiosInstance } from 'axios';
+import { Platform } from 'react-native';
+
+const getDefaultBaseURL = (): string => {
+    if (process.env.EXPO_PUBLIC_API_URL) return process.env.EXPO_PUBLIC_API_URL.trim().replace(/\/$/, '');
+    if (Platform.OS === 'android') return 'http://10.0.2.2:3000/api';
+    return 'http://localhost:3000/api';
+};
 
 export const API_CONFIG = {
-    BASE_URL: process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api',
+    BASE_URL: getDefaultBaseURL(),
     TIMEOUT: 10000,
 };
 
@@ -46,7 +53,11 @@ if (__DEV__) {
             if (error.response) {
                 console.error(`[API Response Error] ${error.response.status} ${error.config.url}`, error.response.data);
             } else if (error.request) {
-                console.error('[API No Response]', error.message);
+                const url = error.config?.baseURL ?? API_CONFIG.BASE_URL;
+                console.error('[API No Response]', error.message, `| URL: ${url}`);
+                if (__DEV__) {
+                    console.warn('[Dica] No celular físico, defina EXPO_PUBLIC_API_URL no .env com o IP do PC (ex.: http://192.168.x.x:3000/api) e use a mesma porta da API.');
+                }
             } else {
                 console.error('[API Error]', error.message);
             }

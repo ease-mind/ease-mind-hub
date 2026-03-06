@@ -1,1 +1,1 @@
-export { default } from './(auth)/account-access';
+export { default } from './splash';

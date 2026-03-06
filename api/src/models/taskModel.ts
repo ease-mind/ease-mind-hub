@@ -11,6 +11,7 @@ export interface ITask {
 	id: string;
 	title: string;
 	description: string;
+	category: string;
 	priority: "low" | "medium" | "high";
 	status: "todo" | "in-progress" | "done";
 	estimatedMinutes: number;
@@ -34,6 +35,7 @@ const taskSchema = new Schema<ITask>(
 		id: { type: String, required: true },
 		title: { type: String, required: true },
 		description: { type: String, default: "" },
+		category: { type: String, default: "Rotina" },
 		priority: {
 			type: String,
 			required: true,

@@ -1,6 +1,6 @@
-import { themeColors } from '@/shared/classes/constants/themeColors';
+import { useCognitiveSettings } from '@/shared/contexts';
 import { Priority, PRIORITY_LABELS, CATEGORY_OPTIONS } from '@/shared/types/tasks';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Modal,
@@ -29,12 +29,133 @@ type AddTaskModalProps = {
 const PRIORITIES: Priority[] = ['alta', 'media', 'baixa'];
 
 export function AddTaskModal({ visible, onClose, onAdd }: AddTaskModalProps) {
+  const { themeColors, spacing, fontSize } = useCognitiveSettings();
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<(typeof CATEGORY_OPTIONS)[number]>(CATEGORY_OPTIONS[0]);
   const [priority, setPriority] = useState<Priority>('alta');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [priorityOpen, setPriorityOpen] = useState(false);
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        overlay: {
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          justifyContent: 'flex-end',
+        },
+        keyboard: { flex: 1 },
+        modal: {
+          backgroundColor: '#FFFFFF',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          paddingTop: spacing,
+          paddingHorizontal: spacing,
+          paddingBottom: spacing * 2,
+          maxHeight: '100%',
+        },
+        header: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: spacing,
+        },
+        headerTitle: {
+          fontSize: Math.max(18, fontSize + 4),
+          fontWeight: '700',
+          color: themeColors.textPrimary,
+          lineHeight: fontSize + spacing,
+        },
+        closeBtn: {
+          width: 36,
+          height: 36,
+          borderRadius: 18,
+          backgroundColor: '#F3F4F6',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        closeText: {
+          fontSize: Math.max(16, fontSize + 2),
+          color: themeColors.textSecondary,
+          fontWeight: '600',
+        },
+        scroll: { maxHeight: 400 },
+        scrollContent: { paddingBottom: spacing * 2 },
+        label: {
+          fontSize,
+          fontWeight: '600',
+          color: themeColors.textPrimary,
+          marginBottom: spacing / 2,
+          lineHeight: fontSize + spacing,
+        },
+        input: {
+          borderWidth: 1,
+          borderColor: '#E5E7EB',
+          borderRadius: 10,
+          paddingHorizontal: spacing,
+          paddingVertical: spacing,
+          fontSize: Math.max(14, fontSize),
+          color: themeColors.textPrimary,
+          marginBottom: spacing,
+        },
+        select: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderWidth: 1,
+          borderColor: '#E5E7EB',
+          borderRadius: 10,
+          paddingHorizontal: spacing,
+          paddingVertical: spacing,
+          marginBottom: spacing,
+        },
+        selectText: {
+          fontSize: Math.max(14, fontSize),
+          color: themeColors.textPrimary,
+          lineHeight: fontSize + spacing,
+        },
+        selectArrow: {
+          fontSize: Math.max(12, fontSize - 2),
+          color: themeColors.textMuted,
+        },
+        dropdown: {
+          backgroundColor: '#FFFFFF',
+          borderWidth: 1,
+          borderColor: '#E5E7EB',
+          borderRadius: 10,
+          marginTop: -spacing,
+          marginBottom: spacing,
+          overflow: 'hidden',
+        },
+        dropdownItem: {
+          paddingVertical: spacing,
+          paddingHorizontal: spacing,
+          borderBottomWidth: 1,
+          borderBottomColor: '#F3F4F6',
+        },
+        dropdownItemText: {
+          fontSize: Math.max(14, fontSize),
+          color: themeColors.textPrimary,
+          lineHeight: fontSize + spacing,
+        },
+        addBtn: {
+          backgroundColor: themeColors.accent,
+          borderRadius: 12,
+          paddingVertical: spacing,
+          alignItems: 'center',
+          marginTop: spacing / 2,
+          paddingHorizontal: spacing,
+        },
+        addBtnText: {
+          fontSize: Math.max(14, fontSize),
+          fontWeight: '700',
+          color: '#FFFFFF',
+          lineHeight: fontSize + spacing,
+        },
+      }),
+    [themeColors, spacing, fontSize],
+  );
 
   const reset = () => {
     setTitle('');
@@ -178,119 +299,3 @@ export function AddTaskModal({ visible, onClose, onAdd }: AddTaskModalProps) {
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
-  keyboard: {
-    maxHeight: '85%',
-  },
-  modal: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    paddingBottom: 32,
-    maxHeight: '100%',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: themeColors.textPrimary,
-  },
-  closeBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#F3F4F6',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  closeText: {
-    fontSize: 18,
-    color: themeColors.textSecondary,
-    fontWeight: '600',
-  },
-  scroll: {
-    maxHeight: 400,
-  },
-  scrollContent: {
-    paddingBottom: 24,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: themeColors.textPrimary,
-    marginBottom: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: themeColors.textPrimary,
-    marginBottom: 16,
-  },
-  select: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    marginBottom: 16,
-  },
-  selectText: {
-    fontSize: 16,
-    color: themeColors.textPrimary,
-  },
-  selectArrow: {
-    fontSize: 12,
-    color: themeColors.textMuted,
-  },
-  dropdown: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 10,
-    marginTop: -12,
-    marginBottom: 16,
-    overflow: 'hidden',
-  },
-  dropdownItem: {
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
-  },
-  dropdownItemText: {
-    fontSize: 16,
-    color: themeColors.textPrimary,
-  },
-  addBtn: {
-    backgroundColor: themeColors.accent,
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  addBtnText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#FFFFFF',
-  },
-});
