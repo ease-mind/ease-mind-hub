@@ -22,6 +22,7 @@ export default createModuleFederationConfig({
     "@mui/material": {
       singleton: true,
       requiredVersion: dependencies["@mui/material"],
+      eager: true,
     },
     "@emotion/react": {
       singleton: true,
