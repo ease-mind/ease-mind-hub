@@ -23,7 +23,6 @@ export default createModuleFederationConfig({
     "@mui/material": {
       singleton: true,
       requiredVersion: dependencies["@mui/material"],
-      eager: true,
     },
     "react-hook-form": {
       singleton: true,

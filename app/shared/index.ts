@@ -3,4 +3,8 @@ export { authService } from './services/authService';
 export type { LoginCredentials, RegisterData, User, AuthResponse } from './services/authService';
 export { symptomService } from './services/symptomService';
 export type { Symptom, UserSymptomRecord } from './services/symptomService';
+export { cognitiveSettingsService } from './services/cognitiveSettingsService';
+export type { CognitiveSettingsData } from './services/cognitiveSettingsService';
 export { AuthProvider, useAuth } from './contexts';
+export { CognitiveSettingsProvider, useCognitiveSettings, DEFAULT_SETTINGS } from './contexts/CognitiveSettingsContext';
+export type { CognitiveSettings, ComplexityLevel, ContrastLevel, SpacingValue, FontSizeValue } from './contexts/CognitiveSettingsContext';

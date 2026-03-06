@@ -48,5 +48,5 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ component: Component, ...r
         return <Navigate to="/" state={{ from: location }} replace />;
     }
 
-    return <Component {...rest} />;
+    return Component ? <Component /> : null;
 };

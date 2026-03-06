@@ -21,8 +21,8 @@ import {
 import type { SnackbarData } from "@repo/ui";
 import { EaseMindButton, EaseMindSnackbar } from "@repo/ui";
 import { useTheme } from "@repo/utils";
+import { useCognitiveSettings } from "@repo/data-access";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useCognitiveSettings } from "../../context/cognitive-settings/cognitive-settings.context";
 import { useFocusTimer } from "../../hooks/use-focus-timer/use-focus-timer";
 import { useTasks } from "../../hooks/use-tasks/use-tasks";
 import { NewTaskModal } from "../../modals/new-task-modal/new-task-modal";

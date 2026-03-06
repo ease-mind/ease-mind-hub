@@ -1,0 +1,57 @@
+.thermometer-page {
+  .MuiTypography-h4 {
+    font-size: calc(var(--font-base) * 1.5);
+  }
+
+  .MuiTypography-h6 {
+    font-size: calc(var(--font-base) * 1.15);
+  }
+
+  .MuiTypography-body1 {
+    font-size: var(--font-base);
+  }
+
+  .MuiTypography-body2 {
+    font-size: calc(var(--font-base) * 0.88);
+  }
+
+  .MuiTypography-caption {
+    font-size: calc(var(--font-base) * 0.72);
+  }
+
+  .MuiButton-root {
+    font-size: calc(var(--font-base) * 0.88) !important;
+  }
+
+  .MuiRadio-root {
+    padding: calc(var(--space-base) * 0.5);
+  }
+}
+
+[data-contrast="high"] .thermometer-page {
+  font-weight: 500;
+
+  .MuiTypography-root {
+    font-weight: inherit;
+  }
+
+  .MuiTypography-h4,
+  .MuiTypography-h6 {
+    font-weight: 700;
+  }
+
+  .MuiAlert-root {
+    border: 2px solid currentColor;
+  }
+}
+
+[data-complexity="simple"] .thermometer-page {
+  .MuiTypography-h4 {
+    font-size: calc(var(--font-base) * 1.75);
+  }
+
+  .MuiButton-root {
+    min-height: 48px;
+    font-size: calc(var(--font-base) * 1) !important;
+  }
+}

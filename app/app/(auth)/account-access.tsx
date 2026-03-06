@@ -154,18 +154,6 @@ const AccountAccessScreen = () => {
                                     disabled={isLoading || !loginForm.formState.isValid}>
                                     {isLoading ? <ActivityIndicator color="#fff" /> : "Entrar"}
                                 </EasemindButton>
-                                {__DEV__ && enterPreviewMode && (
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            enterPreviewMode();
-                                            router.replace('/(protected)/thermometer');
-                                        }}
-                                        style={styles.previewButton}
-                                        activeOpacity={0.7}
-                                    >
-                                        <Text style={styles.previewButtonText}>Apenas visualizar telas (sem login)</Text>
-                                    </TouchableOpacity>
-                                )}
                             </View>
                         </FormProvider>
                     ) : (
