@@ -26,16 +26,10 @@ function CognitiveSettingsPage() {
 	const { settings, updateSettings } = useCognitiveSettings();
 	const { colors, isDarkMode } = useTheme();
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * States
-
 	const [activeSection, setActiveSection] = useState<SectionId>("complexity");
 	const [snackbar, setSnackbar] = useState<SnackbarData | null>(null);
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
 	const [draft, setDraft] = useState<CognitiveSettings>({ ...settings });
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Derived styles
 
 	const cardBg = isDarkMode ? colors["background.card"] : "#ffffff";
 	const pageBg = isDarkMode ? colors.background : "#fef3f1";
@@ -54,9 +48,6 @@ function CognitiveSettingsPage() {
 	const textSecondary = isDarkMode ? colors["coral.800"] : "#4b5563";
 	const borderSubtle = isDarkMode ? darkBorder : "transparent";
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handlers
-
 	const patchDraft = (patch: Partial<CognitiveSettings>) =>
 		setDraft(prev => ({ ...prev, ...patch }));
 
@@ -74,9 +65,6 @@ function CognitiveSettingsPage() {
 
 	const isComplete = settings.complexity === "complete";
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Helpers
-
 	const getSectionMeta = (id: SectionId) => {
 		const s = SECTIONS.find(s => s.id === id)!;
 		const darkIconBg = "rgba(255,255,255,0.08)";
@@ -85,9 +73,6 @@ function CognitiveSettingsPage() {
 			iconBg: isDarkMode ? darkIconBg : s.iconBg
 		};
 	};
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Section renderers
 
 	const renderComplexity = () => {
 		const meta = getSectionMeta("complexity");

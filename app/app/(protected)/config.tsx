@@ -28,16 +28,16 @@ type ComplexityLevel = 'simples' | 'completo';
 type ContrastLevel = 'baixo' | 'normal' | 'alto';
 
 const espacamentoMarkers = ['12px', '14px', '18px'];
-const fontMarkers = ['12px', '14px', '18px'];
+const fontMarkers = ['14px', '16px', '18px'];
 const SPACING_OPTIONS: (12 | 14 | 18)[] = [12, 14, 18];
-const FONT_SIZE_OPTIONS: (12 | 14 | 18)[] = [12, 14, 18];
+const FONT_SIZE_OPTIONS: (14 | 16 | 18)[] = [14, 16, 18];
 
 function spacingToSliderIndex(spacing: 12 | 14 | 18): number {
   const i = SPACING_OPTIONS.indexOf(spacing);
   return i >= 0 ? i : 0;
 }
 
-function fontSizeToSliderIndex(fontSize: 12 | 14 | 18): number {
+function fontSizeToSliderIndex(fontSize: 14 | 16 | 18): number {
   const i = FONT_SIZE_OPTIONS.indexOf(fontSize);
   return i >= 0 ? i : 1;
 }
@@ -77,7 +77,7 @@ export default function ConfigScreen() {
   const [complexidade, setComplexidade] = useState<ComplexityLevel>('completo');
   const [contraste, setContraste] = useState<ContrastLevel>('normal');
   const [espacamento, setEspacamento] = useState<12 | 14 | 18>(12);
-  const [tamanhoFonte, setTamanhoFonte] = useState<12 | 14 | 18>(14);
+  const [tamanhoFonte, setTamanhoFonte] = useState<14 | 16 | 18>(16);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [resetting, setResetting] = useState(false);
@@ -92,15 +92,15 @@ export default function ConfigScreen() {
   };
 
   const getFontLabel = (v: number) => {
-    if (v <= 12) return 'Pequeno';
-    if (v <= 14) return 'Médio';
+    if (v <= 14) return 'Pequeno';
+    if (v <= 16) return 'Médio';
     return 'Grande';
   };
 
-  const normalizeFontSize = (n: number): 12 | 14 | 18 => {
-    if (n === 12 || n === 14 || n === 18) return n;
-    if (n <= 13) return 12;
-    if (n <= 16) return 14;
+  const normalizeFontSize = (n: number): 14 | 16 | 18 => {
+    if (n === 14 || n === 16 || n === 18) return n;
+    if (n <= 15) return 14;
+    if (n <= 17) return 16;
     return 18;
   };
 

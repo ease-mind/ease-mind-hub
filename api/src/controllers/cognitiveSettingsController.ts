@@ -5,7 +5,7 @@ const DEFAULT_SETTINGS = {
 	complexity: "complete" as const,
 	contrast: "normal" as const,
 	spacing: 12 as const,
-	fontSize: 14 as const,
+	fontSize: 16 as const,
 	alertsEnabled: true,
 	alertIntervalMinutes: 30
 };

@@ -10,7 +10,7 @@ export type CognitiveSettingsState = {
   complexity: ComplexityMode;
   contrast: ContrastMode;
   spacing: 12 | 14 | 18;
-  fontSize: 12 | 14 | 18;
+  fontSize: 14 | 16 | 18;
   loading: boolean;
 };
 
@@ -24,7 +24,7 @@ const defaultState: CognitiveSettingsState = {
   complexity: 'complete',
   contrast: 'normal',
   spacing: 12,
-  fontSize: 14,
+  fontSize: 16,
   loading: true,
 };
 
@@ -36,10 +36,10 @@ function getThemeColorsByContrast(contrast: ContrastMode): ThemeColors {
   return themeColorsNormal;
 }
 
-function normalizeFontSize(n: number): 12 | 14 | 18 {
-  if (n === 12 || n === 14 || n === 18) return n;
-  if (n <= 13) return 12;
-  if (n <= 16) return 14;
+function normalizeFontSize(n: number): 14 | 16 | 18 {
+  if (n === 14 || n === 16 || n === 18) return n;
+  if (n <= 15) return 14;
+  if (n <= 17) return 16;
   return 18;
 }
 

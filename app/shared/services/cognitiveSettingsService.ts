@@ -3,7 +3,7 @@ import { api } from '@/shared/config/api';
 export type CognitiveComplexity = 'simple' | 'complete';
 export type CognitiveContrast = 'low' | 'normal' | 'high';
 export type CognitiveSpacing = 12 | 14 | 18;
-export type CognitiveFontSize = 12 | 14 | 18;
+export type CognitiveFontSize = 14 | 16 | 18;
 
 export interface CognitiveSettingsData {
   complexity: CognitiveComplexity;
