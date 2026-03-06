@@ -5,6 +5,7 @@ import { maskDocument } from '@/shared/helpers/maskDocument';
 import { useFeedbackAnimation } from '@/shared/hooks/useFeedbackAnimation';
 import { EasemindInput } from '@/shared/ui/Input/Input';
 import { EasemindInputController } from '@/shared/ui/Input/InputController';
+import { EasemindButton } from '@/shared/ui/Button';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
@@ -14,12 +15,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
-const TAB_BAR_HEIGHT = 64 + 24;
-
 const ProfileScreen = () => {
     const insets = useSafeAreaInsets();
     const { user, updateUser, updateUserProfileImage, logout } = useAuth();
-    const { themeColors, spacing, fontSize } = useCognitiveSettings();
+    const { themeColors, spacing, fontSize, contrast } = useCognitiveSettings();
     const { showFeedback, FeedbackAnimation } = useFeedbackAnimation();
     
     const [isEditing, setIsEditing] = useState(false);
@@ -134,25 +133,46 @@ const ProfileScreen = () => {
         );
     };
 
+    const isHighContrast = contrast === 'high';
+    const isLowContrast = contrast === 'low';
+
+    // Contrast-aware styles
+    const getContrastBorderWidth = () => isHighContrast ? 2 : 1;
+    const getContrastShadowOpacity = () => {
+        if (isLowContrast) return 0.02;
+        if (isHighContrast) return 0.15;
+        return 0.05;
+    };
+    const getProfileBorderWidth = () => isHighContrast ? 6 : 4;
+
     return (
         <>
         <ScreenFadeIn>
             <ScreenHeader title="Meu Perfil" subtitle="Configure suas informações" />
-            <SafeAreaView style={styles.container} edges={['bottom']}>
+            <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]} edges={['bottom']}>
                 <ScrollView
                     keyboardShouldPersistTaps="handled"
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={styles.scrollContent}
+                    contentContainerStyle={[{ paddingBottom: spacing * 8 }]}
                     bounces={true}
                 >
-                    <View style={styles.profileSection}>
+                    <View style={[styles.profileSection, { 
+                        paddingVertical: spacing * 2,
+                        backgroundColor: themeColors.cardBackground,
+                        borderBottomWidth: getContrastBorderWidth(),
+                        borderBottomColor: isHighContrast ? themeColors.borderDivider : '#f0f0f0'
+                    }]}>
                         <TouchableOpacity 
                             onPress={handleEditProfileImage} 
                             disabled={isUploadingImage}
                             activeOpacity={0.8}
                         >
-                            <View style={styles.profileImageContainer}>
-                                <View style={styles.profileImage}>
+                            <View style={[styles.profileImageContainer, { marginBottom: spacing }]}>
+                                <View style={[styles.profileImage, {
+                                    borderWidth: getProfileBorderWidth(),
+                                    borderColor: isHighContrast ? themeColors.borderDivider : '#fff',
+                                    shadowOpacity: getContrastShadowOpacity(),
+                                }]}>
                                     {isUploadingImage ? (
                                         <ActivityIndicator size="large" color={ColorsPalette.light['coral.400']} />
                                     ) : user && user.image ? (
@@ -161,28 +181,67 @@ const ProfileScreen = () => {
                                         <MaterialIcons name="account-circle" size={80} color={ColorsPalette.light['coral.300']} />
                                     )}
                                 </View>
-                                <View style={styles.cameraIconContainer}>
+                                <View style={[styles.cameraIconContainer, {
+                                    borderWidth: isHighContrast ? 4 : 3,
+                                    borderColor: isHighContrast ? themeColors.borderDivider : '#fff',
+                                    shadowOpacity: getContrastShadowOpacity() * 2,
+                                }]}>
                                     <Feather name="camera" size={18} color="#fff" />
                                 </View>
                             </View>
                         </TouchableOpacity>
-                        <Text style={styles.userName}>{formMethods.watch('name') || 'Usuário'}</Text>
-                        <Text style={styles.userEmail}>{user?.email || ''}</Text>
+                        <Text style={[styles.userName, { 
+                            fontSize: fontSize + 10, 
+                            color: themeColors.textPrimary,
+                            marginBottom: spacing / 4,
+                            fontWeight: isHighContrast ? '800' : '700'
+                        }]}>
+                            {formMethods.watch('name') || 'Usuário'}
+                        </Text>
+                        <Text style={[styles.userEmail, { 
+                            fontSize: fontSize - 2, 
+                            color: themeColors.textSecondary,
+                            fontWeight: isHighContrast ? '600' : '400'
+                        }]}>
+                            {user?.email || ''}
+                        </Text>
                     </View>
 
-                    <View style={styles.cardContainer}>
-                        <View style={styles.cardHeader}>
+                    <View style={[styles.cardContainer, { 
+                        marginHorizontal: spacing, 
+                        marginTop: spacing,
+                        borderRadius: spacing,
+                        padding: spacing,
+                        backgroundColor: themeColors.cardBackground,
+                        borderWidth: isHighContrast ? 2 : 0,
+                        borderColor: isHighContrast ? themeColors.borderDivider : 'transparent',
+                        shadowOpacity: getContrastShadowOpacity(),
+                    }]}>
+                        <View style={[styles.cardHeader, { 
+                            gap: spacing / 2, 
+                            marginBottom: spacing,
+                            paddingBottom: spacing,
+                            borderBottomWidth: getContrastBorderWidth(),
+                            borderBottomColor: isHighContrast ? themeColors.borderDivider : '#f0f0f0'
+                        }]}>
                             <Feather name="user" size={20} color={ColorsPalette.light['coral.600']} />
-                            <Text style={styles.cardTitle}>Informações Pessoais</Text>
+                            <Text style={[styles.cardTitle, { 
+                                fontSize: fontSize + 4, 
+                                color: themeColors.textPrimary,
+                                fontWeight: isHighContrast ? '700' : '600'
+                            }]}>
+                                Informações Pessoais
+                            </Text>
                         </View>
 
                         <FormProvider {...formMethods}>
-                            <View style={styles.formSection}>
+                            <View style={[{ gap: spacing / 3 }]}>
                                 <EasemindInputController
                                     name="name"
                                     label={'Nome completo'}
                                     placeholder="Seu nome"
                                     editable={isEditing}
+                                    fontSize={fontSize}
                                     rules={{ required: 'Nome é obrigatório' }}
                                 />
                                 <EasemindInputController
@@ -190,6 +249,7 @@ const ProfileScreen = () => {
                                     label={'E-mail'}
                                     placeholder="email@example.com"
                                     editable={isEditing}
+                                    fontSize={fontSize}
                                     keyboardType="email-address"
                                     rules={{
                                         required: "E-mail obrigatório",
@@ -210,6 +270,7 @@ const ProfileScreen = () => {
                                             onChangeText={(text) => onChange(maskDocument(text))}
                                             placeholder="000.000.000-00"
                                             editable={isEditing}
+                                            fontSize={fontSize}
                                             keyboardType="numeric"
                                             maxLength={14}
                                         />
@@ -219,51 +280,47 @@ const ProfileScreen = () => {
                         </FormProvider>
                     </View>
 
-                    <View style={[styles.actionsSection, { padding: spacing / 2, gap: spacing / 2 }]}>
+                    <View style={[{ padding: spacing, gap: spacing / 2 }]}>
                         {isEditing ? (
-                            <View style={styles.editActionsContainer}>
-                                <TouchableOpacity 
-                                    style={styles.cancelButton} 
+                            <View style={[styles.editActionsContainer, { gap: spacing }]}>
+                                <EasemindButton
+                                    variant="outlined"
                                     onPress={handleCancelEdit}
                                     disabled={isSaving}
+                                    style={{ flex: 1 }}
                                 >
-                                    <Text style={styles.cancelButtonText}>Cancelar</Text>
-                                </TouchableOpacity>
+                                    Cancelar
+                                </EasemindButton>
                                 
-                                <TouchableOpacity 
-                                    style={[styles.saveButton, isSaving && styles.saveButtonDisabled]} 
+                                <EasemindButton
+                                    variant="primary"
                                     onPress={formMethods.handleSubmit(handleSaveProfile)}
                                     disabled={isSaving || !formMethods.formState.isValid}
+                                    loading={isSaving}
+                                    style={{ flex: 1 }}
                                 >
-                                    {isSaving ? (
-                                        <ActivityIndicator size="small" color="#fff" />
-                                    ) : (
-                                        <>
-                                            <Feather name="check" size={20} color="#fff" />
-                                            <Text style={styles.saveButtonText}>Salvar</Text>
-                                        </>
-                                    )}
-                                </TouchableOpacity>
+                                    Salvar
+                                </EasemindButton>
                             </View>
                         ) : (
-                            <TouchableOpacity 
-                                style={styles.editButton} 
+                            <EasemindButton
+                                variant="secondary"
                                 onPress={() => setIsEditing(true)}
-                                activeOpacity={0.7}
+                                icon={<Feather name="edit-2" size={20} color={ColorsPalette.light['coral.600']} />}
+                                fullWidth
                             >
-                                <Feather name="edit-2" size={20} color={ColorsPalette.light['coral.600']} />
-                                <Text style={styles.editButtonText}>Editar Perfil</Text>
-                            </TouchableOpacity>
+                                Editar perfil
+                            </EasemindButton>
                         )}
                         
-                        <TouchableOpacity 
-                            style={styles.logoutButton} 
+                        <EasemindButton
+                            variant="ghost"
                             onPress={handleLogout}
-                            activeOpacity={0.7}
+                            icon={<Feather name="log-out" size={20} color={ColorsPalette.light['coral.600']} />}
+                            fullWidth
                         >
-                            <Feather name="log-out" size={20} color={ColorsPalette.light['coral.600']} />
-                            <Text style={styles.logoutButtonText}>Sair da conta</Text>
-                        </TouchableOpacity>
+                            Sair da conta
+                        </EasemindButton>
                     </View>
                 </ScrollView>
                 <FeedbackAnimation />
@@ -278,19 +335,14 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FAFAFA',
     },
-    scrollContent: {
-        paddingBottom: 100,
-    },
     profileSection: {
         alignItems: 'center',
-        paddingVertical: 32,
         backgroundColor: '#fff',
         borderBottomWidth: 1,
         borderBottomColor: '#f0f0f0',
     },
     profileImageContainer: {
         position: 'relative',
-        marginBottom: 16,
     },
     profileImage: {
         width: 120,
@@ -332,22 +384,13 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     userName: {
-        fontSize: 24,
         fontWeight: '700',
-        color: '#333',
-        marginBottom: 4,
     },
     userEmail: {
-        fontSize: 14,
-        color: '#666',
         fontWeight: '400',
     },
     cardContainer: {
         backgroundColor: '#fff',
-        marginHorizontal: 16,
-        marginTop: 20,
-        borderRadius: 16,
-        padding: 20,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.05,
@@ -357,102 +400,14 @@ const styles = StyleSheet.create({
     cardHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10,
-        marginBottom: 20,
-        paddingBottom: 16,
         borderBottomWidth: 1,
         borderBottomColor: '#f0f0f0',
     },
     cardTitle: {
-        fontSize: 18,
         fontWeight: '600',
-        color: '#333',
-    },
-    formSection: {
-        gap: 4,
-    },
-    actionsSection: {
-        padding: 20,
-        gap: 12,
     },
     editActionsContainer: {
         flexDirection: 'row',
-        gap: 12,
-    },
-    cancelButton: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 14,
-        paddingHorizontal: 20,
-        borderRadius: 12,
-        backgroundColor: '#fff',
-        borderWidth: 2,
-        borderColor: '#e0e0e0',
-    },
-    cancelButtonText: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#666',
-    },
-    saveButton: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 8,
-        paddingVertical: 14,
-        paddingHorizontal: 20,
-        borderRadius: 12,
-        backgroundColor: ColorsPalette.light['coral.600'],
-        shadowColor: ColorsPalette.light['coral.600'],
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 4,
-    },
-    saveButtonDisabled: {
-        opacity: 0.6,
-    },
-    saveButtonText: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#fff',
-    },
-    editButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 8,
-        paddingVertical: 14,
-        paddingHorizontal: 20,
-        borderRadius: 12,
-        backgroundColor: ColorsPalette.light['coral.50'],
-        borderWidth: 2,
-        borderColor: ColorsPalette.light['coral.200'],
-    },
-    editButtonText: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: ColorsPalette.light['coral.600'],
-    },
-    logoutButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 8,
-        paddingVertical: 14,
-        paddingHorizontal: 20,
-        borderRadius: 12,
-        backgroundColor: '#fff',
-        borderWidth: 2,
-        borderColor: ColorsPalette.light['coral.200'],
-    },
-    logoutButtonText: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: ColorsPalette.light['coral.600'],
     },
 });
 

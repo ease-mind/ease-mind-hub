@@ -1,5 +1,5 @@
 import { useCognitiveSettings } from '@/shared/contexts';
-import { Priority, PRIORITY_LABELS, CATEGORY_OPTIONS } from '@/shared/types/tasks';
+import { Priority, PRIORITY_LABELS, CATEGORY_OPTIONS, Task } from '@/shared/types/tasks';
 import React, { useMemo, useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -24,11 +24,12 @@ type AddTaskModalProps = {
   visible: boolean;
   onClose: () => void;
   onAdd: (form: NewTaskForm) => void;
+  editingTask?: Task | null;
 };
 
 const PRIORITIES: Priority[] = ['alta', 'media', 'baixa'];
 
-export function AddTaskModal({ visible, onClose, onAdd }: AddTaskModalProps) {
+export function AddTaskModal({ visible, onClose, onAdd, editingTask }: AddTaskModalProps) {
   const { themeColors, spacing, fontSize } = useCognitiveSettings();
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<(typeof CATEGORY_OPTIONS)[number]>(CATEGORY_OPTIONS[0]);
@@ -36,6 +37,16 @@ export function AddTaskModal({ visible, onClose, onAdd }: AddTaskModalProps) {
   const [estimatedTime, setEstimatedTime] = useState('');
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [priorityOpen, setPriorityOpen] = useState(false);
+
+  // Pre-fill form when editing
+  React.useEffect(() => {
+    if (editingTask) {
+      setTitle(editingTask.title);
+      setCategory(editingTask.category);
+      setPriority(editingTask.priority);
+      setEstimatedTime(editingTask.estimatedTime);
+    }
+  }, [editingTask]);
 
   const styles = useMemo(
     () =>
@@ -45,7 +56,9 @@ export function AddTaskModal({ visible, onClose, onAdd }: AddTaskModalProps) {
           backgroundColor: 'rgba(0,0,0,0.4)',
           justifyContent: 'flex-end',
         },
-        keyboard: { flex: 1 },
+        keyboard: { 
+          justifyContent: 'flex-end',
+        },
         modal: {
           backgroundColor: '#FFFFFF',
           borderTopLeftRadius: 20,
@@ -53,7 +66,7 @@ export function AddTaskModal({ visible, onClose, onAdd }: AddTaskModalProps) {
           paddingTop: spacing,
           paddingHorizontal: spacing,
           paddingBottom: spacing * 2,
-          maxHeight: '100%',
+          maxHeight: '90%',
         },
         header: {
           flexDirection: 'row',
@@ -198,7 +211,7 @@ export function AddTaskModal({ visible, onClose, onAdd }: AddTaskModalProps) {
         >
           <View style={styles.modal}>
             <View style={styles.header}>
-              <Text style={styles.headerTitle}>Nova Tarefa</Text>
+              <Text style={styles.headerTitle}>{editingTask ? 'Editar Tarefa' : 'Nova Tarefa'}</Text>
               <TouchableOpacity
                 onPress={handleClose}
                 style={styles.closeBtn}
@@ -290,7 +303,7 @@ export function AddTaskModal({ visible, onClose, onAdd }: AddTaskModalProps) {
                 onPress={handleAdd}
                 activeOpacity={0.8}
               >
-                <Text style={styles.addBtnText}>Adicionar Tarefa</Text>
+                <Text style={styles.addBtnText}>{editingTask ? 'Salvar' : 'Adicionar Tarefa'}</Text>
               </TouchableOpacity>
             </ScrollView>
           </View>

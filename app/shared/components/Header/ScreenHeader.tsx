@@ -21,7 +21,7 @@ export function ScreenHeader({ title, subtitle, rightElement }: ScreenHeaderProp
         />
         <View style={[styles.headerText, { marginLeft: spacing }]}>
           <Text style={[styles.title, { color: themeColors.textPrimary, fontSize: Math.max(20, fontSize + 6), lineHeight: fontSize + spacing + 6 }]}>{title}</Text>
-          {subtitle ? <Text style={[styles.subtitle, { color: themeColors.textSecondary, fontSize, marginTop: spacing / 2, lineHeight: fontSize + spacing }]}>{subtitle}</Text> : null}
+          {subtitle ? <Text style={[styles.subtitle, { color: themeColors.textSecondary, fontSize, marginTop: spacing / 4, lineHeight: fontSize + spacing }]}>{subtitle}</Text> : null}
         </View>
         {rightElement ? (
           <View style={styles.rightIcon}>{rightElement}</View>

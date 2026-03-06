@@ -20,6 +20,7 @@ export type EasemindInputProps = {
     | "warning"
     variant?: "contained" | "text" | "outlined";
     maskType?: InputMask;
+    fontSize?: number;
     onChangeText?: (masked: string, unmasked: string) => void;
 } & TextInputProps;
 
@@ -34,6 +35,7 @@ export function EasemindInput({
     autoComplete,
     maskType,
     color,
+    fontSize = 16,
     onChangeText,
     ...props
 }: EasemindInputProps & TextInputProps) {
@@ -43,13 +45,13 @@ export function EasemindInput({
     const helperId = helperText ? `${inputId}-helper` : undefined;
 
     const baseInputStyle = { ...styles.input, backgroundColor: '#f0f0f0', borderRadius: 10, marginBottom: 20 };
-    const maskInputStyle = { ...baseInputStyle, height: 50, fontSize: 16, paddingHorizontal: 15 };
+    const maskInputStyle = { ...baseInputStyle, height: 50, fontSize: fontSize, paddingHorizontal: 15 };
     
     const HelperText = () => (helperText ? (
         <Text
           style={{
             color: error ? '#d32f2f' : '#888',
-            fontSize: 12,
+            fontSize: fontSize - 4,
             marginLeft: 10,
             marginTop: -15,
             marginBottom: 10,
@@ -92,7 +94,7 @@ export function EasemindInput({
 
     return (
         <View className="easemind-input">
-            <Text style={styles.inputLabel}>{label}</Text>
+            <Text style={[styles.inputLabel, { fontSize: fontSize - 2 }]}>{label}</Text>
             <TextInput
                 {...props}
                 value={value}
@@ -102,7 +104,7 @@ export function EasemindInput({
                 mode="outlined"
                 theme={{ colors: { primary: theme.colors.primary, onSurfaceVariant: 'gray', onSurface: 'black' } }}
                 aria-describedby={helperId}
-                style={[styles.input, props?.editable === false ? { backgroundColor: '#eee', opacity: 0.5 } : {}]}
+                style={[styles.input, { fontSize: fontSize }, props?.editable === false ? { backgroundColor: '#eee', opacity: 0.5 } : {}]}
                 outlineStyle={styles.inputOutline}
             />
             <HelperText />

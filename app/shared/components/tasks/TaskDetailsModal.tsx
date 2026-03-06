@@ -19,7 +19,8 @@ type TaskDetailsModalProps = {
   onToggleTaskComplete: (taskId: string) => void;
   onToggleSubtask: (taskId: string, subtaskId: string) => void;
   onAddSubtask: (taskId: string, title: string) => void;
-  onReabrir: (taskId: string) => void;
+  onOpen: (taskId: string) => void;
+  onEdit?: (task: Task) => void;
 };
 
 const priorityBg: Record<string, string> = {
@@ -35,7 +36,8 @@ export function TaskDetailsModal({
   onToggleTaskComplete,
   onToggleSubtask,
   onAddSubtask,
-  onReabrir,
+  onOpen,
+  onEdit,
 }: TaskDetailsModalProps) {
   const { themeColors, spacing, fontSize } = useCognitiveSettings();
   const priorityText: Record<string, string> = useMemo(
@@ -515,7 +517,7 @@ export function TaskDetailsModal({
             <View style={styles.actionsRow}>
               <TouchableOpacity
                 style={styles.editarBtn}
-                onPress={onClose}
+                onPress={() => onEdit && onEdit(task)}
                 activeOpacity={0.8}
               >
                 <Feather name="edit-2" size={20} color={themeColors.textPrimary} />
@@ -524,7 +526,7 @@ export function TaskDetailsModal({
               {task.completed && (
                 <TouchableOpacity
                   style={styles.reabrirBtn}
-                  onPress={() => onReabrir(task.id)}
+                  onPress={() => onOpen(task.id)}
                   activeOpacity={0.8}
                 >
                   <Text style={styles.reabrirIcon}>✕</Text>

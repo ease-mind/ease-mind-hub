@@ -1,66 +1,139 @@
-import { Animated, StyleProp, StyleSheet, TextStyle, ViewStyle } from "react-native";
-import { Button, ButtonProps, useTheme } from "react-native-paper";
+import React, { ReactNode } from "react";
+import { ActivityIndicator, StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
 import { ColorsPalette } from "../classes/constants/Pallete";
+import { useCognitiveSettings } from "../contexts";
 
-
-export interface EasemindButtonProps extends ButtonProps {
-    color:
-    | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'error'
-    borderRadius?: string;
-    variant?: 'contained' | 'text' | 'outlined';
+export interface EasemindButtonProps {
+    variant?: 'primary' | 'secondary' | 'outlined' | 'ghost';
     onPress?: () => void;
-    styles?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>;
-    labelStyles?:  StyleProp<TextStyle>;
+    disabled?: boolean;
+    loading?: boolean;
+    children: ReactNode;
+    icon?: ReactNode;
+    style?: StyleProp<ViewStyle>;
+    fullWidth?: boolean;
 }
 
 export function EasemindButton({
-    color,
-    variant = 'contained',
-    borderRadius,
+    variant = 'primary',
     onPress,
+    disabled = false,
+    loading = false,
     children,
-    styles = {},
-    labelStyles = {},
-    disabled
+    icon,
+    style,
+    fullWidth = false,
 }: EasemindButtonProps) {
-    const theme = useTheme();
+    const { spacing, fontSize, contrast } = useCognitiveSettings();
+
+    const getVariantStyles = () => {
+        const isHighContrast = contrast === 'high';
+        const borderWidth = isHighContrast ? 2 : 1;
+        
+        switch (variant) {
+            case 'primary':
+                return {
+                    backgroundColor: ColorsPalette.light['coral.600'],
+                    borderWidth,
+                    borderColor: isHighContrast ? ColorsPalette.light['coral.800'] : ColorsPalette.light['coral.600'],
+                    textColor: '#fff',
+                };
+            case 'secondary':
+                return {
+                    backgroundColor: ColorsPalette.light['coral.50'],
+                    borderWidth,
+                    borderColor: isHighContrast ? ColorsPalette.light['coral.600'] : ColorsPalette.light['coral.200'],
+                    textColor: ColorsPalette.light['coral.600'],
+                };
+            case 'outlined':
+                return {
+                    backgroundColor: '#fff',
+                    borderWidth,
+                    borderColor: isHighContrast ? '#666' : '#e0e0e0',
+                    textColor: '#666',
+                };
+            case 'ghost':
+                return {
+                    backgroundColor: '#fff',
+                    borderWidth,
+                    borderColor: isHighContrast ? ColorsPalette.light['coral.600'] : ColorsPalette.light['coral.200'],
+                    textColor: ColorsPalette.light['coral.600'],
+                };
+            default:
+                return {
+                    backgroundColor: ColorsPalette.light['coral.600'],
+                    borderWidth,
+                    borderColor: isHighContrast ? ColorsPalette.light['coral.800'] : ColorsPalette.light['coral.600'],
+                    textColor: '#fff',
+                };
+        }
+    };
+
+    const variantStyles = getVariantStyles();
+    const isDisabled = disabled || loading;
+    const isHighContrast = contrast === 'high';
 
     return (
-        <Button
-            mode={variant}
-            buttonColor={theme.colors[color]}
-            disabled={disabled}
-            onPress={disabled ? undefined : onPress}
-            style={{ 
-                ...buttonStyles.button, 
-                ...(styles && typeof styles === 'object' ? styles : {}), 
-                ...(borderRadius ? { borderRadius: Number(borderRadius) } : {}),
-                ...(disabled ? { backgroundColor: ColorsPalette.light['grey.200'] } : {})
-            }}
-            labelStyle={{ 
-                ...buttonStyles.buttonText, 
-                ...(labelStyles && typeof labelStyles === 'object' ? labelStyles : {}),
-                ...(disabled ? { color: ColorsPalette.light['grey.500'] } : {})
-            }}
+        <TouchableOpacity
+            style={[
+                buttonStyles.button,
+                {
+                    paddingVertical: spacing,
+                    paddingHorizontal: spacing * 1.5,
+                    borderRadius: spacing,
+                    gap: spacing / 2,
+                    backgroundColor: variantStyles.backgroundColor,
+                    borderWidth: variantStyles.borderWidth,
+                    borderColor: variantStyles.borderColor,
+                },
+                fullWidth && buttonStyles.fullWidth,
+                isDisabled && buttonStyles.disabled,
+                style,
+            ]}
+            onPress={onPress}
+            disabled={isDisabled}
+            activeOpacity={0.7}
         >
-            {children}
-        </Button>
+            {loading ? (
+                <ActivityIndicator size="small" color={variantStyles.textColor} />
+            ) : (
+                <>
+                    {icon}
+                    <Text
+                        style={[
+                            buttonStyles.buttonText,
+                            {
+                                fontSize,
+                                color: variantStyles.textColor,
+                                fontWeight: isHighContrast ? '700' : '600',
+                            },
+                            isDisabled && buttonStyles.disabledText,
+                        ]}
+                    >
+                        {children}
+                    </Text>
+                </>
+            )}
+        </TouchableOpacity>
     );
 }
 
 const buttonStyles = StyleSheet.create({
     button: {
-        borderRadius: 24,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    fullWidth: {
+        width: '100%',
     },
     buttonText: {
-        color: ColorsPalette.light['coral.800'],
-        fontWeight: 'bold',
-        fontSize: 18,
-        display: 'flex',
-        paddingVertical: 4,
-        paddingHorizontal: 8,
+        fontWeight: '600',
+    },
+    disabled: {
+        opacity: 0.6,
+    },
+    disabledText: {
+        color: '#999',
     },
 });

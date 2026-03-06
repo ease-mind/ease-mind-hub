@@ -368,21 +368,18 @@ export default function ConfigScreen() {
             {simpleSectionIndex === SECTIONS.length - 1 && (
               <View style={[styles.footer, { marginTop: spacing / 2, gap: spacing / 2 }]}>
                 <EasemindButton
-                  color="primary"
+                  variant="primary"
                   onPress={handleSave}
                   disabled={loading || saving || resetting}
-                  labelStyles={{ color: '#FFFFFF', paddingVertical: 2, paddingHorizontal: spacing / 2 }}
-                  styles={{ paddingVertical: spacing / 2, paddingHorizontal: spacing, borderRadius: 24 }}
+                  fullWidth
                 >
                   {saving ? 'Salvando...' : 'Salvar preferências'}
                 </EasemindButton>
                 <EasemindButton
-                  color="secondary"
                   variant="outlined"
                   onPress={handleReset}
                   disabled={loading || saving || resetting}
-                  labelStyles={{ color: '#FF4353', paddingVertical: 2, paddingHorizontal: spacing / 2 }}
-                  styles={{ paddingVertical: spacing / 2, paddingHorizontal: spacing, borderRadius: 24 }}
+                  fullWidth
                 >
                   {resetting ? 'Restaurar...' : 'Restaurar padrão'}
                 </EasemindButton>
@@ -397,21 +394,18 @@ export default function ConfigScreen() {
             {renderSectionTamanhoFonte()}
             <View style={[styles.footer, { marginTop: spacing / 2, gap: spacing / 2 }]}>
               <EasemindButton
-                color="primary"
+                variant="primary"
                 onPress={handleSave}
                 disabled={loading || saving || resetting}
-                labelStyles={{ color: '#FFFFFF', paddingVertical: 2, paddingHorizontal: spacing / 2 }}
-                styles={{ paddingVertical: spacing / 2, paddingHorizontal: spacing, borderRadius: 24 }}
+                fullWidth
               >
                 {saving ? 'Salvando...' : 'Salvar preferências'}
               </EasemindButton>
               <EasemindButton
-                color="secondary"
                 variant="outlined"
                 onPress={handleReset}
                 disabled={loading || saving || resetting}
-                labelStyles={{ color: '#FF4353', paddingVertical: 2, paddingHorizontal: spacing / 2 }}
-                styles={{ paddingVertical: spacing / 2, paddingHorizontal: spacing, borderRadius: 24 }}
+                fullWidth
               >
                 {resetting ? 'Restaurar...' : 'Restaurar padrão'}
               </EasemindButton>

@@ -72,15 +72,41 @@ const statusFromCompleted = (completed: boolean): TaskStatus => (completed ? 'do
 
 export default function TasksScreen() {
   const insets = useSafeAreaInsets();
-  const { themeColors, fontSize, spacing } = useCognitiveSettings();
+  const { themeColors, fontSize, spacing, contrast } = useCognitiveSettings();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<TaskFilter>('todas');
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const pendingCount = tasks.filter((t) => !t.completed).length;
   const completedCount = tasks.filter((t) => t.completed).length;
+
+  const getContrastStyles = () => {
+    if (contrast === 'high') {
+      return {
+        tabBorderWidth: 2,
+        tabSelectedBorderWidth: 2,
+        fontWeight: '700' as const,
+      };
+    }
+    if (contrast === 'low') {
+      return {
+        tabBorderWidth: 0,
+        tabSelectedBorderWidth: 1,
+        fontWeight: '400' as const,
+      };
+    }
+  
+    return {
+      tabBorderWidth: 1,
+      tabSelectedBorderWidth: 1,
+      fontWeight: '600' as const,
+    };
+  };
+
+  const contrastStyles = getContrastStyles();
 
   const filteredTasks = tasks.filter((t) => {
     if (filter === 'pendentes') return !t.completed;
@@ -247,6 +273,45 @@ export default function TasksScreen() {
     [patchTaskRemote, tasks],
   );
 
+  const handleEdit = useCallback((task: Task) => {
+    setSelectedTask(null);
+    setEditingTask(task);
+    setAddModalVisible(true);
+  }, []);
+
+  const handleUpdateTask = useCallback(async (form: NewTaskForm) => {
+    if (!editingTask) return;
+    
+    try {
+      const updated: Task = {
+        ...editingTask,
+        title: form.title,
+        category: form.category,
+        priority: form.priority,
+        estimatedTime: form.estimatedTime,
+      };
+      
+      setTasks((prev) => prev.map((t) => (t.id === editingTask.id ? updated : t)));
+      await patchTaskRemote(updated);
+      setEditingTask(null);
+    } catch {
+      Alert.alert('Erro ao atualizar tarefa', 'Não foi possível atualizar a tarefa. Tente novamente.');
+    }
+  }, [editingTask, patchTaskRemote]);
+
+  const handleModalClose = useCallback(() => {
+    setAddModalVisible(false);
+    setEditingTask(null);
+  }, []);
+
+  const handleModalSubmit = useCallback(async (form: NewTaskForm) => {
+    if (editingTask) {
+      await handleUpdateTask(form);
+    } else {
+      await handleAddTask(form);
+    }
+  }, [editingTask, handleUpdateTask, handleAddTask]);
+
   const tabs: { value: TaskFilter; label: string; count: number }[] = [
     { value: 'todas', label: 'Todas', count: tasks.length },
     { value: 'pendentes', label: 'Pendentes', count: pendingCount },
@@ -287,7 +352,15 @@ export default function TasksScreen() {
                   key={tab.value}
                   style={[
                     styles.tab,
-                    selected && [styles.tabSelected, { backgroundColor: themeColors.segmentedSelected, borderColor: themeColors.segmentedBorder }],
+                    { borderWidth: contrastStyles.tabBorderWidth },
+                    selected && [
+                      styles.tabSelected,
+                      { 
+                        backgroundColor: themeColors.segmentedSelected, 
+                        borderColor: themeColors.segmentedBorder,
+                        borderWidth: contrastStyles.tabSelectedBorderWidth,
+                      },
+                    ],
                     isFirst && styles.tabFirst,
                     isLast && styles.tabLast,
                   ]}
@@ -297,7 +370,7 @@ export default function TasksScreen() {
                   <Text
                     style={[
                       styles.tabLabel,
-                      { fontSize, color: themeColors.textSecondary },
+                      { fontSize, color: themeColors.textSecondary, fontWeight: contrastStyles.fontWeight },
                       selected && { color: themeColors.accent },
                     ]}
                   >
@@ -324,7 +397,8 @@ export default function TasksScreen() {
             <TaskCard
               task={item}
               onToggleComplete={handleToggleComplete}
-              onVerDetalhes={setSelectedTask}
+              onClickDetails={setSelectedTask}
+              onEdit={handleEdit}
             />
           )}
           contentContainerStyle={[
@@ -346,8 +420,9 @@ export default function TasksScreen() {
 
         <AddTaskModal
           visible={addModalVisible}
-          onClose={() => setAddModalVisible(false)}
-          onAdd={handleAddTask}
+          onClose={handleModalClose}
+          onAdd={handleModalSubmit}
+          editingTask={editingTask}
         />
 
         <TaskDetailsModal
@@ -358,6 +433,7 @@ export default function TasksScreen() {
           onToggleSubtask={handleToggleSubtask}
           onAddSubtask={handleAddSubtask}
           onReabrir={handleReabrir}
+          onEdit={handleEdit}
         />
       </View>
       </ScreenFadeIn>

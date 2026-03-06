@@ -7,6 +7,7 @@ interface InputControllerProps extends EasemindInputProps{
   rules?: RegisterOptions;
   control?: Control<any>;
   keyboardType?: EasemindInputProps["keyboardType"];
+  fontSize?: EasemindInputProps["fontSize"];
 }
 
 export const EasemindInputController: React.FC<InputControllerProps> = ({
@@ -20,7 +21,8 @@ export const EasemindInputController: React.FC<InputControllerProps> = ({
   keyboardType,
   secureTextEntry,
   right,
-  editable
+  editable,
+  fontSize
 }) => {
   const formContext = useFormContext();
   const control = controlProp ?? formContext?.control;
@@ -50,6 +52,7 @@ export const EasemindInputController: React.FC<InputControllerProps> = ({
           secureTextEntry={secureTextEntry}
           right={right}
           editable={editable}
+          fontSize={fontSize}
           onChangeText={
             maskType
               ? (masked) => field.onChange(masked)

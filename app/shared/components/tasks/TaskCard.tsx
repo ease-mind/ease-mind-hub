@@ -7,7 +7,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 type TaskCardProps = {
   task: Task;
   onToggleComplete: (taskId: string) => void;
-  onVerDetalhes: (task: Task) => void;
+  onClickDetails: (task: Task) => void;
 };
 
 const priorityBg: Record<string, string> = {
@@ -16,8 +16,8 @@ const priorityBg: Record<string, string> = {
   baixa: '#D1FAE5',
 };
 
-export function TaskCard({ task, onToggleComplete, onVerDetalhes }: TaskCardProps) {
-  const { complexity, themeColors, fontSize, spacing } = useCognitiveSettings();
+export function TaskCard({ task, onToggleComplete, onClickDetails }: TaskCardProps) {
+  const { complexity, themeColors, fontSize, spacing, contrast } = useCognitiveSettings();
   const isSimple = complexity === 'simple';
 
   const priorityText: Record<string, string> = {
@@ -26,14 +26,58 @@ export function TaskCard({ task, onToggleComplete, onVerDetalhes }: TaskCardProp
     baixa: '#065F46',
   };
 
+  const getContrastStyles = () => {
+    if (contrast === 'high') {
+      return {
+        borderWidth: 2,
+        borderColor: themeColors.textPrimary,
+        shadowOpacity: 0.15,
+        fontWeight: '700' as const,
+        checkboxBorderWidth: 3,
+      };
+    }
+    if (contrast === 'low') {
+      return {
+        borderWidth: 0,
+        borderColor: 'transparent',
+        shadowOpacity: 0.03,
+        fontWeight: '400' as const,
+        checkboxBorderWidth: 1,
+      };
+    }
+    // normal contrast
+    return {
+      borderWidth: 1,
+      borderColor: '#E5E7EB',
+      shadowOpacity: 0.05,
+      fontWeight: '600' as const,
+      checkboxBorderWidth: 2,
+    };
+  };
+
+  const contrastStyles = getContrastStyles();
+
   if (isSimple) {
     return (
-      <View style={[styles.card, { borderColor: '#E5E7EB', marginBottom: spacing, padding: spacing }]}>
+      <View style={[
+        styles.card, 
+        { 
+          borderColor: contrastStyles.borderColor, 
+          borderWidth: contrastStyles.borderWidth,
+          marginBottom: spacing, 
+          padding: spacing,
+          shadowOpacity: contrastStyles.shadowOpacity,
+        }
+      ]}>
         <View style={styles.simpleContent}>
           <Text
             style={[
               styles.simpleTitle,
-              { color: themeColors.textPrimary, fontSize: Math.max(14, Math.min(20, fontSize + 2)) },
+              { 
+                color: themeColors.textPrimary, 
+                fontSize: Math.max(14, Math.min(20, fontSize + 2)),
+                fontWeight: contrastStyles.fontWeight,
+              },
               task.completed && styles.titleStrike,
             ]}
             numberOfLines={2}
@@ -41,12 +85,12 @@ export function TaskCard({ task, onToggleComplete, onVerDetalhes }: TaskCardProp
             {task.title}
           </Text>
           <TouchableOpacity
-            style={[styles.verDetalhesBtn, { backgroundColor: themeColors.segmentedSelected || '#FFE4E6' }]}
-            onPress={() => onVerDetalhes(task)}
+            style={[styles.verDetalhesBtn, { backgroundColor: themeColors.segmentedSelected || '#FFE4E6', paddingHorizontal: spacing, paddingVertical: spacing / 2 }]}
+            onPress={() => onClickDetails(task)}
             activeOpacity={0.8}
           >
-            <Feather name="file-text" size={16} color={themeColors.accent} />
-            <Text style={[styles.verDetalhesText, { color: themeColors.accent }]}>Ver detalhes</Text>
+            <Feather name="file-text" size={fontSize} color={themeColors.accent} />
+            <Text style={[styles.verDetalhesText, { color: themeColors.accent, fontSize, fontWeight: contrastStyles.fontWeight }]}>Ver detalhes</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -57,13 +101,26 @@ export function TaskCard({ task, onToggleComplete, onVerDetalhes }: TaskCardProp
   const totalSubtasks = task.subtasks.length;
 
   return (
-    <View style={[styles.card, { marginBottom: spacing, padding: spacing }]}>
+    <View style={[
+      styles.card, 
+      { 
+        marginBottom: spacing, 
+        padding: spacing,
+        borderWidth: contrastStyles.borderWidth,
+        borderColor: contrastStyles.borderColor,
+        shadowOpacity: contrastStyles.shadowOpacity,
+      }
+    ]}>
       <TouchableOpacity
         onPress={() => onToggleComplete(task.id)}
-        style={styles.checkboxWrap}
+        style={[styles.checkboxWrap, { marginRight: spacing }]}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
-        <View style={[styles.checkbox, task.completed && styles.checkboxChecked]}>
+        <View style={[
+          styles.checkbox, 
+          { borderWidth: contrastStyles.checkboxBorderWidth },
+          task.completed && styles.checkboxChecked
+        ]}>
           {task.completed ? <Text style={styles.checkMark}>✓</Text> : null}
         </View>
       </TouchableOpacity>
@@ -71,38 +128,42 @@ export function TaskCard({ task, onToggleComplete, onVerDetalhes }: TaskCardProp
         <Text
           style={[
             styles.title,
-            { color: themeColors.textPrimary, fontSize: Math.max(14, Math.min(20, fontSize + 2)) },
+            { 
+              color: themeColors.textPrimary, 
+              fontSize: Math.max(14, Math.min(20, fontSize + 2)),
+              fontWeight: contrastStyles.fontWeight,
+            },
             task.completed && styles.titleStrike,
           ]}
           numberOfLines={2}
         >
           {task.title}
         </Text>
-        <View style={styles.labelsRow}>
-          <View style={[styles.pill, { backgroundColor: priorityBg[task.priority] }]}>
-            <Text style={[styles.pillText, { color: priorityText[task.priority] }]}>
+        <View style={[styles.labelsRow, { gap: spacing / 2, marginBottom: spacing / 2 }]}>
+          <View style={[styles.pill, { backgroundColor: priorityBg[task.priority], paddingHorizontal: spacing, paddingVertical: spacing / 3 }]}>
+            <Text style={[styles.pillText, { color: priorityText[task.priority], fontSize: Math.max(10, fontSize - 2), fontWeight: contrastStyles.fontWeight }]}>
               {PRIORITY_LABELS[task.priority]}
             </Text>
           </View>
-          <View style={styles.pillCategory}>
-            <Text style={[styles.pillCategoryText, { color: themeColors.textSecondary }]}>{task.category}</Text>
+          <View style={[styles.pillCategory, { paddingHorizontal: spacing, paddingVertical: spacing / 3, backgroundColor: themeColors.sliderTrack }]}>
+            <Text style={[styles.pillCategoryText, { color: themeColors.textSecondary, fontSize: Math.max(10, fontSize - 2) }]}>{task.category}</Text>
           </View>
         </View>
-        <View style={styles.metaRow}>
-          <Feather name="clock" size={14} color={themeColors.textMuted} />
+        <View style={[styles.metaRow, { gap: spacing, marginBottom: spacing }]}>
+          <Feather name="clock" size={fontSize} color={themeColors.textMuted} />
           <Text style={[styles.metaText, { color: themeColors.textMuted, fontSize }]}>{task.estimatedTime}</Text>
-          <Feather name="list" size={14} color={themeColors.textMuted} />
+          <Feather name="list" size={fontSize} color={themeColors.textMuted} />
           <Text style={[styles.metaText, { color: themeColors.textMuted, fontSize }]}>
             {completedCount}/{totalSubtasks} subtarefas
           </Text>
         </View>
         <TouchableOpacity
-          style={[styles.verDetalhesBtn, { backgroundColor: themeColors.segmentedSelected || '#FFE4E6' }]}
-          onPress={() => onVerDetalhes(task)}
+          style={[styles.verDetalhesBtn, { backgroundColor: themeColors.segmentedSelected || '#FFE4E6', paddingHorizontal: spacing, paddingVertical: spacing / 2 }]}
+          onPress={() => onClickDetails(task)}
           activeOpacity={0.8}
         >
-          <Feather name="file-text" size={16} color={themeColors.accent} />
-          <Text style={[styles.verDetalhesText, { color: themeColors.accent, fontSize: Math.max(12, fontSize - 2) }]}>Ver detalhes</Text>
+          <Feather name="file-text" size={fontSize} color={themeColors.accent} />
+          <Text style={[styles.verDetalhesText, { color: themeColors.accent, fontSize: Math.max(12, fontSize - 2), fontWeight: contrastStyles.fontWeight }]}>Ver detalhes</Text>
         </TouchableOpacity>
       </View>
     </View>

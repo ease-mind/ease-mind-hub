@@ -20,7 +20,7 @@ const TAB_BAR_HEIGHT = 64 + 24;
 export default function ThermometerScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
-  const { themeColors, spacing, fontSize } = useCognitiveSettings();
+  const { themeColors, spacing, fontSize, contrast, complexity } = useCognitiveSettings();
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,6 +90,34 @@ export default function ThermometerScreen() {
   const getCategoryCount = (category: string) => {
     return selectedSymptoms.filter((id) => symptoms.find((s) => s.id === id)?.category === category).length;
   };
+
+  const getContrastStyles = () => {
+    if (contrast === 'high') {
+      return {
+        borderWidth: 2,
+        borderColor: themeColors.textPrimary,
+        shadowOpacity: 0.15,
+        fontWeight: '700' as const,
+      };
+    }
+    if (contrast === 'low') {
+      return {
+        borderWidth: 0,
+        borderColor: 'transparent',
+        shadowOpacity: 0.05,
+        fontWeight: '400' as const,
+      };
+    }
+
+    return {
+      borderWidth: 1,
+      borderColor: themeColors.borderDivider,
+      shadowOpacity: 0.08,
+      fontWeight: '600' as const,
+    };
+  };
+
+  const contrastStyles = getContrastStyles();
 
   const handleReset = async () => {
     if (!user?._id) return;
@@ -163,10 +191,10 @@ export default function ThermometerScreen() {
           }}
         />
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing * 2 }}>
-          <MaterialIcons name="error-outline" size={64} color={themeColors.accent} />
+          <MaterialIcons name="error-outline" size={fontSize * 4} color={themeColors.accent} />
           <Text style={{ fontSize, color: themeColors.textSecondary, marginTop: spacing, textAlign: 'center', lineHeight: fontSize + spacing }}>{error}</Text>
-          <TouchableOpacity onPress={loadData} style={styles.retryButton}>
-            <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Tentar Novamente</Text>
+          <TouchableOpacity onPress={loadData} style={[styles.retryButton, { marginTop: spacing * 2, paddingHorizontal: spacing * 2, paddingVertical: spacing * 1.5, backgroundColor: themeColors.accent }]}>
+            <Text style={{ fontSize, color: '#FFF', fontWeight: 'bold' }}>Tentar Novamente</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -183,8 +211,8 @@ export default function ThermometerScreen() {
       />
       <ScreenFadeIn>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scrollContent, { paddingBottom: TAB_BAR_HEIGHT + insets.bottom + 24 }]}>
-        <View style={[styles.thermometerSection, { marginTop: spacing * 2, paddingVertical: spacing * 2, paddingHorizontal: spacing * 2 }]}>
-          <View style={[styles.thermometerContainer, { marginBottom: spacing }]}>
+        <View style={[styles.thermometerSection, { marginTop: spacing, paddingVertical: spacing, paddingHorizontal: spacing * 2 }]}>
+          <View style={[styles.thermometerContainer, { marginBottom: spacing / 2 }]}>
             <View style={[styles.thermometerBackground, { backgroundColor: themeColors.sliderTrack }]} />
 
             <View
@@ -206,21 +234,21 @@ export default function ThermometerScreen() {
           </View>
 
           {getTemperatureLevel() && (
-            <Text style={[styles.temperatureLevel, { color: getTemperatureColor(), fontSize: fontSize + 18, marginBottom: spacing }]}>{getTemperatureLevel()}</Text>
+            <Text style={[styles.temperatureLevel, { color: getTemperatureColor(), fontSize: fontSize + 18, marginBottom: spacing / 2 }]}>{getTemperatureLevel()}</Text>
           )}
 
-          <Text style={[styles.temperatureDescription, { fontSize, color: themeColors.textSecondary, marginBottom: spacing, lineHeight: fontSize + spacing }]}>
+          <Text style={[styles.temperatureDescription, { fontSize, color: themeColors.textSecondary, marginBottom: spacing / 2, lineHeight: fontSize + spacing }]}>
             {getTemperature() === 0 ? 'Clique no ícone no topo para fazer uma avaliação' : 
              getTemperature() <= 36 ? 'Você está em um estado tranquilo e equilibrado' :
              getTemperature() <= 38 ? 'Fique atento aos sinais de alerta' :
              'Considere fazer uma pausa e praticar técnicas de relaxamento'}
           </Text>
 
-          <View style={[styles.symptomCountContainer, { marginTop: spacing }]}>
-            <Text style={[styles.symptomCount, { fontSize, color: themeColors.textPrimary, lineHeight: fontSize + spacing }]}>{selectedSymptoms.length} sintomas identificados</Text>
+          <View style={[styles.symptomCountContainer, { marginTop: spacing / 2 }]}>
+            <Text style={[styles.symptomCount, { fontSize, color: themeColors.textPrimary, fontWeight: '600', lineHeight: fontSize + spacing }]}>{selectedSymptoms.length} sintomas identificados</Text>
             
             {selectedSymptoms.length > 0 && (
-              <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
+              <TouchableOpacity onPress={handleReset} style={[styles.resetButton, { paddingHorizontal: spacing * 2, paddingVertical: spacing, backgroundColor: themeColors.accent }]}>
                 <MaterialCommunityIcons name="refresh" size={fontSize} color="#FFF" />
                 <Text style={[styles.resetButtonText, { fontSize, marginLeft: spacing / 2 }]}>Resetar</Text>
               </TouchableOpacity>
@@ -228,45 +256,80 @@ export default function ThermometerScreen() {
           </View>
         </View>
 
-        <View style={[styles.categoriesContainer, { paddingHorizontal: spacing * 2, gap: spacing, marginBottom: spacing * 2 }]}>
-          <View style={[styles.categoryCard, { backgroundColor: themeColors.cardBackground, padding: spacing * 2, marginBottom: spacing / 2 }]}>
-            <View style={[styles.categoryHeader, { gap: spacing }]}>
-              <MaterialIcons name="cancel" size={24} color={themeColors.accent} />
-              <View style={styles.categoryInfo}>
-                <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing }]}>Falha na Comunicação</Text>
+        {complexity !== 'simple' && (
+          <View style={[styles.categoriesContainer, { paddingHorizontal: spacing * 2, gap: spacing, marginBottom: spacing * 2 }]}>
+            <View style={[
+              styles.categoryCard, 
+              { 
+                backgroundColor: themeColors.cardBackground, 
+                padding: spacing * 1.5, 
+                marginBottom: 0, 
+                borderRadius: spacing * 1.5,
+                borderWidth: contrastStyles.borderWidth,
+                borderColor: contrastStyles.borderColor,
+                shadowOpacity: contrastStyles.shadowOpacity,
+              }
+            ]}>
+              <View style={[styles.categoryHeader, { gap: spacing }]}>
+                <MaterialIcons name="cancel" size={fontSize * 1.5} color={themeColors.accent} />
+                <View style={styles.categoryInfo}>
+                  <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing, fontWeight: contrastStyles.fontWeight }]}>Falha na Comunicação</Text>
+                </View>
+              </View>
+              <View style={[styles.categoryCount, { backgroundColor: themeColors.sliderTrack, paddingHorizontal: spacing * 2, paddingVertical: spacing, borderRadius: spacing }]}>
+                <Text style={[styles.categoryCountNumber, { fontSize: fontSize * 1.5, color: themeColors.accent, fontWeight: contrastStyles.fontWeight }]}>{getCategoryCount('communication')}</Text>
               </View>
             </View>
-            <View style={[styles.categoryCount, { backgroundColor: themeColors.sliderTrack, paddingHorizontal: spacing, paddingVertical: spacing }]}>
-              <Text style={[styles.categoryCountNumber, { fontSize: fontSize + 8, color: themeColors.accent }]}>{getCategoryCount('communication')}</Text>
-            </View>
-          </View>
 
-          <View style={[styles.categoryCard, { backgroundColor: themeColors.cardBackground, padding: spacing * 2, marginBottom: spacing / 2 }]}>
-            <View style={[styles.categoryHeader, { gap: spacing }]}>
-              <Feather name="zap" size={24} color="#FFC107" />
-              <View style={styles.categoryInfo}>
-                <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing }]}>Sintomas Físicos</Text>
+            <View style={[
+              styles.categoryCard, 
+              { 
+                backgroundColor: themeColors.cardBackground, 
+                padding: spacing * 1.5, 
+                marginBottom: 0, 
+                borderRadius: spacing * 1.5,
+                borderWidth: contrastStyles.borderWidth,
+                borderColor: contrastStyles.borderColor,
+                shadowOpacity: contrastStyles.shadowOpacity,
+              }
+            ]}>
+              <View style={[styles.categoryHeader, { gap: spacing }]}>
+                <Feather name="zap" size={fontSize * 1.5} color="#FFC107" />
+                <View style={styles.categoryInfo}>
+                  <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing, fontWeight: contrastStyles.fontWeight }]}>Sintomas Físicos</Text>
+                </View>
+              </View>
+              <View style={[styles.categoryCount, { backgroundColor: themeColors.sliderTrack, paddingHorizontal: spacing * 2, paddingVertical: spacing, borderRadius: spacing }]}>
+                <Text style={[styles.categoryCountNumber, { fontSize: fontSize * 1.5, color: themeColors.accent, fontWeight: contrastStyles.fontWeight }]}>{getCategoryCount('physical')}</Text>
               </View>
             </View>
-            <View style={[styles.categoryCount, { backgroundColor: themeColors.sliderTrack, paddingHorizontal: spacing, paddingVertical: spacing }]}>
-              <Text style={[styles.categoryCountNumber, { fontSize: fontSize + 8, color: themeColors.accent }]}>{getCategoryCount('physical')}</Text>
-            </View>
-          </View>
 
-          <View style={[styles.categoryCard, { backgroundColor: themeColors.cardBackground, padding: spacing * 2, marginBottom: spacing / 2 }]}>
-            <View style={[styles.categoryHeader, { gap: spacing }]}>
-              <MaterialCommunityIcons name="chart-line" size={24} color="#2196F3" />
-              <View style={styles.categoryInfo}>
-                <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing }]}>Aumento de Estereotipias</Text>
+            <View style={[
+              styles.categoryCard, 
+              { 
+                backgroundColor: themeColors.cardBackground, 
+                padding: spacing * 1.5, 
+                marginBottom: 0, 
+                borderRadius: spacing * 1.5,
+                borderWidth: contrastStyles.borderWidth,
+                borderColor: contrastStyles.borderColor,
+                shadowOpacity: contrastStyles.shadowOpacity,
+              }
+            ]}>
+              <View style={[styles.categoryHeader, { gap: spacing }]}>
+                <MaterialCommunityIcons name="chart-line" size={fontSize * 1.5} color="#2196F3" />
+                <View style={styles.categoryInfo}>
+                  <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing, fontWeight: contrastStyles.fontWeight }]}>Aumento de Estereotipias</Text>
+                </View>
+              </View>
+              <View style={[styles.categoryCount, { backgroundColor: themeColors.sliderTrack, paddingHorizontal: spacing * 2, paddingVertical: spacing, borderRadius: spacing }]}>
+                <Text style={[styles.categoryCountNumber, { fontSize: fontSize * 1.5, color: themeColors.accent, fontWeight: contrastStyles.fontWeight }]}>{getCategoryCount('stereotypies')}</Text>
               </View>
             </View>
-            <View style={[styles.categoryCount, { backgroundColor: themeColors.sliderTrack, paddingHorizontal: spacing, paddingVertical: spacing }]}>
-              <Text style={[styles.categoryCountNumber, { fontSize: fontSize + 8, color: themeColors.accent }]}>{getCategoryCount('stereotypies')}</Text>
-            </View>
           </View>
-        </View>
+        )}
 
-        <View style={{ height: 40 }} />
+        <View style={{ height: spacing * 3 }} />
       </ScrollView>
       </ScreenFadeIn>
       <ThermometerModal visible={modalVisible} onClose={() => setModalVisible(false)} onSave={loadData} />
