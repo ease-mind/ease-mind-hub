@@ -85,17 +85,14 @@ export const EasemindDrawer = ({
                     <View style={styles.footerButtons}>
                         <EasemindButton
                             onPress={onCancel}
-                            mode="contained-tonal"
-                            color="tertiary"
+                            variant="outlined"
                             style={styles.footerBtn}
-                            styles={{ backgroundColor: '#FFF' }}
                         >
                             {cancelLabel}
                         </EasemindButton>
                         <EasemindButton
                             onPress={onSubmit}
-                            mode="contained"
-                            color="primary"
+                            variant="primary"
                             style={styles.footerBtn}
                             disabled={disabled}
                         >

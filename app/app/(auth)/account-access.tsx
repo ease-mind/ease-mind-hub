@@ -8,7 +8,6 @@ import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import {
-    ActivityIndicator,
     Alert,
     Image,
     Keyboard,
@@ -17,14 +16,13 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     TouchableWithoutFeedback,
     View
 } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 const AccountAccessScreen = () => {
-    const { login, signUp, user, isLoading: authLoading, enterPreviewMode } = useAuth();
+    const { login, signUp, user, isLoading: authLoading } = useAuth();
     const [activeTab, setActiveTab] = useState('login');
     const [showPassword, setShowPassword] = useState(false);
     const [showRegisterPassword, setShowRegisterPassword] = useState(false);
@@ -54,14 +52,8 @@ const AccountAccessScreen = () => {
     }, [user, authLoading]);
 
     const handleLogin = async (data: { email: string; password: string }) => {
-        const startTime = performance.now();
         setIsLoading(true);
         const result = await login(data.email.toLowerCase().trim(), data.password);
-        const loginTime = performance.now() - startTime;
-
-        if (__DEV__) {
-            console.log(`[Performance - Cenário 1] Tempo de autenticação (login): ${loginTime.toFixed(2)}ms (${(loginTime / 1000).toFixed(2)}s)`);
-        }
 
         setIsLoading(false);
 
@@ -148,11 +140,11 @@ const AccountAccessScreen = () => {
                                     }
                                 />
                                 <EasemindButton
-                                    color="primary"
-                                    variant="contained"
+                                    variant="primary"
                                     onPress={loginForm.handleSubmit(handleLogin)}
-                                    disabled={isLoading || !loginForm.formState.isValid}>
-                                    {isLoading ? <ActivityIndicator color="#fff" /> : "Entrar"}
+                                    disabled={isLoading || !loginForm.formState.isValid}
+                                    loading={isLoading}>
+                                    Entrar
                                 </EasemindButton>
                             </View>
                         </FormProvider>
@@ -193,11 +185,11 @@ const AccountAccessScreen = () => {
                                     }
                                 />
                                 <EasemindButton
-                                    color="primary"
-                                    variant="contained"
+                                    variant="primary"
                                     onPress={registerForm.handleSubmit(handleRegister)}
-                                    disabled={isLoading || !registerForm.formState.isValid}>
-                                    {isLoading ? <ActivityIndicator color={ColorsPalette.light['coral.700']} /> : "Criar conta"}
+                                    disabled={isLoading || !registerForm.formState.isValid}
+                                    loading={isLoading}>
+                                    Criar conta
                                 </EasemindButton>
                             </View>
                         </FormProvider>

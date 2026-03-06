@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getCognitiveSettings } from '@/shared/services/cognitiveSettingsService';
 import { themeColorsNormal, themeColorsLow, themeColorsHigh, ThemeColors } from '@/shared/classes/constants/themeColors';
+import { useAuth } from './AuthContext';
 
 export type ComplexityMode = 'simple' | 'complete';
 export type ContrastMode = 'low' | 'normal' | 'high';
@@ -51,8 +52,15 @@ function normalizeSpacing(n: number): 12 | 14 | 18 {
 
 export function CognitiveSettingsProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<CognitiveSettingsState>(defaultState);
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
 
   const loadSettings = useCallback(async () => {
+
+    if (!isAuthenticated) {
+      setState((s) => ({ ...s, loading: false }));
+      return;
+    }
+
     try {
       setState((s) => ({ ...s, loading: true }));
       const data = await getCognitiveSettings();
@@ -63,14 +71,17 @@ export function CognitiveSettingsProvider({ children }: { children: ReactNode })
         fontSize: normalizeFontSize(Number(data.fontSize) || 14),
         loading: false,
       });
-    } catch {
+    } catch (error) {
+      console.warn('[CognitiveSettings] Erro ao carregar configurações:', error);
       setState((s) => ({ ...s, loading: false }));
     }
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
-    loadSettings();
-  }, [loadSettings]);
+    if (!authLoading) {
+      loadSettings();
+    }
+  }, [authLoading, loadSettings]);
 
   const updateState = useCallback((patch: Partial<CognitiveSettingsState>) => {
     setState((s) => ({ ...s, ...patch }));

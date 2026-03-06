@@ -69,9 +69,25 @@ export function EasemindButton({
         }
     };
 
+    const getDisabledStyles = () => {
+        const isHighContrast = contrast === 'high';
+        
+        if (isHighContrast) {
+            return {
+                backgroundColor: '#cccccc',
+                borderColor: '#666',
+                borderWidth: 2,
+                textColor: '#333',
+            };
+        }
+        
+        return null;
+    };
+
     const variantStyles = getVariantStyles();
     const isDisabled = disabled || loading;
     const isHighContrast = contrast === 'high';
+    const disabledStyles = getDisabledStyles();
 
     return (
         <TouchableOpacity
@@ -87,7 +103,12 @@ export function EasemindButton({
                     borderColor: variantStyles.borderColor,
                 },
                 fullWidth && buttonStyles.fullWidth,
-                isDisabled && buttonStyles.disabled,
+                isDisabled && !isHighContrast && buttonStyles.disabled,
+                isDisabled && isHighContrast && disabledStyles && {
+                    backgroundColor: disabledStyles.backgroundColor,
+                    borderColor: disabledStyles.borderColor,
+                    borderWidth: disabledStyles.borderWidth,
+                },
                 style,
             ]}
             onPress={onPress}
@@ -95,7 +116,10 @@ export function EasemindButton({
             activeOpacity={0.7}
         >
             {loading ? (
-                <ActivityIndicator size="small" color={variantStyles.textColor} />
+                <ActivityIndicator 
+                    size="small" 
+                    color={isDisabled && isHighContrast && disabledStyles ? disabledStyles.textColor : variantStyles.textColor} 
+                />
             ) : (
                 <>
                     {icon}
@@ -104,10 +128,10 @@ export function EasemindButton({
                             buttonStyles.buttonText,
                             {
                                 fontSize,
-                                color: variantStyles.textColor,
+                                color: isDisabled && isHighContrast && disabledStyles ? disabledStyles.textColor : variantStyles.textColor,
                                 fontWeight: isHighContrast ? '700' : '600',
                             },
-                            isDisabled && buttonStyles.disabledText,
+                            isDisabled && !isHighContrast && buttonStyles.disabledText,
                         ]}
                     >
                         {children}
