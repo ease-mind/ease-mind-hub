@@ -3,13 +3,14 @@
 	--font-base: 18px;
 }
 
-[data-contrast="low"] {
+/* ===== MODO CLARO ===== */
+:root[data-contrast="low"]:not(.dark-mode),
+body[data-contrast="low"]:not(.dark-mode) {
 	--cog-bg: #fffcfb;
 	--cog-card-bg: #ffffff;
 	--cog-text: #6b7280;
 	--cog-text-secondary: #9ca3af;
 	--cog-border: transparent;
-	--cog-border-dark: transparent;
 	--cog-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 	--cog-divider: transparent;
 	--cog-card-border: none;
@@ -18,13 +19,13 @@
 	--cog-option-border-width: 1px;
 }
 
-[data-contrast="normal"] {
+:root[data-contrast="normal"]:not(.dark-mode),
+body[data-contrast="normal"]:not(.dark-mode) {
 	--cog-bg: #fef3f1;
 	--cog-card-bg: #ffffff;
 	--cog-text: #111827;
 	--cog-text-secondary: #4b5563;
 	--cog-border: #e5e7eb;
-	--cog-border-dark: rgba(255, 255, 255, 0.1);
 	--cog-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 	--cog-divider: #f3f4f6;
 	--cog-card-border: 1px solid #e5e7eb;
@@ -33,13 +34,13 @@
 	--cog-option-border-width: 2px;
 }
 
-[data-contrast="high"] {
+:root[data-contrast="high"]:not(.dark-mode),
+body[data-contrast="high"]:not(.dark-mode) {
 	--cog-bg: #fce8e6;
 	--cog-card-bg: #ffffff;
 	--cog-text: #000000;
 	--cog-text-secondary: #1f2937;
 	--cog-border: #9ca3af;
-	--cog-border-dark: rgba(255, 255, 255, 0.25);
 	--cog-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
 	--cog-divider: #d1d5db;
 	--cog-card-border: 2px solid #9ca3af;
@@ -48,9 +49,55 @@
 	--cog-option-border-width: 3px;
 }
 
+/* ===== MODO ESCURO ===== */
+:root.dark-mode[data-contrast="low"],
+body.dark-mode[data-contrast="low"] {
+	--cog-bg: #0a0a0a;
+	--cog-card-bg: #1a1a1a;
+	--cog-text: #d1d5db;
+	--cog-text-secondary: #9ca3af;
+	--cog-border: transparent;
+	--cog-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	--cog-divider: transparent;
+	--cog-card-border: none;
+	--cog-task-border-width: 1px;
+	--cog-task-border-color: rgba(255, 255, 255, 0.05);
+	--cog-option-border-width: 1px;
+}
+
+:root.dark-mode[data-contrast="normal"],
+body.dark-mode[data-contrast="normal"] {
+	--cog-bg: #1a1a2e;
+	--cog-card-bg: #16213e;
+	--cog-text: #f3f4f6;
+	--cog-text-secondary: #d1d5db;
+	--cog-border: rgba(255, 255, 255, 0.1);
+	--cog-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+	--cog-divider: rgba(255, 255, 255, 0.08);
+	--cog-card-border: 1px solid rgba(255, 255, 255, 0.1);
+	--cog-task-border-width: 1px;
+	--cog-task-border-color: rgba(255, 255, 255, 0.1);
+	--cog-option-border-width: 2px;
+}
+
+:root.dark-mode[data-contrast="high"],
+body.dark-mode[data-contrast="high"] {
+	--cog-bg: #000000;
+	--cog-card-bg: #1a1a1a;
+	--cog-text: #ffffff;
+	--cog-text-secondary: #f3f4f6;
+	--cog-border: rgba(255, 255, 255, 0.3);
+	--cog-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+	--cog-divider: rgba(255, 255, 255, 0.2);
+	--cog-card-border: 2px solid rgba(255, 255, 255, 0.25);
+	--cog-task-border-width: 2px;
+	--cog-task-border-color: rgba(255, 255, 255, 0.25);
+	--cog-option-border-width: 3px;
+}
 
 .cog-settings-page,
-.task-page {
+.task-page,
+.thermometer-page {
 	font-size: var(--font-base);
 
 	.MuiTypography-root {
@@ -115,7 +162,8 @@
 
 
 [data-contrast="high"] .cog-settings-page,
-[data-contrast="high"] .task-page {
+[data-contrast="high"] .task-page,
+[data-contrast="high"] .thermometer-page {
 	font-weight: 500;
 
 	.MuiTypography-root {
@@ -186,4 +234,181 @@
 [data-contrast="low"] .task-progress-badge {
 	border: none !important;
 	box-shadow: var(--cog-shadow);
+}
+
+body[data-contrast="low"] {
+	background-color: var(--cog-bg);
+}
+
+body[data-contrast="normal"] {
+	background-color: var(--cog-bg);
+}
+
+body[data-contrast="high"] {
+	background-color: var(--cog-bg);
+}
+
+[data-contrast="high"] .MuiCard-root,
+[data-contrast="high"] .MuiPaper-root {
+	border: 2px solid var(--cog-border) !important;
+}
+
+[data-contrast="low"] .MuiCard-root,
+[data-contrast="low"] .MuiPaper-root {
+	border: none !important;
+	box-shadow: var(--cog-shadow) !important;
+}
+
+[data-contrast="high"] {
+	color: var(--cog-text);
+	
+	.MuiTypography-root {
+		color: var(--cog-text);
+	}
+	
+	.MuiTypography-body2,
+	.MuiTypography-caption {
+		color: var(--cog-text-secondary);
+	}
+}
+
+[data-contrast="low"] {
+	color: var(--cog-text);
+	
+	.MuiTypography-root {
+		color: var(--cog-text);
+	}
+	
+	.MuiTypography-body2,
+	.MuiTypography-caption {
+		color: var(--cog-text-secondary);
+	}
+}
+
+.dark-mode {
+	color: var(--cog-text) !important;
+	
+	.MuiTypography-root {
+		color: var(--cog-text) !important;
+	}
+	
+	.MuiTypography-h1,
+	.MuiTypography-h2,
+	.MuiTypography-h3,
+	.MuiTypography-h4,
+	.MuiTypography-h5,
+	.MuiTypography-h6 {
+		color: var(--cog-text) !important;
+	}
+	
+	.MuiTypography-body1,
+	.MuiTypography-body2 {
+		color: var(--cog-text) !important;
+	}
+	
+	.MuiTypography-caption,
+	.MuiTypography-subtitle1,
+	.MuiTypography-subtitle2 {
+		color: var(--cog-text-secondary) !important;
+	}
+	
+	p, span, div, h1, h2, h3, h4, h5, h6 {
+		color: var(--cog-text);
+	}
+	
+	.MuiCard-root,
+	.MuiPaper-root {
+		color: var(--cog-text) !important;
+		
+		.MuiTypography-root {
+			color: var(--cog-text) !important;
+		}
+	}
+	
+	.cog-settings-page,
+	.task-page,
+	.thermometer-page {
+		color: var(--cog-text) !important;
+		
+		* {
+			color: inherit;
+		}
+	}
+}
+
+.dark-mode[data-contrast="normal"] {
+	.MuiTypography-root {
+		color: #f3f4f6 !important;
+	}
+	
+	.MuiTypography-body2,
+	.MuiTypography-caption {
+		color: #d1d5db !important;
+	}
+}
+
+.dark-mode[data-contrast="high"] {
+	.MuiTypography-root {
+		color: #ffffff !important;
+	}
+	
+	.MuiTypography-body2,
+	.MuiTypography-caption {
+		color: #f3f4f6 !important;
+	}
+}
+
+.dark-mode[data-contrast="low"] {
+	.MuiTypography-root {
+		color: #d1d5db !important;
+	}
+	
+	.MuiTypography-body2,
+	.MuiTypography-caption {
+		color: #9ca3af !important;
+	}
+}
+
+[data-contrast="high"] .MuiButton-contained {
+	font-weight: 600;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-contrast="high"] .MuiButton-outlined {
+	border-width: 2px !important;
+}
+[data-contrast="high"] .MuiDivider-root {
+	border-color: var(--cog-divider);
+	border-width: 2px;
+}
+
+[data-contrast="low"] .MuiDivider-root {
+	border-color: var(--cog-divider);
+	opacity: 0.3;
+}
+
+[data-contrast="normal"] .MuiDivider-root {
+	border-color: var(--cog-divider);
+}
+
+/* Ajustar inputs e formulários */
+[data-contrast="high"] .MuiOutlinedInput-root {
+	border-width: 2px;
+	
+	.MuiOutlinedInput-notchedOutline {
+		border-width: 2px;
+	}
+}
+
+[data-contrast="low"] .MuiOutlinedInput-root {
+	.MuiOutlinedInput-notchedOutline {
+		border-color: rgba(0, 0, 0, 0.1);
+	}
+}
+[data-contrast="high"] .MuiCheckbox-root,
+[data-contrast="high"] .MuiRadio-root,
+[data-contrast="high"] .MuiSwitch-root {
+	.MuiSvgIcon-root {
+		font-size: 1.75rem;
+	}
 }

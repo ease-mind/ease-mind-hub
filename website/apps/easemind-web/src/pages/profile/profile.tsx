@@ -29,6 +29,9 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [isLoading, setLoading] = useState(false);
 
+    // Define o background igual ao das outras páginas
+    const pageBg = isDarkMode ? colors.background : "#fef3f1";
+
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const userMethods = useForm<ProfileFormValues>({
@@ -160,187 +163,198 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
     }, [user, userMethods]);
 
     return (
-        <Container maxWidth="xl" sx={{ marginBottom: '5vw' }}>
-            <Box width={'100%'} pt={{xs: 2, sm: 2, md:4}} mb={{xs: 2, sm: 2, md:4}} display={'flex'} flexDirection={'column'} gap={1}>
-                <EaseMindText variant="xxl" fontWeight={'bolder'} align="center">
-                    Meu perfil
-                </EaseMindText>
-                <EaseMindText variant="sm" align="center">
-                    Edite seus dados pessoais ou altere sua foto de perfil.
-                </EaseMindText>
-            </Box>
+        <Box sx={{ background: pageBg, minHeight: '100vh', width: '100vw' }}>
+            <Container maxWidth="xl" sx={{ marginBottom: '5vw' }}>
+                <Box width={'100%'} pt={{xs: 2, sm: 2, md:4}} mb={{xs: 2, sm: 2, md:4}} display={'flex'} flexDirection={'column'} gap={1}>
+                    <EaseMindText variant="xxl" fontWeight={'bolder'} align="center">
+                        Meu perfil
+                    </EaseMindText>
+                    <EaseMindText variant="sm" align="center">
+                        Edite seus dados pessoais ou altere sua foto de perfil.
+                    </EaseMindText>
+                </Box>
 
-            <Box width={'100%'} display={'flex'} gap={4} className="content">
-                <EaseMindCard styles={{
-                    width: "30%",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    padding: "16px 0 48px"
-                }} className="image-section">
-                    <Box padding={2}>
-                        <EaseMindText variant='lg' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>{user?.name}</EaseMindText>
-                    </Box>
-                    <Box flexGrow={1} px={2} maxWidth={'445px'} >
-                        {hasUserImage ?
-                            <Box width={'100%'} minWidth={'17em'} minHeight={'17em'} borderRadius={'50%'} sx={{ background: `url(${user?.image}) center center / cover` }}></Box> :
-                            <Box width={'100%'} minWidth={'17em'} minHeight={'17em'} borderRadius={'50%'} bgcolor={isDarkMode ? colors['coral.200'] : colors['coral.200']} display='flex' justifyContent='center' alignItems='center'>
-                                <CameraEnhanceRoundedIcon fontSize={'large'} sx={{fontSize: '100pt'}}/>
-                            </Box>
-                        }
-                    </Box>
-                    <Box>
-                        <input
-                            ref={fileInputRef}
-                            type="file"
-                            accept="image/*"
-                            style={{ opacity: 0, position: 'absolute', width: 0, height: 0 }}
-                            onChange={updateImage}
-                        />
-                        <EaseMindButton
-                            onClick={handleEditClick}
-                            label="Editar foto"
-                            variant={"outlined"}
-                            color={"primary"}
-                            sx={{
-                                mt: 3
-                            }}
-                        />
-                    </Box>
-                </EaseMindCard>
+                <Box width={'100%'} display={'flex'} gap={4} className="content">
+                    <EaseMindCard styles={{
+                        width: "30%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        padding: "16px 0 48px"
+                    }} className="image-section">
+                        <Box padding={2}>
+                            <EaseMindText variant='lg' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>{user?.name}</EaseMindText>
+                        </Box>
+                        <Box flexGrow={1} px={2} maxWidth={'445px'} >
+                            {hasUserImage ?
+                                <Box width={'100%'} minWidth={'17em'} minHeight={'17em'} borderRadius={'50%'} sx={{ background: `url(${user?.image}) center center / cover` }}></Box> :
+                                <Box width={'100%'} minWidth={'17em'} minHeight={'17em'} borderRadius={'50%'} bgcolor={isDarkMode ? colors['coral.200'] : colors['coral.200']} display='flex' justifyContent='center' alignItems='center'>
+                                    <CameraEnhanceRoundedIcon fontSize={'large'} sx={{fontSize: '100pt'}}/>
+                                </Box>
+                            }
+                        </Box>
+                        <Box>
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                style={{ opacity: 0, position: 'absolute', width: 0, height: 0 }}
+                                onChange={updateImage}
+                            />
+                            <EaseMindButton
+                                onClick={handleEditClick}
+                                label="Editar foto"
+                                variant={"outlined"}
+                                color={"primary"}
+                                sx={{
+                                    mt: 3
+                                }}
+                            />
+                        </Box>
+                    </EaseMindCard>
 
-                <EaseMindCard styles={{
-                    flex: "1",
-                }} className="form-section">
-                    <Box p={{ xs: 2, sm: 2, md: 4 }}>
-                    <Box pb={{ xs: 2, sm: 2, md: 4 }}>
-                        <EaseMindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Dados pessoais</EaseMindText>
-                    </Box>
-                    <FormProvider {...userMethods}>
-                        <form onSubmit={userMethods.handleSubmit(handleSubmit)}>
-                            <Box display="flex" gap={{xs: 1, sm: 2, md:3}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
-                                <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-                                    <EaseMindInputController
-                                        name="name"
-                                        autoComplete="name"
-                                        type="text"
-                                        label="Nome completo"
-                                        placeholder="Digite seu nome"
-                                        rules={{
-                                            required: "Nome é obrigatório",
-                                        }}
-                                    />
+                    <EaseMindCard styles={{
+                        flex: "1",
+                    }} className="form-section">
+                        <Box p={{ xs: 2, sm: 2, md: 4 }}>
+                        <Box pb={{ xs: 2, sm: 2, md: 4 }}>
+                            <EaseMindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Dados pessoais</EaseMindText>
+                        </Box>
+                        <FormProvider {...userMethods}>
+                            <form onSubmit={userMethods.handleSubmit(handleSubmit)}>
+                                <Box display="flex" gap={{xs: 1, sm: 2, md:3}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
+                                    <Box sx={{ width: { xs: "100%", md: "50%" } }}>
+                                        <EaseMindInputController
+                                            control={userMethods.control}
+                                            name="name"
+                                            autoComplete="name"
+                                            type="text"
+                                            label="Nome completo"
+                                            placeholder="Digite seu nome"
+                                            rules={{
+                                                required: "Nome é obrigatório",
+                                            }}
+                                        />
+                                    </Box>
+                                    <Box sx={{ width: { xs: "100%", md: "50%" } }}>
+                                        <EaseMindInputController
+                                            control={userMethods.control}
+                                            name="email"
+                                            autoComplete="email"
+                                            type="email"
+                                            label="E‑mail"
+                                            placeholder="Digite seu e‑mail"
+                                            rules={{
+                                                required: "E-mail é obrigatório",
+                                                pattern: {
+                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                    message: "E-mail inválido"
+                                                }
+                                            }}
+                                        />
+                                    </Box>
                                 </Box>
-                                <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-                                    <EaseMindInputController
-                                        name="email"
-                                        autoComplete="email"
-                                        type="email"
-                                        label="E‑mail"
-                                        placeholder="Digite seu e‑mail"
-                                        rules={{
-                                            required: "E-mail é obrigatório",
-                                            pattern: {
-                                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                                message: "E-mail inválido"
-                                            }
-                                        }}
-                                    />
-                                </Box>
-                            </Box>
 
-                            <Box display="flex" gap={{xs: 1, sm: 2, md:3}} pt={{xs: 0, sm: 1, md:2}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
-                                <Box sx={{ width: { xs: "100%", md: "20%" } }}>
-                                    <EaseMindInputController
-                                        name="document"
-                                        type="text"
-                                        label="CPF"
-                                        placeholder="Digite seu CPF"
-                                        rules={{
-                                            validate: validateCPF,
-                                        }}
-                                        onBlur={(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-                                            const formatted = formatCPF(e.target.value);
-                                            userMethods.setValue("document", formatted, { shouldValidate: true });
-                                        }}
+                                <Box display="flex" gap={{xs: 1, sm: 2, md:3}} pt={{xs: 0, sm: 1, md:2}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
+                                    <Box sx={{ width: { xs: "100%", md: "20%" } }}>
+                                        <EaseMindInputController
+                                            control={userMethods.control}
+                                            name="document"
+                                            type="text"
+                                            label="CPF"
+                                            placeholder="Digite seu CPF"
+                                            rules={{
+                                                validate: validateCPF,
+                                            }}
+                                            onBlur={(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                                                const formatted = formatCPF(e.target.value);
+                                                userMethods.setValue("document", formatted, { shouldValidate: true });
+                                            }}
+                                        />
+                                    </Box>
+                                    <Box sx={{ width: { xs: "100%", md: "35%" } }}>
+                                        <EaseMindInputController
+                                            control={userMethods.control}
+                                            name="address"
+                                            type="text"
+                                            label="Endereço"
+                                            placeholder="Rua, número, etc."
+                                        />
+                                    </Box>
+                                    <Box sx={{ width: { xs: "100%", md: "15%" } }}>
+                                        <EaseMindInputController
+                                            control={userMethods.control}
+                                            name="city"
+                                            type="text"
+                                            label="Cidade"
+                                            placeholder="Digite sua cidade"
+                                        />
+                                    </Box>
+                                    <Box sx={{ width: { xs: "100%", md: "15%" } }}>
+                                        <EaseMindSelectController
+                                            control={userMethods.control}
+                                            color='primary'
+                                            name="state"
+                                            label="Estado"
+                                            options={STATES_LIST.map(state => ({
+                                                value: state.name,
+                                                label: state.acronym
+                                            }))}
+                                        />
+                                    </Box>
+                                    <Box sx={{ width: { xs: "100%", md: "15%" } }}>
+                                        <EaseMindInputController
+                                            control={userMethods.control}
+                                            name="complement"
+                                            type="text"
+                                            label="Complemento"
+                                            placeholder="Casa, apto..."
+                                        />
+                                    </Box>
+                                </Box>
+                                <Box pt={{xs: 2, sm: 2, md:4}}>
+                                    <EaseMindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Atualizar senha</EaseMindText>
+                                </Box>
+                                <Box display="flex" gap={{xs: 0, sm: 0, md:3}} pt={{xs: 1, sm: 1, md:2}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
+                                    <Box sx={{ width: { xs: "100%", md: "50%" } }}>
+                                        <EaseMindInputController
+                                            control={userMethods.control}
+                                            name="password"
+                                            autoComplete="new-password"
+                                            type="password"
+                                            label="Senha"
+                                            placeholder="Digite sua senha"
+                                        />
+                                    </Box>
+                                    <Box sx={{ width: { xs: "100%", md: "50%" } }}>
+                                        <EaseMindInputController
+                                            control={userMethods.control}
+                                            name="newPassword"
+                                            autoComplete="new-password"
+                                            type="password"
+                                            label="Nova senha"
+                                            placeholder="Digite a nova senha"
+                                        />
+                                    </Box>
+                                </Box>
+                                <Box display="flex" pt={4} justifyContent="end">
+                                    <EaseMindButton
+                                        style={{ padding: '0 16px' }}
+                                        type="submit"
+                                        label="Alterar dados"
+                                        color="primary"
+                                        variant="contained"
+                                        loading={isLoading}
                                     />
                                 </Box>
-                                <Box sx={{ width: { xs: "100%", md: "35%" } }}>
-                                    <EaseMindInputController
-                                        name="address"
-                                        type="text"
-                                        label="Endereço"
-                                        placeholder="Rua, número, etc."
-                                    />
-                                </Box>
-                                <Box sx={{ width: { xs: "100%", md: "15%" } }}>
-                                    <EaseMindInputController
-                                        name="city"
-                                        type="text"
-                                        label="Cidade"
-                                        placeholder="Digite sua cidade"
-                                    />
-                                </Box>
-                                <Box sx={{ width: { xs: "100%", md: "15%" } }}>
-                                    <EaseMindSelectController
-                                        color='primary'
-                                        name="state"
-                                        label="Estado"
-                                        options={STATES_LIST.map(state => ({
-                                            value: state.name,
-                                            label: state.acronym
-                                        }))}
-                                    />
-                                </Box>
-                                <Box sx={{ width: { xs: "100%", md: "15%" } }}>
-                                    <EaseMindInputController
-                                        name="complement"
-                                        type="text"
-                                        label="Complemento"
-                                        placeholder="Casa, apto..."
-                                    />
-                                </Box>
-                            </Box>
-                            <Box pt={{xs: 2, sm: 2, md:4}}>
-                                <EaseMindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Atualizar senha</EaseMindText>
-                            </Box>
-                            <Box display="flex" gap={{xs: 0, sm: 0, md:3}} pt={{xs: 1, sm: 1, md:2}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
-                                <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-                                    <EaseMindInputController
-                                        name="password"
-                                        autoComplete="new-password"
-                                        type="password"
-                                        label="Senha"
-                                        placeholder="Digite sua senha"
-                                    />
-                                </Box>
-                                <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-                                    <EaseMindInputController
-                                        name="newPassword"
-                                        autoComplete="new-password"
-                                        type="password"
-                                        label="Nova senha"
-                                        placeholder="Digite a nova senha"
-                                    />
-                                </Box>
-                            </Box>
-                            <Box display="flex" pt={4} justifyContent="end">
-                                <EaseMindButton
-                                    style={{ padding: '0 16px' }}
-                                    type="submit"
-                                    label="Alterar dados"
-                                    color="primary"
-                                    variant="contained"
-                                    loading={isLoading}
-                                />
-                            </Box>
-                        </form>
-                    </FormProvider>
-                    </Box>
-                </EaseMindCard>
-            </Box>
-            <EaseMindSnackbar open={snackbarOpen} data={snackbarData} onClose={closeSnackbar} />
-        </Container>
+                            </form>
+                        </FormProvider>
+                        </Box>
+                    </EaseMindCard>
+                </Box>
+                <EaseMindSnackbar open={snackbarOpen} data={snackbarData} onClose={closeSnackbar} />
+            </Container>
+        </Box>
     );
 };
 

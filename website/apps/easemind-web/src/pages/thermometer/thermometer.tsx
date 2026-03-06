@@ -17,7 +17,7 @@ import './thermometer.scss';
 interface EaseMindThermometerProps { }
 
 const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
-  const { colors } = useTheme();
+  const { colors, isDarkMode } = useTheme();
   const { user } = useUser();
   const { settings } = useCognitiveSettings();
   const isSimple = settings.complexity === 'simple';
@@ -28,6 +28,9 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+
+  // Define o background igual ao da página de tasks
+  const pageBg = isDarkMode ? colors.background : "#fef3f1";
 
   useEffect(() => {
     loadSymptoms();
@@ -186,8 +189,8 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
 
   const spacing = {
     card: settings.spacing === 24 ? 4 : settings.spacing === 18 ? 3 : 2,
-    gap: settings.spacing === 24 ? 3 : settings.spacing === 18 ? 2 : 1.5,
-    small: settings.spacing === 24 ? 2 : settings.spacing === 18 ? 1.5 : 1
+    gap: settings.spacing === 24 ? 3 : settings.spacing === 18 ? 2 : 1,
+    small: settings.spacing === 24 ? 2 : settings.spacing === 18 ? 1 : 1
   };
 
   const renderSimpleStepContent = () => {
@@ -261,18 +264,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
               >
                 Próximo
               </Button>
-            ) : (
-              <Button
-                variant="contained"
-                onClick={() => {}}
-                sx={{ 
-                  bgcolor: colors['coral.500'],
-                  '&:hover': { bgcolor: colors['coral.600'] }
-                }}
-              >
-                Concluir
-              </Button>
-            )}
+            ) : null}
           </Box>
 
           <Box display="flex" justifyContent="center" gap={1} mt={spacing.gap}>
@@ -401,7 +393,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
 
   if (error) {
     return (
-      <Box p={spacing.card}>
+      <Box p={spacing.card} sx={{ background: pageBg, minHeight: '100vh' }}>
         <Alert severity="error" action={
           <Button color="inherit" size="small" onClick={loadSymptoms}>
             Tentar Novamente
@@ -414,17 +406,17 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   }
 
   return (
-    <Box className="thermometer-page" width={'100%'}>
+    <Box className="thermometer-page" width={'100%'} sx={{ background: pageBg, minHeight: '100vh' }}>
       <Box width={'100%'} px={{xs: 2, sm: 3, md: 4}} py={spacing.card} display={'flex'} flexDirection={'column'} gap={spacing.gap}>
         <Box>
           <Typography variant="h4" fontWeight="bold" display="flex" alignItems="center" gap={1}>
           Termômetro Sensorial
           </Typography>
-          <Typography variant="body2" color="text.primary" mt={1}>
+          <Typography variant="body2" mt={1}>
             Identifique sinais de sobrecarga antes que ela aconteça (Rumble Stage)
           </Typography>
           {saving && (
-            <Typography variant="caption" color="text.primary" mt={1} display="flex" alignItems="center" gap={1}>
+            <Typography variant="caption" mt={1} display="flex" alignItems="center" gap={1}>
               <CircularProgress size={12} /> Salvando automaticamente...
             </Typography>
           )}

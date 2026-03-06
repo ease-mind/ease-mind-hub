@@ -193,7 +193,7 @@ export const lightTheme = createTheme(defaultTheme, {
 });
 
 export const darkTheme = createTheme(defaultTheme, {
-  ...getTypographyDefinition(darkPalette["coral.highcontrast"]),
+  ...getTypographyDefinition("#f3f4f6"),
   palette: {
     mode: "dark",
     background: {
@@ -237,8 +237,8 @@ export const darkTheme = createTheme(defaultTheme, {
       name: "white",
     }),
     text: {
-      primary: darkPalette["coral.accent"],
-      secondary: darkPalette["coral.accent"],
+      primary: "#f3f4f6",
+      secondary: "#d1d5db",
     },
   },
   components: {
@@ -259,22 +259,22 @@ export const darkTheme = createTheme(defaultTheme, {
           backgroundColor: darkPalette["coral.600"],
         },
         "&:hover": {
-          backgroundColor: darkPalette["coral.600"], //hover do options do select
+          backgroundColor: darkPalette["coral.600"],
         },
       },
     },
     MuiTypography: {
       styleOverrides: {
         root: {
-          color: darkPalette["coral.accent"],
+          color: "#f3f4f6",
         },
       },
     },
     MuiLink: {
       styleOverrides: {
         root: {
-          color: darkPalette["coral.900"],
-          textDecorationColor: darkPalette["coral.900"],
+          color: darkPalette["coral.500"],
+          textDecorationColor: darkPalette["coral.500"],
         },
       },
     },

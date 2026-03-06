@@ -2,6 +2,7 @@
   "name": "mfe-tasks",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "rsbuild dev --port 3001",
     "build": "rsbuild build",

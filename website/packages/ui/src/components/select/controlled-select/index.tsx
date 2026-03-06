@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
+import { Controller, RegisterOptions, useFormContext, Control } from 'react-hook-form';
 import { SelectOption, EaseMindSelect } from '../select';
 
 interface ControlledSelectProps {
@@ -7,6 +7,7 @@ interface ControlledSelectProps {
   label: string;
   options: SelectOption[];
   rules?: RegisterOptions;
+  control?: Control<any>;
   color:
     | "primary"
     | "secondary"
@@ -22,8 +23,17 @@ export const EaseMindSelectController: React.FC<ControlledSelectProps> = ({
   rules,
   options,
   color,
+  control: controlProp,
 }) => {
-  const { control } = useFormContext();
+  const formContext = useFormContext();
+  const control = controlProp ?? formContext?.control;
+
+  if (!control) {
+    throw new Error(
+      "EaseMindSelectController deve ser usado dentro de um FormProvider ou receber a prop 'control'"
+    );
+  }
+
   return (
     <Controller
       name={name}

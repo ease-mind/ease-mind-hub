@@ -2,7 +2,7 @@ import {
 	getCognitiveSettings as fetchSettings,
 	resetCognitiveSettings as resetRemoteSettings,
 	updateCognitiveSettings as saveSettings
-} from "@repo/data-access";
+} from "../../api/cognitiveSettingsService";
 import {
 	createContext,
 	useCallback,
@@ -12,6 +12,7 @@ import {
 	useState,
 	type ReactNode
 } from "react";
+import { useTheme } from "@repo/utils";
 
 export type ComplexityLevel = "simple" | "complete";
 export type ContrastLevel = "low" | "normal" | "high";
@@ -48,6 +49,7 @@ const CognitiveSettingsContext = createContext<CognitiveSettingsContextProps | u
 
 export function CognitiveSettingsProvider({ children }: { children: ReactNode }) {
 	const [settings, setSettings] = useState<CognitiveSettings>({ ...DEFAULT_SETTINGS });
+	const { isDarkMode } = useTheme();
 
 	useEffect(() => {
 		const token = sessionStorage.getItem("token");
@@ -72,11 +74,24 @@ export function CognitiveSettingsProvider({ children }: { children: ReactNode })
 
 	useEffect(() => {
 		const root = document.documentElement;
+		const body = document.body;
+		
+		if (isDarkMode) {
+			root.classList.add('dark-mode');
+			body.classList.add('dark-mode');
+		} else {
+			root.classList.remove('dark-mode');
+			body.classList.remove('dark-mode');
+		}
+		
 		root.style.setProperty("--space-base", `${settings.spacing}px`);
 		root.style.setProperty("--font-base", `${settings.fontSize}px`);
+		
 		root.setAttribute("data-contrast", settings.contrast);
 		root.setAttribute("data-complexity", settings.complexity);
-	}, [settings.spacing, settings.fontSize, settings.contrast, settings.complexity]);
+		body.setAttribute("data-contrast", settings.contrast);
+		body.setAttribute("data-complexity", settings.complexity);
+	}, [settings.spacing, settings.fontSize, settings.contrast, settings.complexity, isDarkMode]);
 
 	const value = useMemo(
 		() => ({ settings, updateSettings, resetSettings }),
