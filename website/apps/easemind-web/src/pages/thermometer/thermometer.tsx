@@ -43,7 +43,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   }, [user]);
 
   useEffect(() => {
-    if (selectedSymptoms.length > 5) {
+    if (selectedSymptoms.length > 4) {
       setShowAlert(true);
     } else {
       setShowAlert(false);
@@ -434,7 +434,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
           >
             <Typography fontWeight="bold">Atenção: Sinais de Alerta</Typography>
             <Typography variant="body2">
-              Você está entrando na fase de alerta. Considere fazer uma pausa e praticar técnicas de respiração.
+              Você está na fase de alerta. Considere fazer uma pausa e praticar técnicas de respiração.
             </Typography>
           </Alert>
         )}

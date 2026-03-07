@@ -240,7 +240,7 @@ export default function ThermometerScreen() {
           <Text style={[styles.temperatureDescription, { fontSize, color: themeColors.textSecondary, marginBottom: spacing / 2, lineHeight: fontSize + spacing }]}>
             {getTemperature() === 0 ? 'Clique no ícone no topo para fazer uma avaliação' : 
              getTemperature() <= 36 ? 'Você está em um estado tranquilo e equilibrado' :
-             getTemperature() <= 38 ? 'Fique atento aos sinais de alerta' :
+             getTemperature() <= 38 ? 'Você está na fase de alerta. Considere fazer uma pausa e praticar técnicas de respiração.' :
              'Considere fazer uma pausa e praticar técnicas de relaxamento'}
           </Text>
 
