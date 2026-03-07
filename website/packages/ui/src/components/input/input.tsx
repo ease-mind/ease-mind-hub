@@ -11,7 +11,7 @@ declare module "@mui/material/TextField" {
   }
 }
 
-export type EaseMindInputProps = Omit<TextFieldProps, "onChange" | "value"> & {
+export type EasemindInputProps = Omit<TextFieldProps, "onChange" | "value"> & {
   label: string;
   value?: string;
   onChange: (value: string) => void;
@@ -46,7 +46,7 @@ function formatCurrency(value: string) {
   });
 }
 
-export function EaseMindInput({
+export function EasemindInput({
   value,
   onChange,
   label,
@@ -59,7 +59,7 @@ export function EaseMindInput({
   color,
   id,
   ...props
-}: EaseMindInputProps) {
+}: EasemindInputProps) {
   const reactId = useId();
   const inputId = id || `input-${reactId}`;
   const helperId = helperText ? `${inputId}-helper` : undefined;

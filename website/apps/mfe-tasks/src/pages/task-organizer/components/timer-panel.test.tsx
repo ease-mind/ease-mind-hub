@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { TimerPanel } from "./timer-panel";
 
 jest.mock("@repo/ui", () => ({
-	EaseMindButton: ({
+	EasemindButton: ({
 		label,
 		onClick
 	}: {

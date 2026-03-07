@@ -2,21 +2,21 @@ import { Box, Link } from "@mui/material";
 import { useUser } from "@repo/data-access";
 import {
   AccessModalType,
-  EaseMindAccessModalProps,
-  EaseMindButton,
-  EaseMindInputController,
-  EaseMindModal,
-  EaseMindText,
+  EasemindAccessModalProps,
+  EasemindButton,
+  EasemindInputController,
+  EasemindModal,
+  EasemindText,
 } from "@repo/ui";
 import { ReactElement, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 
-export function EaseMindRegisterModal({
+export function EasemindRegisterModal({
   open,
   onClose,
   onSubmit,
   openModal,
-}: EaseMindAccessModalProps): ReactElement {
+}: EasemindAccessModalProps): ReactElement {
   const [isLoading, setLoading] = useState(false);
   const { register } = useUser();
 
@@ -51,19 +51,19 @@ export function EaseMindRegisterModal({
 
   return (
     <>
-      <EaseMindModal
+      <EasemindModal
         title={"Criar uma conta"}
         open={open}
         illustrationShow
         onClose={() => { registerMethods.reset(); onClose(); }}
       >
         <>
-          <EaseMindText>
+          <EasemindText>
             Preencha os campos abaixo para criar sua conta corrente!
-          </EaseMindText>
+          </EasemindText>
           <FormProvider {...registerMethods}>
             <form onSubmit={registerMethods.handleSubmit(handleRegister)}>
-              <EaseMindInputController
+              <EasemindInputController
                 control={registerMethods.control}
                 rules={{ required: true }}
                 name="name"
@@ -72,7 +72,7 @@ export function EaseMindRegisterModal({
                 label="Nome"
                 placeholder="Digite seu nome"
               />
-              <EaseMindInputController
+              <EasemindInputController
                 control={registerMethods.control}
                 rules={{ required: true }}
                 name="email"
@@ -81,7 +81,7 @@ export function EaseMindRegisterModal({
                 label="E-mail"
                 placeholder="Digite seu e-mail"
               />
-              <EaseMindInputController
+              <EasemindInputController
                 control={registerMethods.control}
                 rules={{ required: true }}
                 name="password"
@@ -91,13 +91,13 @@ export function EaseMindRegisterModal({
                 placeholder="Digite sua senha"
               />
               <Box display={"flex"} pt={2} justifyContent={"center"}>
-                <EaseMindButton
+                <EasemindButton
                   label={"Criar conta"}
                   color={"secondary"}
                   variant={"contained"}
                   loading={isLoading}
                   fullWidth
-                ></EaseMindButton>
+                ></EasemindButton>
               </Box>
             </form>
           </FormProvider>
@@ -108,7 +108,7 @@ export function EaseMindRegisterModal({
             justifyContent={"center"}
             flexWrap={"wrap"}
           >
-            <EaseMindText>Já tem uma conta?</EaseMindText>
+            <EasemindText>Já tem uma conta?</EasemindText>
             <Link
               component="button"
               variant="sm"
@@ -119,7 +119,7 @@ export function EaseMindRegisterModal({
             </Link>
           </Box>
         </>
-      </EaseMindModal>
+      </EasemindModal>
     </>
   );
 }

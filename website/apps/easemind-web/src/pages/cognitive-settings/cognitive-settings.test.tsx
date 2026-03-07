@@ -38,10 +38,10 @@ jest.mock("@repo/utils", () => ({
 }));
 
 jest.mock("@repo/ui", () => ({
-	EaseMindButton: ({ label, onClick }: { label: string; onClick?: () => void }) => (
+	EasemindButton: ({ label, onClick }: { label: string; onClick?: () => void }) => (
 		<button onClick={onClick}>{label}</button>
 	),
-	EaseMindSnackbar: () => null
+	EasemindSnackbar: () => null
 }));
 
 describe("<CognitiveSettingsPage />", () => {

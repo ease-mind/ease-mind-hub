@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindDatePicker } from './datepicker';
+import { EasemindDatePicker } from './datepicker';
 
-const meta: Meta<typeof EaseMindDatePicker> = {
+const meta: Meta<typeof EasemindDatePicker> = {
   title: 'Components/DatePicker',
-  component: EaseMindDatePicker,
+  component: EasemindDatePicker,
   parameters: {
     layout: 'centered',
   },
@@ -11,17 +11,17 @@ const meta: Meta<typeof EaseMindDatePicker> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof EaseMindDatePicker>;
+type Story = StoryObj<typeof EasemindDatePicker>;
 
 export const Default: Story = {
-  render: (args) => <EaseMindDatePicker {...args} />,
+  render: (args) => <EasemindDatePicker {...args} />,
   args: {
     label: 'Select a date',
   },
 };
 
 export const WithMinMaxDates: Story = {
-  render: (args) => <EaseMindDatePicker {...args} />,
+  render: (args) => <EasemindDatePicker {...args} />,
   args: {
     label: 'Select a date within range',
     minDate: new Date(new Date().setDate(new Date().getDate() - 5)),
@@ -30,7 +30,7 @@ export const WithMinMaxDates: Story = {
 };
 
 export const DisableFutureDates: Story = {
-  render: (args) => <EaseMindDatePicker {...args} />,
+  render: (args) => <EasemindDatePicker {...args} />,
   args: {
     label: 'Select a date (no future)',
     disableFuture: true,
@@ -38,7 +38,7 @@ export const DisableFutureDates: Story = {
 };
 
 export const DisablePastDates: Story = {
-  render: (args) => <EaseMindDatePicker {...args} />,
+  render: (args) => <EasemindDatePicker {...args} />,
   args: {
     label: 'Select a date (no past)',
     disablePast: true,
@@ -46,7 +46,7 @@ export const DisablePastDates: Story = {
 };
 
 export const WithError: Story = {
-  render: (args) => <EaseMindDatePicker {...args} />,
+  render: (args) => <EasemindDatePicker {...args} />,
   args: {
     label: 'Date with error',
     error: true,
@@ -55,7 +55,7 @@ export const WithError: Story = {
 };
 
 export const Disabled: Story = {
-  render: (args) => <EaseMindDatePicker {...args} />,
+  render: (args) => <EasemindDatePicker {...args} />,
   args: {
     label: 'Disabled date picker',
     disabled: true,
@@ -63,7 +63,7 @@ export const Disabled: Story = {
 };
 
 export const YearMonthOnly: Story = {
-  render: (args) => <EaseMindDatePicker {...args} />,
+  render: (args) => <EasemindDatePicker {...args} />,
   args: {
     label: 'Year and Month only',
     views: ['year', 'month'],

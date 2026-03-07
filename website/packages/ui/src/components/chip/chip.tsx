@@ -2,15 +2,15 @@ import { JSX } from "react";
 import { Chip } from "@mui/material";
 import { useTheme } from "@repo/utils";
 
-export interface EaseMindChipProps {
+export interface EasemindChipProps {
   label: string;
   onClick?: () => void;
 }
 
-export function EaseMindChip({
+export function EasemindChip({
   label,
   onClick,
-}: EaseMindChipProps): JSX.Element {
+}: EasemindChipProps): JSX.Element {
   const { colors } = useTheme();
 
   return (

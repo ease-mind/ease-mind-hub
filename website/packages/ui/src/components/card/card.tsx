@@ -2,7 +2,7 @@ import { JSX } from "react";
 import { Card } from '@mui/material';
 import { colorsPalette, useTheme } from "@repo/utils";
 
-export interface EaseMindCardProps {
+export interface EasemindCardProps {
     bgcolor?: string;
     radius?: 'sm' | 'md' | 'lg';
     variant?: "elevation" | "outlined" | undefined;
@@ -11,20 +11,20 @@ export interface EaseMindCardProps {
     styles?: React.CSSProperties;
 }
 
-export enum EaseMindCardRadius {
+export enum EasemindCardRadius {
     sm = '5px',
     md = '10px',
     lg = '14px',
 }
 
-export function EaseMindCard({
+export function EasemindCard({
     bgcolor,
     radius = 'md',
     variant = 'outlined',
     children,
     className,
     styles
-}: EaseMindCardProps): JSX.Element {
+}: EasemindCardProps): JSX.Element {
     const { isDarkMode } = useTheme();
     const palette = !isDarkMode ? colorsPalette.light : colorsPalette.dark;
     const cardColor = bgcolor ?? palette["background.card"];
@@ -32,7 +32,7 @@ export function EaseMindCard({
     return (
         <Card
             variant={variant}
-            sx={{ background: cardColor, borderRadius: EaseMindCardRadius[radius], ...styles }}
+            sx={{ background: cardColor, borderRadius: EasemindCardRadius[radius], ...styles }}
             className={`${className}`}
         >
             {children}

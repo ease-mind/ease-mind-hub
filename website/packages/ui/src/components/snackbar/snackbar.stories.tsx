@@ -1,8 +1,8 @@
 import { Meta, StoryFn } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
-import { EaseMindSnackbar } from "./snackbar";
+import { EasemindSnackbar } from "./snackbar";
 import { Box } from "@mui/material";
-import { EaseMindSnackbarProps } from "../../classes/models/snackbar";
+import { EasemindSnackbarProps } from "../../classes/models/snackbar";
 
 export default {
   title: "Components/Snackbar",
@@ -36,12 +36,12 @@ export default {
   },
 } as Meta;
 
-const SnackbarTemplate: StoryFn<typeof EaseMindSnackbar> = (
-  args: EaseMindSnackbarProps,
+const SnackbarTemplate: StoryFn<typeof EasemindSnackbar> = (
+  args: EasemindSnackbarProps,
 ) => {
   return (
     <Box py={4}>
-      <EaseMindSnackbar
+      <EasemindSnackbar
         {...args}
         onClose={() => console.log("Fechar o componente snackbar.")}
       />

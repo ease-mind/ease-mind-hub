@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller, useFormContext, RegisterOptions, Control } from "react-hook-form";
-import { EaseMindInput } from "../input";
+import { EasemindInput } from "../input";
 
 interface ControlledInputProps {
   name: string;
@@ -24,7 +24,7 @@ interface ControlledInputProps {
   onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-export const EaseMindInputController: React.FC<ControlledInputProps> = ({
+export const EasemindInputController: React.FC<ControlledInputProps> = ({
   control: controlProp,
   name,
   label,
@@ -41,7 +41,7 @@ export const EaseMindInputController: React.FC<ControlledInputProps> = ({
 
   if (!control) {
     throw new Error(
-      "EaseMindInputController deve ser usado dentro de um FormProvider ou receber a prop 'control'"
+      "EasemindInputController deve ser usado dentro de um FormProvider ou receber a prop 'control'"
     );
   }
 
@@ -51,7 +51,7 @@ export const EaseMindInputController: React.FC<ControlledInputProps> = ({
       rules={rules}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <EaseMindInput
+        <EasemindInput
           {...field}
           label={label}
           type={type}

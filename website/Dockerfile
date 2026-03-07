@@ -1,4 +1,4 @@
-# Dockerfile para aplicação React (EaseMind)
+# Dockerfile para aplicação React (Easemind)
 FROM node:20.16.0-alpine
 WORKDIR /app
 COPY apps/. /app/apps/.

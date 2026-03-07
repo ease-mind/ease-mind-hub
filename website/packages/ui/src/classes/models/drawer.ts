@@ -1,5 +1,5 @@
 import { DrawerProps } from "@mui/material";
 
-export interface EaseMindDrawerProps extends DrawerProps {
+export interface EasemindDrawerProps extends DrawerProps {
     title: string;
 }

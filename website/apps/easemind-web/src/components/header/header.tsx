@@ -18,19 +18,19 @@ import MenuIcon from "@mui/icons-material/Menu";
 import {
     loggedPages,
     unloggedPages,
-    EaseMindButton,
-    EaseMindToggleButton,
+    EasemindButton,
+    EasemindToggleButton,
     SnackbarData,
     AccessModalType,
-    EaseMindSnackbar,
+    EasemindSnackbar,
 } from "@repo/ui";
 import AppRegistrationRoundedIcon from "@mui/icons-material/AppRegistrationRounded";
 import LoginIcon from "@mui/icons-material/Login";
 import { useUser } from "@repo/data-access";
-import { EaseMindRegisterModal, EaseMindLoginModal } from "../../modals";
+import { EasemindRegisterModal, EasemindLoginModal } from "../../modals";
 import { useTheme } from "@repo/utils";
 
-export function EaseMindHeader() {
+export function EasemindHeader() {
     const { colors, isDarkMode } = useTheme();
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -219,7 +219,7 @@ export function EaseMindHeader() {
                             }}
                         >
                             {pages.map((page) => (
-                                <EaseMindButton
+                                <EasemindButton
                                     key={page.name}
                                     label={page.name}
                                     onClick={() => (page.blank) ? window.open(page.route, '_blank') : navigate(page.route)}
@@ -233,13 +233,13 @@ export function EaseMindHeader() {
                         <Box display={'flex'} flex={'none'} gap={1}>
                             {!isLogged ? (<>
                                 <Box sx={{ display: { xs: "none", md: "flex" } }} gap={1}>
-                                    <EaseMindButton
+                                    <EasemindButton
                                         onClick={() => setOpenRegisterModal(true)}
                                         label="Crie uma conta"
                                         color="primary"
                                         variant="contained"
                                     />
-                                    <EaseMindButton
+                                    <EasemindButton
                                         onClick={() => setOpenLoginModal(true)}
                                         label="Entre"
                                         color="primary"
@@ -296,14 +296,14 @@ export function EaseMindHeader() {
                                 </>
                             )
                             }
-                            <EaseMindToggleButton />
+                            <EasemindToggleButton />
                         </Box>
                     </Toolbar>
                 </Container>
             </AppBar>
-            <EaseMindRegisterModal open={openRegisterModal} onClose={closeRegisterModal} onSubmit={handleRegisterModal} openModal={handleModalStates} />
-            <EaseMindLoginModal open={openLoginModal} onClose={closeLoginModal} onSubmit={handleLoginModal} openModal={handleModalStates} />
-            <EaseMindSnackbar open={isSnackbarOpen} data={snackbarData} onClose={closeSnackbar} />
+            <EasemindRegisterModal open={openRegisterModal} onClose={closeRegisterModal} onSubmit={handleRegisterModal} openModal={handleModalStates} />
+            <EasemindLoginModal open={openLoginModal} onClose={closeLoginModal} onSubmit={handleLoginModal} openModal={handleModalStates} />
+            <EasemindSnackbar open={isSnackbarOpen} data={snackbarData} onClose={closeSnackbar} />
         </>
     );
 }

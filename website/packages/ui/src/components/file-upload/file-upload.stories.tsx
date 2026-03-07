@@ -1,11 +1,11 @@
 import * as DocBlock from '@storybook/blocks';
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindButtonFileUpload } from './file-upload';
+import { EasemindButtonFileUpload } from './file-upload';
 import { useState } from 'react';
 
 const meta = {
   title: 'Components/FileUpload',
-  component: EaseMindButtonFileUpload,
+  component: EasemindButtonFileUpload,
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -20,17 +20,17 @@ const meta = {
         </>
     }
   }
-} satisfies Meta<typeof EaseMindButtonFileUpload>;
+} satisfies Meta<typeof EasemindButtonFileUpload>;
 
 export default meta;
 
-type Story = StoryObj<typeof EaseMindButtonFileUpload>;
+type Story = StoryObj<typeof EasemindButtonFileUpload>;
 
 export const Default: Story = {
   render: (args) => {
     const [file, setFile] = useState<File | null>(null);
     return (
-      <EaseMindButtonFileUpload
+      <EasemindButtonFileUpload
         {...args}
         value={file}
         onChange={setFile}
@@ -48,7 +48,7 @@ export const WithSelectedFile: Story = {
       new File(['dummy content'], 'example-document.pdf', { type: 'application/pdf' })
     );
     return (
-      <EaseMindButtonFileUpload
+      <EasemindButtonFileUpload
         {...args}
         value={file}
         onChange={setFile}
@@ -64,7 +64,7 @@ export const CustomLabel: Story = {
   render: (args) => {
     const [file, setFile] = useState<File | null>(null);
     return (
-      <EaseMindButtonFileUpload
+      <EasemindButtonFileUpload
         {...args}
         value={file}
         onChange={setFile}

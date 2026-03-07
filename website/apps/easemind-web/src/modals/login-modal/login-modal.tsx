@@ -2,21 +2,21 @@ import { Box, Link } from "@mui/material";
 import { useUser } from "@repo/data-access";
 import {
   AccessModalType,
-  EaseMindAccessModalProps,
-  EaseMindButton,
-  EaseMindInputController,
-  EaseMindModal,
-  EaseMindText,
+  EasemindAccessModalProps,
+  EasemindButton,
+  EasemindInputController,
+  EasemindModal,
+  EasemindText,
 } from "@repo/ui";
 import { ReactElement, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 
-export function EaseMindLoginModal({
+export function EasemindLoginModal({
   open,
   onClose,
   onSubmit,
   openModal,
-}: EaseMindAccessModalProps): ReactElement {
+}: EasemindAccessModalProps): ReactElement {
   const [isLoading, setLoading] = useState(false);
   const { login } = useUser();
 
@@ -47,7 +47,7 @@ export function EaseMindLoginModal({
 
   return (
     <>
-      <EaseMindModal
+      <EasemindModal
         title={"Login"}
         open={open}
         illustrationShow
@@ -56,7 +56,7 @@ export function EaseMindLoginModal({
         <>
           <FormProvider {...loginMethods}>
             <form onSubmit={loginMethods.handleSubmit(handleLogin)}>
-              <EaseMindInputController
+              <EasemindInputController
                 control={loginMethods.control}
                 rules={{ required: true }}
                 name="email"
@@ -65,7 +65,7 @@ export function EaseMindLoginModal({
                 label="E-mail"
                 placeholder="Digite seu e-mail"
               />
-              <EaseMindInputController
+              <EasemindInputController
                 control={loginMethods.control}
                 rules={{ required: true }}
                 name="password"
@@ -85,13 +85,13 @@ export function EaseMindLoginModal({
                 <Link component="button" variant="sm" color={"secondary"}>
                   Esqueceu sua senha?
                 </Link>
-                <EaseMindButton
+                <EasemindButton
                   label={"Entrar"}
                   color={"secondary"}
                   variant={"contained"}
                   loading={isLoading}
                   fullWidth
-                ></EaseMindButton>
+                ></EasemindButton>
               </Box>
             </form>
           </FormProvider>
@@ -102,7 +102,7 @@ export function EaseMindLoginModal({
             justifyContent={"center"}
             flexWrap={"wrap"}
           >
-            <EaseMindText>Não tem uma conta?</EaseMindText>
+            <EasemindText>Não tem uma conta?</EasemindText>
             <Link
               component="button"
               variant="sm"
@@ -113,7 +113,7 @@ export function EaseMindLoginModal({
             </Link>
           </Box>
         </>
-      </EaseMindModal>
+      </EasemindModal>
     </>
   );
 }

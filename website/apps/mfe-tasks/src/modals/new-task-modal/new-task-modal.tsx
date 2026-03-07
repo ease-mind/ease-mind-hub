@@ -1,6 +1,6 @@
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Box, Chip, IconButton, TextField, Typography } from "@mui/material";
-import { EaseMindButton, EaseMindModal } from "@repo/ui";
+import { EasemindButton, EasemindModal } from "@repo/ui";
 import { useTheme } from "@repo/utils";
 import { useState } from "react";
 import { Task, TaskPriority, generateId } from "../../repositories/tasks";
@@ -79,7 +79,7 @@ export function NewTaskModal({ open, onClose, onSubmit }: NewTaskModalProps) {
 	};
 
 	return (
-		<EaseMindModal open={open} onClose={handleClose} title="Nova Tarefa">
+		<EasemindModal open={open} onClose={handleClose} title="Nova Tarefa">
 			<Box className="new-task-form">
 				<Box className="new-task-field">
 					<Typography variant="body2" fontWeight={600}>
@@ -175,7 +175,7 @@ export function NewTaskModal({ open, onClose, onSubmit }: NewTaskModalProps) {
 							onChange={e => setSubtaskInput(e.target.value)}
 							onKeyDown={e => e.key === "Enter" && handleAddSubtask()}
 						/>
-						<EaseMindButton
+						<EasemindButton
 							variant="contained"
 							color="secondary"
 							label="+ Adicionar"
@@ -218,7 +218,7 @@ export function NewTaskModal({ open, onClose, onSubmit }: NewTaskModalProps) {
 				</Box>
 
 				<Box className="new-task-actions">
-					<EaseMindButton
+					<EasemindButton
 						variant="outlined"
 						color="secondary"
 						label="Cancelar"
@@ -230,7 +230,7 @@ export function NewTaskModal({ open, onClose, onSubmit }: NewTaskModalProps) {
 							color: isDarkMode ? "#ffd5d5" : "#374151"
 						}}
 					/>
-					<EaseMindButton
+					<EasemindButton
 						variant="contained"
 						color="secondary"
 						label="Criar Tarefa"
@@ -244,6 +244,6 @@ export function NewTaskModal({ open, onClose, onSubmit }: NewTaskModalProps) {
 					/>
 				</Box>
 			</Box>
-		</EaseMindModal>
+		</EasemindModal>
 	);
 }

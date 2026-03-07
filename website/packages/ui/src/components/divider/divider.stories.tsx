@@ -1,10 +1,10 @@
 import * as DocBlock from '@storybook/blocks';
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindDivider } from './divider';
+import { EasemindDivider } from './divider';
 
 const meta = {
   title: 'Components/Divider', // O título aqui deve estar correto
-  component: EaseMindDivider,
+  component: EasemindDivider,
   tags: ['autodocs'],
   parameters: {
          docs: {
@@ -21,11 +21,11 @@ const meta = {
           </>
       }
     }
-} satisfies Meta<typeof EaseMindDivider>;
+} satisfies Meta<typeof EasemindDivider>;
 
 export default meta;
 
-type Story = StoryObj<typeof EaseMindDivider>;
+type Story = StoryObj<typeof EasemindDivider>;
 
 export const Primary: Story = {
   args: {

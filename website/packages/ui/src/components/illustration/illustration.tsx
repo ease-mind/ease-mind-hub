@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-export interface EaseMindIllustrationProps {
+export interface EasemindIllustrationProps {
   /**
    * O nome da ilustração
    */
@@ -20,13 +20,13 @@ export interface EaseMindIllustrationProps {
   className?: string;
 }
 
-const EaseMindIllustrationSizes = {
+const EasemindIllustrationSizes = {
   sm: 60,
   md: 160,
   lg: 220,
 };
 
-export function EaseMindIllustration({
+export function EasemindIllustration({
   name,
   variant = "auto",
   type = "svg",
@@ -36,10 +36,10 @@ export function EaseMindIllustration({
   justifyContent = "center",
   src,
   className
-}: EaseMindIllustrationProps) {
+}: EasemindIllustrationProps) {
   const path = name ? `/images/${name}.${type}` : "";
 
-  const fixedWidth = EaseMindIllustrationSizes[variant as keyof typeof EaseMindIllustrationSizes];
+  const fixedWidth = EasemindIllustrationSizes[variant as keyof typeof EasemindIllustrationSizes];
 
   return (
     <Box

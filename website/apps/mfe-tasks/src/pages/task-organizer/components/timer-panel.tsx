@@ -5,7 +5,7 @@ import {
 	Timer as TimerIcon
 } from "@mui/icons-material";
 import { Box, Chip, IconButton, Typography } from "@mui/material";
-import { EaseMindButton } from "@repo/ui";
+import { EasemindButton } from "@repo/ui";
 import { useFocusTimer } from "../../../hooks/use-focus-timer/use-focus-timer";
 
 interface TimerPanelProps {
@@ -73,7 +73,7 @@ export function TimerPanel({
 
 			<Box display="flex" gap={1} justifyContent="center" mt="12px">
 				{timer.state === "idle" || timer.state === "paused" ? (
-					<EaseMindButton
+					<EasemindButton
 						variant="contained"
 						color="secondary"
 						label={timer.state === "paused" ? "Retomar" : "Iniciar"}
@@ -86,7 +86,7 @@ export function TimerPanel({
 						}}
 					/>
 				) : (
-					<EaseMindButton
+					<EasemindButton
 						variant="contained"
 						color="secondary"
 						label="Pausar"

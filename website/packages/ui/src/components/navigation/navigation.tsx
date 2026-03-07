@@ -4,7 +4,7 @@ import {
   ArrowBackIosNewRounded,
   ArrowForwardIosRounded,
 } from "@mui/icons-material";
-export interface EaseMindNavigationProps {
+export interface EasemindNavigationProps {
   onPrev: () => void;
   onNext: () => void;
   disabled: boolean;
@@ -12,7 +12,7 @@ export interface EaseMindNavigationProps {
   color?: "primary" | "secondary" | "success" | "error" | "info" | "warning";
 }
 
-export const EaseMindNavigation: React.FC<EaseMindNavigationProps> = ({
+export const EasemindNavigation: React.FC<EasemindNavigationProps> = ({
   onPrev,
   onNext,
   size = "large",

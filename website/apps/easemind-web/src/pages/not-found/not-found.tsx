@@ -1,4 +1,4 @@
-import { EaseMindButton, EaseMindIllustration, EaseMindText } from "@repo/ui";
+import { EasemindButton, EasemindIllustration, EasemindText } from "@repo/ui";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@repo/data-access";
@@ -24,22 +24,22 @@ export default function NotFound() {
       textAlign="center"
     >
       <Box width={{ xs: "80%", sm: "60%", md: "40%" }} maxWidth={400}>
-        <EaseMindIllustration variant="auto" name="not-found" alt="ilustração de duas folhas e uma lupa"/>
+        <EasemindIllustration variant="auto" name="not-found" alt="ilustração de duas folhas e uma lupa"/>
       </Box>
 
-      <EaseMindText variant="xxl" align="center">
+      <EasemindText variant="xxl" align="center">
         Página não encontrada!
-      </EaseMindText>
+      </EasemindText>
 
-      <EaseMindText
+      <EasemindText
         variant="md"
         style={{ whiteSpace: "pre-line", marginTop: 8 }}
       >
         {`Desculpe! Não encontramos o que você está procurando.\nQue tal voltar para a nossa página inicial ou explorar outras áreas do seu dashboard?`}
-      </EaseMindText>
+      </EasemindText>
 
       <Box marginTop={4}>
-        <EaseMindButton
+        <EasemindButton
           label="Voltar ao início"
           variant="contained"
           color="primary"

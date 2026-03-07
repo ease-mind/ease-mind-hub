@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
-import { EaseMindWrapper } from "./components/wrapper/wrapper";
+import { EasemindWrapper } from "./components/wrapper/wrapper";
 import ErrorBoundary from "./error-boundary";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -13,13 +13,13 @@ root.render(
 	<React.StrictMode>
 		<UserProvider>
 			<Router>
-				<EaseMindWrapper>
+				<EasemindWrapper>
 					<CognitiveSettingsProvider>
 						<ErrorBoundary>
 							<App />
 						</ErrorBoundary>
 					</CognitiveSettingsProvider>
-				</EaseMindWrapper>
+				</EasemindWrapper>
 			</Router>
 		</UserProvider>
 	</React.StrictMode>

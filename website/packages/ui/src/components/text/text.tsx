@@ -1,19 +1,19 @@
 import { Box, Typography, TypographyProps } from '@mui/material';
 
-export interface EaseMindTextProps extends TypographyProps {
+export interface EasemindTextProps extends TypographyProps {
   children: React.ReactNode;
   color?: string;
   variant?: 'xs' | 'sm' | 'md' | 'lg' | 'h1' | 'h2' | 'h3' | 'h4' | 'xxl';
   fontSize?: string;
 }
 
-export function EaseMindText({
+export function EasemindText({
   children,
   color,
   variant,
   fontSize,
   ...props
-}: EaseMindTextProps) {
+}: EasemindTextProps) {
   return (
     <Box>
       <Typography

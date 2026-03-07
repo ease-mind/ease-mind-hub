@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
 import * as DocBlock from '@storybook/blocks';
-import { EaseMindFooter } from './footer';
+import { EasemindFooter } from './footer';
 
 const meta = {
     title: 'Components/Footer',
-    component: EaseMindFooter,
+    component: EasemindFooter,
     tags: ['autodocs'],
     parameters: {
         docs: {
@@ -18,11 +18,11 @@ const meta = {
                 </>
         }
     }
-} satisfies Meta<typeof EaseMindFooter>;
+} satisfies Meta<typeof EasemindFooter>;
 
 export default meta;
 
-type Story = StoryObj<typeof EaseMindFooter>;
+type Story = StoryObj<typeof EasemindFooter>;
 
 
 export const Desktop: Story = {

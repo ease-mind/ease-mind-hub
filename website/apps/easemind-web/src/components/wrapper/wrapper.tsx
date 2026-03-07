@@ -1,7 +1,7 @@
 import { Box, CssBaseline } from "@mui/material";
-import { EaseMindThemeProvider } from "@repo/utils";
-import { EaseMindFooter } from "../footer/footer";
-import { EaseMindHeader } from "../header/header";
+import { EasemindThemeProvider } from "@repo/utils";
+import { EasemindFooter } from "../footer/footer";
+import { EasemindHeader } from "../header/header";
 
 export interface WrapperRouteProps {
 	name: string;
@@ -9,7 +9,7 @@ export interface WrapperRouteProps {
 	disabled?: boolean;
 }
 
-export function EaseMindWrapper({
+export function EasemindWrapper({
 	canNavigate = true,
 	children
 }: {
@@ -19,16 +19,16 @@ export function EaseMindWrapper({
 }) {
 	return (
 		<>
-			<EaseMindThemeProvider>
+			<EasemindThemeProvider>
 				<CssBaseline />
-				{canNavigate ? <EaseMindHeader /> : ""}
+				{canNavigate ? <EasemindHeader /> : ""}
 				<Box sx={{ display: "flex", overflow: "hidden" }}>
 					<Box display={"flex"} flex={1}>
 						{children}
 					</Box>
 				</Box>
-				{canNavigate ? <EaseMindFooter /> : ""}
-			</EaseMindThemeProvider>
+				{canNavigate ? <EasemindFooter /> : ""}
+			</EasemindThemeProvider>
 		</>
 	);
 }

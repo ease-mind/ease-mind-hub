@@ -8,7 +8,7 @@ export interface DividerProps {
     color?: string;
 }
 
-export function EaseMindDivider({
+export function EasemindDivider({
     type = 'horizontal',
     color,
     className

@@ -1,6 +1,6 @@
 import { Assignment as AssignmentIcon } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
-import { EaseMindButton, EaseMindModal } from "@repo/ui";
+import { EasemindButton, EasemindModal } from "@repo/ui";
 
 interface CognitiveAlertModalProps {
 	open: boolean;
@@ -20,7 +20,7 @@ export function CognitiveAlertModal({
 	minutes
 }: CognitiveAlertModalProps) {
 	return (
-		<EaseMindModal open={open} onClose={onContinue} title="Alerta Cognitivo">
+		<EasemindModal open={open} onClose={onContinue} title="Alerta Cognitivo">
 			<Box
 				display="flex"
 				flexDirection="column"
@@ -40,7 +40,7 @@ export function CognitiveAlertModal({
 					</Typography>
 				</Box>
 				<Box display="flex" gap={1} width="100%" mt={1}>
-					<EaseMindButton
+					<EasemindButton
 						variant="outlined"
 						color="secondary"
 						label="Continuar foco"
@@ -52,7 +52,7 @@ export function CognitiveAlertModal({
 							color: isDarkMode ? "#ffd5d5" : "#374151"
 						}}
 					/>
-					<EaseMindButton
+					<EasemindButton
 						variant="contained"
 						color="secondary"
 						label="Encerrar foco"
@@ -66,6 +66,6 @@ export function CognitiveAlertModal({
 					/>
 				</Box>
 			</Box>
-		</EaseMindModal>
+		</EasemindModal>
 	);
 }

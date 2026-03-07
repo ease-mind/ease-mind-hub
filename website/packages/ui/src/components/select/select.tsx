@@ -16,7 +16,7 @@ export interface SelectOption {
   value: string;
 }
 
-export type EaseMindSelectProps = SelectProps & {
+export type EasemindSelectProps = SelectProps & {
   value: string | string[];
   onChange: (value: string | string[]) => void;
   onOpen?: (value: string) => void;
@@ -32,7 +32,7 @@ export type EaseMindSelectProps = SelectProps & {
   color?: "primary" | "secondary" | "success" | "error" | "info" | "warning";
 };
 
-export function EaseMindSelect({
+export function EasemindSelect({
   value,
   onChange,
   onOpen,
@@ -43,7 +43,7 @@ export function EaseMindSelect({
   color,
   multiple,
   loading = false,
-}: EaseMindSelectProps) {
+}: EasemindSelectProps) {
   const reactId = useId();
   const selectId = `select-${reactId}`;
   const {colors} = useTheme();

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import type { Meta, StoryFn } from "@storybook/react";
-import { EaseMindInput } from "./input";
+import { EasemindInput } from "./input";
 import * as DocBlock from "@storybook/blocks";
 
 export default {
   title: "Components/Input",
-  component: EaseMindInput,
+  component: EasemindInput,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -20,16 +20,16 @@ export default {
       ),
     },
   },
-} as Meta<typeof EaseMindInput>;
+} as Meta<typeof EasemindInput>;
 
-const Template: StoryFn<typeof EaseMindInput> = (args) => {
+const Template: StoryFn<typeof EasemindInput> = (args) => {
   const [value, setValue] = useState("");
 
   const handleChange = (e: any) => {
     setValue(e.target.value);
   };
 
-  return <EaseMindInput {...args} value={value} onChange={handleChange} />;
+  return <EasemindInput {...args} value={value} onChange={handleChange} />;
 };
 
 export const Default = Template.bind({});

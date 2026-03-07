@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import EaseMindThermometerPage from './thermometer';
+import EasemindThermometerPage from './thermometer';
 
 const mockUseTheme = {
   colors: {
@@ -19,26 +19,26 @@ jest.mock('@repo/utils', () => ({
 }));
 
 jest.mock('@repo/ui', () => ({
-  EaseMindCard: ({ children }: { children: React.ReactNode }) => <div data-testid="easemind-card">{children}</div>,
+  EasemindCard: ({ children }: { children: React.ReactNode }) => <div data-testid="easemind-card">{children}</div>,
 }));
 
-describe('<EaseMindThermometerPage />', () => {
+describe('<EasemindThermometerPage />', () => {
   test('deve renderizar o componente corretamente', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     expect(screen.getByText('Termômetro Sensorial')).toBeInTheDocument();
     expect(screen.getByText(/Identifique sinais de sobrecarga/i)).toBeInTheDocument();
   });
 
   test('deve exibir o alerta de atenção inicialmente', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     expect(screen.getByText('Atenção: Sinais de Alerta')).toBeInTheDocument();
     expect(screen.getByText(/Você está entrando na fase de alerta/i)).toBeInTheDocument();
   });
 
   test('deve fechar o alerta ao clicar no botão de fechar', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     const closeButton = screen.getByLabelText(/close/i);
     fireEvent.click(closeButton);
@@ -47,7 +47,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve exibir as três categorias de sintomas', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     expect(screen.getByText('Falha na Comunicação')).toBeInTheDocument();
     expect(screen.getByText('Sintomas Físicos')).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve exibir todos os sintomas de comunicação', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     expect(screen.getByText('Dificuldade para encontrar palavras')).toBeInTheDocument();
     expect(screen.getByText('Fala mais rápida ou lenta')).toBeInTheDocument();
@@ -64,7 +64,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve exibir todos os sintomas físicos', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     expect(screen.getByText('Tensão muscular')).toBeInTheDocument();
     expect(screen.getByText('Respiração acelerada')).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve exibir todos os sintomas de estereotipias', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     expect(screen.getByText('Balançar o corpo')).toBeInTheDocument();
     expect(screen.getByText('Bater ou esfregar as mãos')).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve selecionar um sintoma ao clicar', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     const symptom = screen.getByText('Tensão muscular').closest('div');
     if (symptom) {
@@ -93,7 +93,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve aumentar o contador ao selecionar múltiplos sintomas', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     const symptom1 = screen.getByText('Tensão muscular').closest('div');
     const symptom2 = screen.getByText('Dor de cabeça').closest('div');
@@ -107,7 +107,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve desselecionar um sintoma ao clicar novamente', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     const symptom = screen.getByText('Tensão muscular').closest('div');
     
@@ -121,7 +121,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve atualizar a contagem por categoria', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     const symptom1 = screen.getByText('Tensão muscular').closest('div');
     const symptom2 = screen.getByText('Dor de cabeça').closest('div');
@@ -136,7 +136,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve resetar todas as seleções ao clicar em Resetar', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     const symptom1 = screen.getByText('Tensão muscular').closest('div');
     const symptom2 = screen.getByText('Dor de cabeça').closest('div');
@@ -153,7 +153,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve exibir o emoji correto baseado no nível de sintomas', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     expect(screen.getByText('😊')).toBeInTheDocument();
 
@@ -171,7 +171,7 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve exibir o nível de temperatura correto', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     const symptom1 = screen.getByText('Tensão muscular').closest('div');
     const symptom2 = screen.getByText('Dor de cabeça').closest('div');
@@ -183,20 +183,20 @@ describe('<EaseMindThermometerPage />', () => {
   });
 
   test('deve renderizar os botões de ação no alerta', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     expect(screen.getByRole('button', { name: /técnicas de calma/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /buscar ajuda/i })).toBeInTheDocument();
   });
 
   test('deve exibir o contador inicial como 0', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     expect(screen.getByText('Sintomas identificados: 0')).toBeInTheDocument();
   });
 
   test('deve renderizar os cards de categorias', () => {
-    render(<EaseMindThermometerPage />);
+    render(<EasemindThermometerPage />);
 
     const cards = screen.getAllByTestId('easemind-card');
     expect(cards.length).toBeGreaterThan(0);

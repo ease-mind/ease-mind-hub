@@ -1,11 +1,11 @@
 import * as DocBlock from '@storybook/blocks';
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindAutoComplete } from './auto-complete';
+import { EasemindAutoComplete } from './auto-complete';
 import { useState } from 'react';
 
 const meta = {
   title: 'Components/AutoComplete',
-  component: EaseMindAutoComplete,
+  component: EasemindAutoComplete,
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -21,11 +21,11 @@ const meta = {
       ),
     },
   },
-} satisfies Meta<typeof EaseMindAutoComplete>;
+} satisfies Meta<typeof EasemindAutoComplete>;
 
 export default meta;
 
-type Story = StoryObj<typeof EaseMindAutoComplete>;
+type Story = StoryObj<typeof EasemindAutoComplete>;
 
 const mockOptions = [
   { label: 'Apple', value: '1' },
@@ -39,7 +39,7 @@ export const Default: Story = {
   render: (args) => {
     const [value, setValue] = useState<{ label: string; value: string } | null>(null);
     return (
-      <EaseMindAutoComplete
+      <EasemindAutoComplete
         {...args}
         value={value}
         onChange={setValue}
@@ -57,7 +57,7 @@ export const WithLoading: Story = {
   render: (args) => {
     const [value, setValue] = useState<{ label: string; value: string } | null>(null);
     return (
-      <EaseMindAutoComplete
+      <EasemindAutoComplete
         {...args}
         value={value}
         onChange={setValue}
@@ -75,7 +75,7 @@ export const WithError: Story = {
   render: (args) => {
     const [value, setValue] = useState<{ label: string; value: string } | null>(null);
     return (
-      <EaseMindAutoComplete
+      <EasemindAutoComplete
         {...args}
         value={value}
         onChange={setValue}
@@ -103,7 +103,7 @@ export const WithCreateOption: Story = {
     };
 
     return (
-      <EaseMindAutoComplete
+      <EasemindAutoComplete
         {...args}
         options={options}
         value={value}

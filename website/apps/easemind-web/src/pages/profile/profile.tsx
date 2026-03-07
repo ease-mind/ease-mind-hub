@@ -1,13 +1,13 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { Box, Container } from '@mui/material';
-import { EaseMindCard, EaseMindButton, EaseMindText, SnackbarData, EaseMindIllustration, EaseMindInputController, EaseMindSnackbar, EaseMindSelectController } from '@repo/ui';
+import { EasemindCard, EasemindButton, EasemindText, SnackbarData, EasemindIllustration, EasemindInputController, EasemindSnackbar, EasemindSelectController } from '@repo/ui';
 import { formatCPF, useTheme, validateCPF } from '@repo/utils';
 import { getUserAddress, STATES_LIST, updateUser, updateUserProfileImage, useUser } from '@repo/data-access';
 import { FormProvider, useForm } from 'react-hook-form';
 import CameraEnhanceRoundedIcon from '@mui/icons-material/CameraEnhanceRounded';
 import "./profile.scss";
 
-interface EaseMindProfileProps { }
+interface EasemindProfileProps { }
 
 interface ProfileFormValues {
     name: string;
@@ -21,7 +21,7 @@ interface ProfileFormValues {
     complement: string;
 }
 
-const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
+const EasemindProfilePage: FC<EasemindProfileProps> = () => {
     const [hasUserImage, setHasUserImage] = useState(false);
     const { isDarkMode, colors } = useTheme();
     const { user, setUser } = useUser();
@@ -166,16 +166,16 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
         <Box sx={{ background: pageBg, minHeight: '100vh', width: '100vw' }}>
             <Container maxWidth="xl" sx={{ marginBottom: '5vw' }}>
                 <Box width={'100%'} pt={{xs: 2, sm: 2, md:4}} mb={{xs: 2, sm: 2, md:4}} display={'flex'} flexDirection={'column'} gap={1}>
-                    <EaseMindText variant="xxl" fontWeight={'bolder'} align="center">
+                    <EasemindText variant="xxl" fontWeight={'bolder'} align="center">
                         Meu perfil
-                    </EaseMindText>
-                    <EaseMindText variant="sm" align="center">
+                    </EasemindText>
+                    <EasemindText variant="sm" align="center">
                         Edite seus dados pessoais ou altere sua foto de perfil.
-                    </EaseMindText>
+                    </EasemindText>
                 </Box>
 
                 <Box width={'100%'} display={'flex'} gap={4} className="content">
-                    <EaseMindCard styles={{
+                    <EasemindCard styles={{
                         width: "30%",
                         display: "flex",
                         flexDirection: "column",
@@ -183,7 +183,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                         padding: "16px 0 48px"
                     }} className="image-section">
                         <Box padding={2}>
-                            <EaseMindText variant='lg' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>{user?.name}</EaseMindText>
+                            <EasemindText variant='lg' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>{user?.name}</EasemindText>
                         </Box>
                         <Box flexGrow={1} px={2} maxWidth={'445px'} >
                             {hasUserImage ?
@@ -201,7 +201,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                 style={{ opacity: 0, position: 'absolute', width: 0, height: 0 }}
                                 onChange={updateImage}
                             />
-                            <EaseMindButton
+                            <EasemindButton
                                 onClick={handleEditClick}
                                 label="Editar foto"
                                 variant={"outlined"}
@@ -211,20 +211,20 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                 }}
                             />
                         </Box>
-                    </EaseMindCard>
+                    </EasemindCard>
 
-                    <EaseMindCard styles={{
+                    <EasemindCard styles={{
                         flex: "1",
                     }} className="form-section">
                         <Box p={{ xs: 2, sm: 2, md: 4 }}>
                         <Box pb={{ xs: 2, sm: 2, md: 4 }}>
-                            <EaseMindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Dados pessoais</EaseMindText>
+                            <EasemindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Dados pessoais</EasemindText>
                         </Box>
                         <FormProvider {...userMethods}>
                             <form onSubmit={userMethods.handleSubmit(handleSubmit)}>
                                 <Box display="flex" gap={{xs: 1, sm: 2, md:3}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
                                     <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-                                        <EaseMindInputController
+                                        <EasemindInputController
                                             control={userMethods.control}
                                             name="name"
                                             autoComplete="name"
@@ -237,7 +237,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                         />
                                     </Box>
                                     <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-                                        <EaseMindInputController
+                                        <EasemindInputController
                                             control={userMethods.control}
                                             name="email"
                                             autoComplete="email"
@@ -257,7 +257,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
 
                                 <Box display="flex" gap={{xs: 1, sm: 2, md:3}} pt={{xs: 0, sm: 1, md:2}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
                                     <Box sx={{ width: { xs: "100%", md: "20%" } }}>
-                                        <EaseMindInputController
+                                        <EasemindInputController
                                             control={userMethods.control}
                                             name="document"
                                             type="text"
@@ -273,7 +273,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                         />
                                     </Box>
                                     <Box sx={{ width: { xs: "100%", md: "35%" } }}>
-                                        <EaseMindInputController
+                                        <EasemindInputController
                                             control={userMethods.control}
                                             name="address"
                                             type="text"
@@ -282,7 +282,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                         />
                                     </Box>
                                     <Box sx={{ width: { xs: "100%", md: "15%" } }}>
-                                        <EaseMindInputController
+                                        <EasemindInputController
                                             control={userMethods.control}
                                             name="city"
                                             type="text"
@@ -291,7 +291,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                         />
                                     </Box>
                                     <Box sx={{ width: { xs: "100%", md: "15%" } }}>
-                                        <EaseMindSelectController
+                                        <EasemindSelectController
                                             control={userMethods.control}
                                             color='primary'
                                             name="state"
@@ -303,7 +303,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                         />
                                     </Box>
                                     <Box sx={{ width: { xs: "100%", md: "15%" } }}>
-                                        <EaseMindInputController
+                                        <EasemindInputController
                                             control={userMethods.control}
                                             name="complement"
                                             type="text"
@@ -313,11 +313,11 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                     </Box>
                                 </Box>
                                 <Box pt={{xs: 2, sm: 2, md:4}}>
-                                    <EaseMindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Atualizar senha</EaseMindText>
+                                    <EasemindText variant='md' color={colors['coral.highcontrast']} textTransform='capitalize' fontWeight='bold'>Atualizar senha</EasemindText>
                                 </Box>
                                 <Box display="flex" gap={{xs: 0, sm: 0, md:3}} pt={{xs: 1, sm: 1, md:2}} sx={{ flexDirection: { xs: "column", md: "row" } }}>
                                     <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-                                        <EaseMindInputController
+                                        <EasemindInputController
                                             control={userMethods.control}
                                             name="password"
                                             autoComplete="new-password"
@@ -327,7 +327,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                         />
                                     </Box>
                                     <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-                                        <EaseMindInputController
+                                        <EasemindInputController
                                             control={userMethods.control}
                                             name="newPassword"
                                             autoComplete="new-password"
@@ -338,7 +338,7 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                                     </Box>
                                 </Box>
                                 <Box display="flex" pt={4} justifyContent="end">
-                                    <EaseMindButton
+                                    <EasemindButton
                                         style={{ padding: '0 16px' }}
                                         type="submit"
                                         label="Alterar dados"
@@ -350,12 +350,12 @@ const EaseMindProfilePage: FC<EaseMindProfileProps> = () => {
                             </form>
                         </FormProvider>
                         </Box>
-                    </EaseMindCard>
+                    </EasemindCard>
                 </Box>
-                <EaseMindSnackbar open={snackbarOpen} data={snackbarData} onClose={closeSnackbar} />
+                <EasemindSnackbar open={snackbarOpen} data={snackbarData} onClose={closeSnackbar} />
             </Container>
         </Box>
     );
 };
 
-export default EaseMindProfilePage;
+export default EasemindProfilePage;

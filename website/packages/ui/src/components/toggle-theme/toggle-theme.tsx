@@ -3,7 +3,7 @@ import { ToggleButton } from '@mui/material';
 import { useTheme } from '@repo/utils';
 import { DarkMode } from '@mui/icons-material';
 
-export const EaseMindToggleButton = (): JSX.Element => {
+export const EasemindToggleButton = (): JSX.Element => {
   const [selected, setSelected] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const iconColor = theme.palette.text.primary;

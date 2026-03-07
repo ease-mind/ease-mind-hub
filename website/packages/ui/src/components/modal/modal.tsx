@@ -2,15 +2,15 @@ import './style.scss';
 import { Box, IconButton, Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTheme } from '@repo/utils';
-import { EaseMindModalProps } from '../../classes';
-import { EaseMindText } from '../text/text';
+import { EasemindModalProps } from '../../classes';
+import { EasemindText } from '../text/text';
 
-export function EaseMindModal({
+export function EasemindModal({
   onClose,
   open,
   children,
   title,
-}: EaseMindModalProps) {
+}: EasemindModalProps) {
   const { isDarkMode, colors } = useTheme();
   const bgColor = isDarkMode ? colors['coral.50'] : colors['white.main'];
   return (
@@ -29,9 +29,9 @@ export function EaseMindModal({
 
 
         <Box pb={2}>
-          <EaseMindText alignContent="center" fontWeight="700" color="textPrimary" variant={'md'} >
+          <EasemindText alignContent="center" fontWeight="700" color="textPrimary" variant={'md'} >
             {title}
-          </EaseMindText>
+          </EasemindText>
         </Box>
         {children}
       </Box>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller, useFormContext, RegisterOptions } from "react-hook-form";
-import { EaseMindDatePicker } from "../datepicker";
+import { EasemindDatePicker } from "../datepicker";
 
 interface ControlledDatePickerProps {
   name: string;
@@ -17,7 +17,7 @@ interface ControlledDatePickerProps {
 }
 
 
-export const EaseMindDatePickerController: React.FC<ControlledDatePickerProps> = ({
+export const EasemindDatePickerController: React.FC<ControlledDatePickerProps> = ({
   name,
   label,
   minDate,
@@ -38,7 +38,7 @@ export const EaseMindDatePickerController: React.FC<ControlledDatePickerProps> =
       rules={rules}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <EaseMindDatePicker
+        <EasemindDatePicker
           id={id}
           label={label}
           value={field.value === undefined ? null : field.value}

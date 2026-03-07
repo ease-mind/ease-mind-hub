@@ -7,17 +7,17 @@ interface TabOption {
   id: string;
 }
 
-interface EaseMindTabsProps {
+interface EasemindTabsProps {
   options: TabOption[];
   onChangeTab?: (id: string) => void;
   children: React.ReactNode;
 }
 
-export function EaseMindTabs({
+export function EasemindTabs({
   options,
   onChangeTab,
   children,
-}: EaseMindTabsProps) {
+}: EasemindTabsProps) {
   const [value, setValue] = useState(0);
   const { colors } = useTheme();
 

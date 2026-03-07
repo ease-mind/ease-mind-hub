@@ -13,7 +13,7 @@ import {
 } from "@mui/icons-material";
 import { Box, Slider, Switch, Typography } from "@mui/material";
 import type { SnackbarData } from "@repo/ui";
-import { EaseMindButton, EaseMindSnackbar } from "@repo/ui";
+import { EasemindButton, EasemindSnackbar } from "@repo/ui";
 import { useTheme } from "@repo/utils";
 import React, { useState } from "react";
 import "./cognitive-settings.scss";
@@ -427,7 +427,7 @@ function CognitiveSettingsPage() {
 			)}
 
 			<Box className="cog-settings-actions">
-				<EaseMindButton
+				<EasemindButton
 					variant="outlined"
 					color="secondary"
 					label="Cancelar"
@@ -439,7 +439,7 @@ function CognitiveSettingsPage() {
 						"&:hover": { borderColor: "#d1d5db", background: "rgba(0,0,0,0.04)" }
 					}}
 				/>
-				<EaseMindButton
+				<EasemindButton
 					variant="contained"
 					color="secondary"
 					label="Salvar Configurações"
@@ -452,7 +452,7 @@ function CognitiveSettingsPage() {
 				/>
 			</Box>
 
-			<EaseMindSnackbar
+			<EasemindSnackbar
 				open={snackbarOpen}
 				onClose={() => setSnackbarOpen(false)}
 				data={snackbar}

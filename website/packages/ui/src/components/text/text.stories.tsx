@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
 import * as DocBlock from '@storybook/blocks';
-import { EaseMindText, EaseMindTextProps } from './text';
+import { EasemindText, EasemindTextProps } from './text';
 
 const SIMPLE_TEXT = 'The quick brown fox jumps over the lazy dog';
 
 const meta = {
   title: 'Components/Text',
-  component: EaseMindText,
+  component: EasemindText,
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -22,11 +22,11 @@ const meta = {
       ),
     },
   },
-} satisfies Meta<typeof EaseMindText>;
+} satisfies Meta<typeof EasemindText>;
 
 export default meta;
 
-type Story = StoryObj<EaseMindTextProps>;
+type Story = StoryObj<EasemindTextProps>;
 
 export const H1: Story = {
   args: {

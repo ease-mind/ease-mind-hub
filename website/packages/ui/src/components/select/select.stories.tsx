@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
-import { SelectOption, EaseMindSelect } from './select';
+import { SelectOption, EasemindSelect } from './select';
 import * as DocBlock from '@storybook/blocks';
 
 export default {
   title: 'Components/Select',
-  component: EaseMindSelect,
+  component: EasemindSelect,
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -20,14 +20,14 @@ export default {
       ),
     },
   },
-} as Meta<typeof EaseMindSelect>;
+} as Meta<typeof EasemindSelect>;
 
 const options: SelectOption[] = [
   { label: 'Pessoa Física', value: 'pf' },
   { label: 'Pessoa Jurídica', value: 'pj' },
 ];
 
-const Template: StoryFn<typeof EaseMindSelect> = (args) => {
+const Template: StoryFn<typeof EasemindSelect> = (args) => {
   const [value, setValue] = useState('');
 
   const handleChange = (event: any) => {
@@ -35,7 +35,7 @@ const Template: StoryFn<typeof EaseMindSelect> = (args) => {
   };
 
   return (
-      <EaseMindSelect {...args} value={value} onChange={handleChange} />
+      <EasemindSelect {...args} value={value} onChange={handleChange} />
   );
 };
 

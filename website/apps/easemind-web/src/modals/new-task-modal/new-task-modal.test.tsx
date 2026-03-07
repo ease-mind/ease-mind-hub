@@ -11,7 +11,7 @@ jest.mock("@repo/utils", () => ({
 }));
 
 jest.mock("@repo/ui", () => ({
-	EaseMindButton: ({
+	EasemindButton: ({
 		label,
 		onClick
 	}: {
@@ -19,7 +19,7 @@ jest.mock("@repo/ui", () => ({
 		onClick?: () => void;
 		[key: string]: any;
 	}) => <button onClick={onClick}>{label}</button>,
-	EaseMindModal: ({
+	EasemindModal: ({
 		children,
 		open,
 		title,

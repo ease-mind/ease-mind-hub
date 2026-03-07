@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import { EaseMindCard } from "@repo/ui";
+import { EasemindCard } from "@repo/ui";
 import {
   PsychologyOutlined,
   AccessibilityNewOutlined,
@@ -29,20 +29,20 @@ const BENEFITS: Benefit[] = [
       "Recursos adaptados para diferentes necessidades cognitivas, incluindo TDAH, autismo e outras neurodivergências.",
   },
   {
-    icon: <AutoAwesomeOutlined sx={{ fontSize: 80 }} />,
-    title: "Recomendações Inteligentes",
+    icon: <HealthAndSafetyOutlined sx={{ fontSize: 80 }} />,
+    title: "Termômetro Sensorial",
     description:
-      "Inteligência artificial que aprende com você e sugere momentos ideais para cada tipo de tarefa baseado no seu perfil cognitivo.",
+      "Monitore seu estado emocional em tempo real. Identifique sintomas de sobrecarga e receba orientações personalizadas para seu bem-estar.",
   },
   {
-    icon: <HealthAndSafetyOutlined sx={{ fontSize: 80 }} />,
+    icon: <AutoAwesomeOutlined sx={{ fontSize: 80 }} />,
     title: "Bem-estar Mental",
     description:
-      "Monitore sua carga cognitiva e receba alertas para pausas estratégicas, mantendo sua saúde mental em equilíbrio.",
+      "Acompanhe sua carga cognitiva e receba alertas para pausas estratégicas, mantendo sua saúde mental em equilíbrio.",
   },
 ];
 
-const EaseMindHomePage = () => {
+const EasemindHomePage = () => {
   const { isDarkMode, colors } = useTheme();
 
   useEffect(() => {
@@ -132,7 +132,7 @@ const EaseMindHomePage = () => {
               respeitando seu ritmo cognitivo.
             </Typography>
             <Typography variant="md">
-              Descubra o EaseMind e transforme sua produtividade com flexibilidade e cuidado mental.
+              Descubra o Easemind e transforme sua produtividade com flexibilidade e cuidado mental.
             </Typography>
           </Box>
         </Box>
@@ -153,7 +153,7 @@ const EaseMindHomePage = () => {
             fontWeight={"bolder"}
             color={colors["coral.900"]}
           >
-            Conheça os benefícios do EaseMind
+            Conheça os benefícios do Easemind
           </Typography>
           <Box>
             <Box
@@ -166,7 +166,7 @@ const EaseMindHomePage = () => {
               {BENEFITS.map(
                 ({ icon, title, description }: Benefit, index: number) => (
                   <Box maxWidth={"20em"} key={index}>
-                    <EaseMindCard
+                    <EasemindCard
                       bgcolor={colors["coral.contrast"]}
                       variant={"outlined"}
                       styles={{ borderColor: colors["coral.100"] }}
@@ -195,7 +195,7 @@ const EaseMindHomePage = () => {
                           {description}
                         </Typography>
                       </Box>
-                    </EaseMindCard>
+                    </EasemindCard>
                   </Box>
                 )
               )}
@@ -207,4 +207,4 @@ const EaseMindHomePage = () => {
   );
 };
 
-export default EaseMindHomePage;
+export default EasemindHomePage;

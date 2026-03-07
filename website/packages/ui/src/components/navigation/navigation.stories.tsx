@@ -1,9 +1,9 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { EaseMindNavigation, EaseMindNavigationProps } from "./navigation";
+import { EasemindNavigation, EasemindNavigationProps } from "./navigation";
 
 export default {
   title: "Components/Navigation",
-  component: EaseMindNavigation,
+  component: EasemindNavigation,
   argTypes: {
     size: {
       control: { type: "select" },
@@ -14,7 +14,7 @@ export default {
   },
 } as Meta;
 
-const Template: StoryFn<EaseMindNavigationProps> = (args) => <EaseMindNavigation {...args} />;
+const Template: StoryFn<EasemindNavigationProps> = (args) => <EasemindNavigation {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

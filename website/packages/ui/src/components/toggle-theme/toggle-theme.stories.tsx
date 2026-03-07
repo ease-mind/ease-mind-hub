@@ -1,12 +1,12 @@
 import * as DocBlock from '@storybook/blocks';
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindToggleButton } from './toggle-theme';
+import { EasemindToggleButton } from './toggle-theme';
 import { Box } from '@mui/material';
-import { EaseMindText } from '../text/text';
+import { EasemindText } from '../text/text';
 
 const meta = {
   title: 'Components/ToggleTheme',
-  component: EaseMindToggleButton,
+  component: EasemindToggleButton,
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -21,22 +21,22 @@ const meta = {
         </>
     }
   }
-} satisfies Meta<typeof EaseMindToggleButton>;
+} satisfies Meta<typeof EasemindToggleButton>;
 
 export default meta;
 
-type Story = StoryObj<typeof EaseMindToggleButton>;
+type Story = StoryObj<typeof EasemindToggleButton>;
 
 export const Default: Story = {
   render: () =>
     <Box display="flex" alignItems="center" gap={2}>
-      <EaseMindText variant="sm">Toggle Dark Mode:</EaseMindText>
-      <EaseMindToggleButton />
+      <EasemindText variant="sm">Toggle Dark Mode:</EasemindText>
+      <EasemindToggleButton />
     </Box>
 };
 
 export const Standalone: Story = {
-  render: () => <EaseMindToggleButton />
+  render: () => <EasemindToggleButton />
 };
 
 export const InHeader: Story = {
@@ -52,12 +52,12 @@ export const InHeader: Story = {
         boxShadow: 1,
       }}
     >
-      <EaseMindText variant="lg" sx={{ fontWeight: 600 }}>
+      <EasemindText variant="lg" sx={{ fontWeight: 600 }}>
         Application Header
-      </EaseMindText>
+      </EasemindText>
       <Box display="flex" gap={2} alignItems="center">
-        <EaseMindText variant="sm">Theme:</EaseMindText>
-        <EaseMindToggleButton />
+        <EasemindText variant="sm">Theme:</EasemindText>
+        <EasemindToggleButton />
       </Box>
     </Box>
 };

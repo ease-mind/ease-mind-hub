@@ -2,7 +2,7 @@ import { useTheme } from "@repo/utils";
 import "./footer.module.scss";
 import { Box, Container, Link, Typography } from "@mui/material";
 
-export function EaseMindFooter() {
+export function EasemindFooter() {
   const { colors } = useTheme();
   const footerColor = colors["navigation"];
   const isLogged = true;
@@ -15,7 +15,7 @@ export function EaseMindFooter() {
         textAlign={"center"}
       >
         <Typography id="easemind-footer-text">
-          © 2026 EaseMind. Cuidando da sua saúde cognitiva.
+          © 2026 Easemind. Cuidando da sua saúde cognitiva.
         </Typography>
       </Box>
     </>
@@ -60,7 +60,7 @@ export function EaseMindFooter() {
         </Typography>
         <Box display="flex" alignItems="center">
           <Link href="/" className="logo-footer">
-            <img src="logo.svg" className="logo" alt="EaseMind logo" />
+            <img src="logo.svg" className="logo" alt="Easemind logo" />
           </Link>
         </Box>
       </Box>

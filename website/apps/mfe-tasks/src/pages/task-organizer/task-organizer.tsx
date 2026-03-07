@@ -19,7 +19,7 @@ import {
 	Typography
 } from "@mui/material";
 import type { SnackbarData } from "@repo/ui";
-import { EaseMindButton, EaseMindSnackbar } from "@repo/ui";
+import { EasemindButton, EasemindSnackbar } from "@repo/ui";
 import { useTheme } from "@repo/utils";
 import { useCognitiveSettings } from "@repo/data-access";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -343,7 +343,7 @@ function TaskOrganizerPage() {
 						)}
 
 						<Box display="flex" gap={1} mt={3}>
-							<EaseMindButton
+							<EasemindButton
 								variant="outlined"
 								color="secondary"
 								label="Ver todas as tarefas"
@@ -359,7 +359,7 @@ function TaskOrganizerPage() {
 									}
 								}}
 							/>
-							<EaseMindButton
+							<EasemindButton
 								variant="contained"
 								color="secondary"
 								label="Concluir"
@@ -371,7 +371,7 @@ function TaskOrganizerPage() {
 									color: "#fff !important"
 								}}
 							/>
-							<EaseMindButton
+							<EasemindButton
 								variant="outlined"
 								color="secondary"
 								label="Excluir"
@@ -442,14 +442,14 @@ function TaskOrganizerPage() {
 						</DialogContentText>
 					</DialogContent>
 					<DialogActions sx={{ padding: "8px 24px 16px" }}>
-						<EaseMindButton
+						<EasemindButton
 							variant="outlined"
 							color="secondary"
 							label="Cancelar"
 							onClick={() => setDeleteConfirmOpen(false)}
 							borderRadius="8px"
 						/>
-						<EaseMindButton
+						<EasemindButton
 							variant="contained"
 							color="secondary"
 							label="Sim, excluir"
@@ -464,7 +464,7 @@ function TaskOrganizerPage() {
 					</DialogActions>
 				</Dialog>
 
-				<EaseMindSnackbar
+				<EasemindSnackbar
 					open={snackbarOpen}
 					onClose={() => setSnackbarOpen(false)}
 					data={snackbar}
@@ -544,7 +544,7 @@ function TaskOrganizerPage() {
 								Quadro Kanban
 							</Typography>
 						</Box>
-						<EaseMindButton
+						<EasemindButton
 							variant="contained"
 							color="secondary"
 							label="Nova Tarefa"
@@ -648,7 +648,7 @@ function TaskOrganizerPage() {
 				onClose={() => setModalOpen(false)}
 				onSubmit={handleCreateTask}
 			/>
-			<EaseMindSnackbar
+			<EasemindSnackbar
 				open={snackbarOpen}
 				onClose={() => setSnackbarOpen(false)}
 				data={snackbar}

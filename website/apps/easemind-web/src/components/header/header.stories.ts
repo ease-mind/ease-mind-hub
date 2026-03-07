@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { EaseMindHeader } from './header';
+import { EasemindHeader } from './header';
 
 const meta = {
   title: 'Components/Header',
-  component: EaseMindHeader,
+  component: EasemindHeader,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
   },
   args: {},
-} satisfies Meta<typeof EaseMindHeader>;
+} satisfies Meta<typeof EasemindHeader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

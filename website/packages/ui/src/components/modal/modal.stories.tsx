@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindModal } from './modal';
+import { EasemindModal } from './modal';
 import { useState } from 'react';
-import { EaseMindButton } from '../button/button';
-import { EaseMindModalProps } from '../../classes';
+import { EasemindButton } from '../button/button';
+import { EasemindModalProps } from '../../classes';
 
-const meta: Meta<EaseMindModalProps> = {
+const meta: Meta<EasemindModalProps> = {
   title: 'Components/Modal',
-  component: EaseMindModal,
+  component: EasemindModal,
   tags: ['autodocs'],
   argTypes: {
     open: { control: 'boolean' },
@@ -17,7 +17,7 @@ const meta: Meta<EaseMindModalProps> = {
 
 export default meta;
 
-type Story = StoryObj<EaseMindModalProps>;
+type Story = StoryObj<EasemindModalProps>;
 
 export const Default: Story = {
   args: {
@@ -31,13 +31,13 @@ export const Default: Story = {
 
     return (
       <>
-        <EaseMindButton
+        <EasemindButton
           label="Abrir Modal"
           color="primary"
           variant="contained"
           onClick={() => setOpen(true)}
         />
-        <EaseMindModal
+        <EasemindModal
           title={args.title}
           open={open}
           onClose={() => setOpen(false)}
@@ -45,7 +45,7 @@ export const Default: Story = {
           <p style={{ marginTop: 16, textAlign: 'center' }}>
             Aqui vai o conteúdo do modal.
           </p>
-        </EaseMindModal>
+        </EasemindModal>
       </>
     );
   },

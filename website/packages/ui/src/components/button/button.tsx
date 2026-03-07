@@ -11,7 +11,7 @@ declare module '@mui/material/Button' {
   }
 }
 
-export interface EaseMindButtonProps extends ButtonProps {
+export interface EasemindButtonProps extends ButtonProps {
   /**
    * O texto do botão
    */
@@ -40,14 +40,14 @@ export interface EaseMindButtonProps extends ButtonProps {
   onClick?: () => void;
 }
 
-export function EaseMindButton({
+export function EasemindButton({
   label,
   color,
   variant,
   borderRadius,
   onClick,
   ...props
-}: EaseMindButtonProps): JSX.Element {
+}: EasemindButtonProps): JSX.Element {
   const { colors } = useTheme();
   const palette = colors;
 

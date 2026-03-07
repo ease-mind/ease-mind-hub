@@ -1,12 +1,12 @@
 import * as DocBlock from '@storybook/blocks';
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindLinearProgress } from './linear-progress';
+import { EasemindLinearProgress } from './linear-progress';
 import { Box } from '@mui/material';
-import { EaseMindText } from '../text/text';
+import { EasemindText } from '../text/text';
 
 const meta = {
   title: 'Components/LinearProgress',
-  component: EaseMindLinearProgress,
+  component: EasemindLinearProgress,
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -21,11 +21,11 @@ const meta = {
         </>
     }
   }
-} satisfies Meta<typeof EaseMindLinearProgress>;
+} satisfies Meta<typeof EasemindLinearProgress>;
 
 export default meta;
 
-type Story = StoryObj<typeof EaseMindLinearProgress>;
+type Story = StoryObj<typeof EasemindLinearProgress>;
 
 export const Primary: Story = {
   args: {
@@ -61,20 +61,20 @@ export const MultipleProgress: Story = {
   render: () =>
     <Box display="flex" flexDirection="column" gap={3}>
       <Box>
-        <EaseMindText variant="sm" sx={{ mb: 1 }}>Loading: 25%</EaseMindText>
-        <EaseMindLinearProgress value={25} variant="primary" />
+        <EasemindText variant="sm" sx={{ mb: 1 }}>Loading: 25%</EasemindText>
+        <EasemindLinearProgress value={25} variant="primary" />
       </Box>
       <Box>
-        <EaseMindText variant="sm" sx={{ mb: 1 }}>Processing: 50%</EaseMindText>
-        <EaseMindLinearProgress value={50} variant="primary" />
+        <EasemindText variant="sm" sx={{ mb: 1 }}>Processing: 50%</EasemindText>
+        <EasemindLinearProgress value={50} variant="primary" />
       </Box>
       <Box>
-        <EaseMindText variant="sm" sx={{ mb: 1 }}>Almost done: 75%</EaseMindText>
-        <EaseMindLinearProgress value={75} variant="secondary" />
+        <EasemindText variant="sm" sx={{ mb: 1 }}>Almost done: 75%</EasemindText>
+        <EasemindLinearProgress value={75} variant="secondary" />
       </Box>
       <Box>
-        <EaseMindText variant="sm" sx={{ mb: 1 }}>Complete: 100%</EaseMindText>
-        <EaseMindLinearProgress value={100} variant="secondary" />
+        <EasemindText variant="sm" sx={{ mb: 1 }}>Complete: 100%</EasemindText>
+        <EasemindLinearProgress value={100} variant="secondary" />
       </Box>
     </Box>
 };

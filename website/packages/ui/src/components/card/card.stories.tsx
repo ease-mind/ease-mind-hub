@@ -1,9 +1,9 @@
 import { Meta, StoryFn } from "@storybook/react";
 import { Box, Typography } from "@mui/material";
 import * as DocBlock from "@storybook/blocks";
-import { EaseMindCard, EaseMindCardProps } from "./card";
+import { EasemindCard, EasemindCardProps } from "./card";
 
-const cards: (EaseMindCardProps & { name: string })[] = [
+const cards: (EasemindCardProps & { name: string })[] = [
   { name: "Titulo do card", variant: "elevation", bgcolor: "coral.900" },
   { name: "Titulo do card", variant: "outlined", bgcolor: "coral.700" },
 ];
@@ -45,7 +45,7 @@ export default {
                     flexDirection="column"
                     alignItems="flex-start"
                   >
-                    <EaseMindCard
+                    <EasemindCard
                       variant={item.variant}
                       bgcolor={'coral.700'}
                     >
@@ -70,7 +70,7 @@ export default {
                           officia deserunt mollit anim id est laborum.
                         </Typography>
                       </Box>
-                    </EaseMindCard>
+                    </EasemindCard>
                   </Box>
                 </>);
               })}
@@ -92,11 +92,11 @@ export default {
   },
 } as Meta;
 
-const CardTemplate: StoryFn<EaseMindCardProps> = ({
+const CardTemplate: StoryFn<EasemindCardProps> = ({
   variant,
   radius,
-}: EaseMindCardProps) => (
-  <EaseMindCard variant={variant} radius={radius}>
+}: EasemindCardProps) => (
+  <EasemindCard variant={variant} radius={radius}>
     <Box p={2} gap={4}>
       <Typography variant="h4" style={{ marginTop: "8px" }}>
         Eu sou um card
@@ -112,7 +112,7 @@ const CardTemplate: StoryFn<EaseMindCardProps> = ({
         officia deserunt mollit anim id est laborum.
       </Typography>
     </Box>
-  </EaseMindCard>
+  </EasemindCard>
 );
 
 export const Card = CardTemplate;

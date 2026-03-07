@@ -17,17 +17,17 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-interface EaseMindButtonFileUploadProps {
+interface EasemindButtonFileUploadProps {
   label: string;
   value?: File | null;
   onChange?: (file: File | null) => void;
 }
 
-export function EaseMindButtonFileUpload({
+export function EasemindButtonFileUpload({
   label,
   value,
   onChange,
-}: EaseMindButtonFileUploadProps) {
+}: EasemindButtonFileUploadProps) {
   const { colors, isDarkMode } = useTheme();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

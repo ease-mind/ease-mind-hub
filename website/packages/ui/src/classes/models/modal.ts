@@ -1,6 +1,6 @@
 import { ModalProps } from "@mui/material";
 
-export interface EaseMindModalProps extends ModalProps {
+export interface EasemindModalProps extends ModalProps {
     title: string;
     illustrationShow?: boolean;
     fullHeight?: boolean;

@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import EaseMindHome from './home';
+import EasemindHome from './home';
 
-describe('<EaseMindHome />', () => {
+describe('<EasemindHome />', () => {
   test('it should mount', () => {
-    render(<EaseMindHome />);
+    render(<EasemindHome />);
 
     const pagesHome = screen.getByTestId('Home');
 

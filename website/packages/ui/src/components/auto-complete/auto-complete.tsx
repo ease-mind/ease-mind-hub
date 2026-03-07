@@ -4,7 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@repo/utils";
 
-interface EaseMindAutoCompleteProps {
+interface EasemindAutoCompleteProps {
   loading: boolean;
   options: { label: string; value: string }[];
   label: string;
@@ -15,7 +15,7 @@ interface EaseMindAutoCompleteProps {
   helperText?: string;
 }
 
-export function EaseMindAutoComplete({
+export function EasemindAutoComplete({
   options,
   loading,
   label,
@@ -24,7 +24,7 @@ export function EaseMindAutoComplete({
   value,
   onChange,
   onCreateOption,
-}: EaseMindAutoCompleteProps) {
+}: EasemindAutoCompleteProps) {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
   const { colors } = useTheme();

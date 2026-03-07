@@ -7,7 +7,7 @@ import { useId } from "react";
 import "./style.scss";
 import { useTheme } from "@repo/utils";
 
-export type EaseMindDatePickerProps = {
+export type EasemindDatePickerProps = {
   label: string;
   value: Date | null;
   onChange: (date: Date | null) => void;
@@ -23,7 +23,7 @@ export type EaseMindDatePickerProps = {
   format?: string;
 };
 
-export function EaseMindDatePicker({
+export function EasemindDatePicker({
   value,
   onChange,
   label,
@@ -37,7 +37,7 @@ export function EaseMindDatePicker({
   disablePast,
   views,
   format = "dd/MM/yyyy",
-}: EaseMindDatePickerProps) {
+}: EasemindDatePickerProps) {
   const reactId = useId();
   const datepickerId = id || `datepicker-${reactId}`;
   const helperId = helperText ? `${datepickerId}-helper` : undefined;

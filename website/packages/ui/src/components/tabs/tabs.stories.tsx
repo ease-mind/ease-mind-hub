@@ -1,13 +1,13 @@
 import * as DocBlock from '@storybook/blocks';
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindTabs } from './tabs';
-import { EaseMindText } from '../text/text';
+import { EasemindTabs } from './tabs';
+import { EasemindText } from '../text/text';
 import { Box } from '@mui/material';
 import { useState } from 'react';
 
 const meta = {
   title: 'Components/Tabs',
-  component: EaseMindTabs,
+  component: EasemindTabs,
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -22,11 +22,11 @@ const meta = {
         </>
     }
   }
-} satisfies Meta<typeof EaseMindTabs>;
+} satisfies Meta<typeof EasemindTabs>;
 
 export default meta;
 
-type Story = StoryObj<typeof EaseMindTabs>;
+type Story = StoryObj<typeof EasemindTabs>;
 
 export const TwoTabs: Story = {
   args: {
@@ -37,7 +37,7 @@ export const TwoTabs: Story = {
     onChangeTab: (id) => console.log('Selected tab:', id),
     children:
       <Box py={2}>
-        <EaseMindText variant="md">Content for the selected tab</EaseMindText>
+        <EasemindText variant="md">Content for the selected tab</EasemindText>
       </Box>
   },
 };
@@ -52,10 +52,10 @@ export const ThreeTabs: Story = {
     onChangeTab: (id) => console.log('Selected tab:', id),
     children:
       <Box py={2}>
-        <EaseMindText variant="md">Tab content goes here</EaseMindText>
-        <EaseMindText variant="sm" sx={{ mt: 2 }}>
+        <EasemindText variant="md">Tab content goes here</EasemindText>
+        <EasemindText variant="sm" sx={{ mt: 2 }}>
           This is where you would display different content based on the selected tab.
-        </EaseMindText>
+        </EasemindText>
       </Box>
   },
 };
@@ -71,10 +71,10 @@ export const FourTabs: Story = {
     onChangeTab: (id) => console.log('Selected tab:', id),
     children:
       <Box py={2}>
-        <EaseMindText variant="lg">Welcome!</EaseMindText>
-        <EaseMindText variant="sm" sx={{ mt: 1 }}>
+        <EasemindText variant="lg">Welcome!</EasemindText>
+        <EasemindText variant="sm" sx={{ mt: 1 }}>
           Navigate between tabs to see different content.
-        </EaseMindText>
+        </EasemindText>
       </Box>
   },
 };
@@ -86,34 +86,34 @@ export const WithDynamicContent: Story = {
     const contentMap: Record<string, React.ReactNode> = {
       tab1:
         <Box py={2}>
-          <EaseMindText variant="lg">Tab 1 Content</EaseMindText>
-          <EaseMindText variant="sm" sx={{ mt: 1 }}>
+          <EasemindText variant="lg">Tab 1 Content</EasemindText>
+          <EasemindText variant="sm" sx={{ mt: 1 }}>
             This is the content for the first tab.
-          </EaseMindText>
+          </EasemindText>
         </Box>,
       tab2:
         <Box py={2}>
-          <EaseMindText variant="lg">Tab 2 Content</EaseMindText>
-          <EaseMindText variant="sm" sx={{ mt: 1 }}>
+          <EasemindText variant="lg">Tab 2 Content</EasemindText>
+          <EasemindText variant="sm" sx={{ mt: 1 }}>
             This is the content for the second tab.
-          </EaseMindText>
+          </EasemindText>
         </Box>,
       tab3:
         <Box py={2}>
-          <EaseMindText variant="lg">Tab 3 Content</EaseMindText>
-          <EaseMindText variant="sm" sx={{ mt: 1 }}>
+          <EasemindText variant="lg">Tab 3 Content</EasemindText>
+          <EasemindText variant="sm" sx={{ mt: 1 }}>
             This is the content for the third tab.
-          </EaseMindText>
+          </EasemindText>
         </Box>,
     };
 
     return (
-      <EaseMindTabs
+      <EasemindTabs
         {...args}
         onChangeTab={(id) => setSelectedTab(id)}
       >
         {contentMap[selectedTab]}
-      </EaseMindTabs>
+      </EasemindTabs>
     );
   },
   args: {

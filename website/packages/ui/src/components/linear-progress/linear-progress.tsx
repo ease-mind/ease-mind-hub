@@ -3,18 +3,18 @@ import { LinearProgress, linearProgressClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@repo/utils";
 
-interface EaseMindLinearProgressProps {
+interface EasemindLinearProgressProps {
   value?: number;
   height?: number;
   variant?: 'primary' | 'secondary'; // ← sua variante customizada
 }
 
-export function EaseMindLinearProgress({
+export function EasemindLinearProgress({
   value,
   height = 14,
   variant = 'primary', // ← padrão
   ...rest
-}: EaseMindLinearProgressProps): JSX.Element {
+}: EasemindLinearProgressProps): JSX.Element {
 
   const { colors } = useTheme();
 

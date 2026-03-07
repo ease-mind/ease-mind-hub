@@ -1,12 +1,12 @@
 import { Alert, Snackbar } from '@mui/material';
-import { EaseMindSnackbarProps } from '../../classes/models/snackbar';
+import { EasemindSnackbarProps } from '../../classes/models/snackbar';
 import { ReactElement } from 'react';
 
-export function EaseMindSnackbar({
+export function EasemindSnackbar({
   open,
   onClose,
   data,
-}: EaseMindSnackbarProps): ReactElement {
+}: EasemindSnackbarProps): ReactElement {
   return data ? (
     <>
       <Snackbar

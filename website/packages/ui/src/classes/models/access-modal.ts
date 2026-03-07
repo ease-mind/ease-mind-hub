@@ -1,6 +1,6 @@
 import { AccessModalType } from "../enums/access-modal-type.enum";
 
-export interface EaseMindAccessModalProps {
+export interface EasemindAccessModalProps {
     open: boolean;
     onClose: () => void;
     onSubmit: (data: any) => void;

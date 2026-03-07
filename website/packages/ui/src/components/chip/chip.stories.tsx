@@ -1,11 +1,11 @@
 import * as DocBlock from '@storybook/blocks';
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindChip } from './chip';
+import { EasemindChip } from './chip';
 import { Box } from '@mui/material';
 
 const meta = {
   title: 'Components/Chip',
-  component: EaseMindChip,
+  component: EasemindChip,
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -20,11 +20,11 @@ const meta = {
         </>
     }
   }
-} satisfies Meta<typeof EaseMindChip>;
+} satisfies Meta<typeof EasemindChip>;
 
 export default meta;
 
-type Story = StoryObj<typeof EaseMindChip>;
+type Story = StoryObj<typeof EasemindChip>;
 
 export const Default: Story = {
   args: {
@@ -48,10 +48,10 @@ export const LongLabel: Story = {
 export const MultipleChips: Story = {
   render: () =>
     <Box display="flex" gap={1} flexWrap="wrap">
-      <EaseMindChip label="JavaScript" onClick={() => console.log('JavaScript')} />
-      <EaseMindChip label="TypeScript" onClick={() => console.log('TypeScript')} />
-      <EaseMindChip label="React" onClick={() => console.log('React')} />
-      <EaseMindChip label="Node.js" onClick={() => console.log('Node.js')} />
-      <EaseMindChip label="MongoDB" onClick={() => console.log('MongoDB')} />
+      <EasemindChip label="JavaScript" onClick={() => console.log('JavaScript')} />
+      <EasemindChip label="TypeScript" onClick={() => console.log('TypeScript')} />
+      <EasemindChip label="React" onClick={() => console.log('React')} />
+      <EasemindChip label="Node.js" onClick={() => console.log('Node.js')} />
+      <EasemindChip label="MongoDB" onClick={() => console.log('MongoDB')} />
     </Box>
 };

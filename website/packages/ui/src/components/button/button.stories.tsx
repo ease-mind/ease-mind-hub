@@ -1,10 +1,10 @@
 import * as DocBlock from '@storybook/blocks';
 import { Meta, StoryObj } from '@storybook/react';
-import { EaseMindButton } from './button';
+import { EasemindButton } from './button';
 
 const meta = {
   title: 'Components/Button',
-  component: EaseMindButton,
+  component: EasemindButton,
   tags: ['autodocs'],
   parameters: {
          docs: {
@@ -21,11 +21,11 @@ const meta = {
           </>
       }
     }
-} satisfies Meta<typeof EaseMindButton>;
+} satisfies Meta<typeof EasemindButton>;
 
 export default meta;
 
-type Story = StoryObj<typeof EaseMindButton>;
+type Story = StoryObj<typeof EasemindButton>;
 
 export const Primary: Story = {
   args: {

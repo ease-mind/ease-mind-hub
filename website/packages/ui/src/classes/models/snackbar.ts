@@ -1,6 +1,6 @@
 import { AlertColor } from "@mui/material";
 
-export interface EaseMindSnackbarProps {
+export interface EasemindSnackbarProps {
     open: boolean; 
     onClose: () => void;
     data: SnackbarData | null;

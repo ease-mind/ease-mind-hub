@@ -1,7 +1,7 @@
 import { Meta, StoryFn } from '@storybook/react';
 import { Box, Typography } from '@mui/material';
 import * as DocBlock from '@storybook/blocks';
-import { EaseMindIllustration, EaseMindIllustrationProps } from './illustration';
+import { EasemindIllustration, EasemindIllustrationProps } from './illustration';
 
 export default {
   title: 'Design Tokens/Illustration',
@@ -22,7 +22,7 @@ export default {
             <Box display="flex" flexDirection="row" flexWrap="nowrap" alignItems="flex-end" gap={5}>
               {['not-found.svg'].map((name) => (
                 <Box key={name} display="flex" alignItems="center" flexDirection="column">
-                  <EaseMindIllustration name={name} variant="md" />
+                  <EasemindIllustration name={name} variant="md" />
                   <Typography variant="caption" style={{ marginTop: '8px' }}>
                     {name}
                   </Typography>
@@ -43,10 +43,10 @@ export default {
       options: ['auto', 'sm', 'md', 'lg'],
     },
   },
-} as Meta<typeof EaseMindIllustration>;
+} as Meta<typeof EasemindIllustration>;
 
-const createStory = (args: EaseMindIllustrationProps): StoryFn<EaseMindIllustrationProps> => {
-  const StoryComponent: StoryFn<EaseMindIllustrationProps> = (storyArgs) => <EaseMindIllustration {...storyArgs} />;
+const createStory = (args: EasemindIllustrationProps): StoryFn<EasemindIllustrationProps> => {
+  const StoryComponent: StoryFn<EasemindIllustrationProps> = (storyArgs) => <EasemindIllustration {...storyArgs} />;
   StoryComponent.args = args;
   return StoryComponent;
 };

@@ -10,7 +10,7 @@ const ThemeContext = createContext({
   isDarkMode: false,
 });
 
-export const EaseMindThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const EasemindThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [theme, setTheme] = useState(lightTheme);
   const toggleTheme = () => setIsDarkMode((prev) => !prev);

@@ -1,18 +1,18 @@
 import React from 'react';
 import Pagination, { PaginationProps } from '@mui/material/Pagination';
 
-export interface EaseMindPaginationProps extends PaginationProps {
+export interface EasemindPaginationProps extends PaginationProps {
   totalPages: number;
   currentPage: number;
   onPageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
 }
 
-export const EaseMindPagination = ({
+export const EasemindPagination = ({
   totalPages,
   currentPage,
   onPageChange,
   ...props
-}: EaseMindPaginationProps) => {
+}: EasemindPaginationProps) => {
   return (
     <Pagination
       {...props}

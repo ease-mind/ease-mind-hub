@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, Checkbox, IconButton } from '@mui/material';
 import { Delete, Add } from '@mui/icons-material';
-import { EaseMindCard, EaseMindButton } from '@repo/ui';
+import { EasemindCard, EasemindButton } from '@repo/ui';
 
 interface Task {
   id: number;
@@ -44,7 +44,7 @@ export const TaskList: React.FC = () => {
       </Typography>
       <Box display="flex" flexDirection="column" gap={2}>
         {tasks.map(task => (
-          <EaseMindCard key={task.id}>
+          <EasemindCard key={task.id}>
             <Box 
               display="flex" 
               alignItems="center" 
@@ -70,12 +70,12 @@ export const TaskList: React.FC = () => {
                 <Delete />
               </IconButton>
             </Box>
-          </EaseMindCard>
+          </EasemindCard>
         ))}
       </Box>
 
       <Box mt={3} textAlign="center">
-        <EaseMindButton
+        <EasemindButton
           onClick={addTask}
           label="Adicionar Tarefa"
           variant="contained"

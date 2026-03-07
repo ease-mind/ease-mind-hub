@@ -1,13 +1,13 @@
 import React from "react";
 import { Controller, useFormContext, RegisterOptions } from "react-hook-form";
-import { EaseMindAutoComplete } from "../auto-complete";
+import { EasemindAutoComplete } from "../auto-complete";
 
 interface OptionType {
   label: string;
   value: string;
 }
 
-interface EaseMindAutoCompleteControllerProps {
+interface EasemindAutoCompleteControllerProps {
   name: string;
   label: string;
   loading?: boolean;
@@ -16,7 +16,7 @@ interface EaseMindAutoCompleteControllerProps {
   onCreateOption?: (label: string) => Promise<void>;
 }
 
-export const EaseMindAutoCompleteController: React.FC<EaseMindAutoCompleteControllerProps> = ({
+export const EasemindAutoCompleteController: React.FC<EasemindAutoCompleteControllerProps> = ({
   name,
   label,
   loading = false,
@@ -36,7 +36,7 @@ export const EaseMindAutoCompleteController: React.FC<EaseMindAutoCompleteContro
           options.find((option) => option.value === field.value) || null;
 
         return (
-          <EaseMindAutoComplete
+          <EasemindAutoComplete
             label={label}
             loading={loading}
             options={options}

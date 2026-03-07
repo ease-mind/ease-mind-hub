@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Box, Typography, Radio, Button, Alert, CircularProgress, Chip } from '@mui/material';
 import { Warning, Cancel, Lightbulb, TrendingUp, Loop, ArrowBack, ArrowForward } from '@mui/icons-material';
-import { EaseMindCard, EaseMindText } from '@repo/ui';
+import { EasemindCard, EasemindText } from '@repo/ui';
 import { useTheme } from '@repo/utils';
 import { 
   getAllSymptoms, 
@@ -14,9 +14,9 @@ import {
 } from '@repo/data-access';
 import './thermometer.scss';
 
-interface EaseMindThermometerProps { }
+interface EasemindThermometerProps { }
 
-const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
+const EasemindThermometerPage: FC<EasemindThermometerProps> = () => {
   const { colors, isDarkMode } = useTheme();
   const { user } = useUser();
   const { settings } = useCognitiveSettings();
@@ -198,7 +198,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
     const categorySymptoms = symptoms.filter(s => s.category === category.key);
 
     return (
-      <EaseMindCard>
+      <EasemindCard>
         <Box p={spacing.card}>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={spacing.gap}>
             <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1}>
@@ -282,14 +282,14 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
             ))}
           </Box>
         </Box>
-      </EaseMindCard>
+      </EasemindCard>
     );
   };
 
   const renderComplexContent = () => {
     return (
       <>
-        <EaseMindCard>
+        <EasemindCard>
           <Box p={spacing.card}>
             <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={spacing.gap}>
               <Cancel sx={{ color: colors['coral.500'] }} /> Falha na Comunicação
@@ -320,9 +320,9 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
               ))}
             </Box>
           </Box>
-        </EaseMindCard>
+        </EasemindCard>
 
-        <EaseMindCard>
+        <EasemindCard>
           <Box p={spacing.card}>
             <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={spacing.gap}>
               <Lightbulb sx={{ color: '#FFC107' }} /> Sintomas Físicos
@@ -353,9 +353,9 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
               ))}
             </Box>
           </Box>
-        </EaseMindCard>
+        </EasemindCard>
 
-        <EaseMindCard>
+        <EasemindCard>
           <Box p={spacing.card}>
             <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1} mb={spacing.gap}>
               <TrendingUp sx={{ color: '#2196F3' }} /> Aumento de Estereotipias
@@ -386,7 +386,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
               ))}
             </Box>
           </Box>
-        </EaseMindCard>
+        </EasemindCard>
       </>
     );
   };
@@ -441,7 +441,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
 
         <Box display="grid" gridTemplateColumns="1fr 2fr" gap={spacing.gap} sx={{ gridTemplateColumns: { xs: '1fr', sm: '1fr', md: '1fr 2fr' }}}>
           <Box>
-            <EaseMindCard>
+            <EasemindCard>
               <Box p={spacing.card} display="flex" flexDirection="column" alignItems="center" gap={spacing.gap}>
                 <Box position="relative" width="200px" height="450px">
                   <Box
@@ -539,7 +539,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                         minWidth="30px"
                         textAlign="center"
                       >
-                        <EaseMindText color={colors['coral.100']}>{getCategoryCount('communication')}</EaseMindText>
+                        <EasemindText color={colors['coral.100']}>{getCategoryCount('communication')}</EasemindText>
                       </Box>
                     </Box>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={spacing.small} pb={2}>
@@ -552,7 +552,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                         minWidth="30px"
                         textAlign="center"
                       >
-                        <EaseMindText color={colors['coral.100']}>{getCategoryCount('physical')}</EaseMindText>
+                        <EasemindText color={colors['coral.100']}>{getCategoryCount('physical')}</EasemindText>
                       </Box>
                     </Box>
                     <Box display="flex" justifyContent="space-between" alignItems="center" pb={2}>
@@ -564,7 +564,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                         minWidth="30px"
                         textAlign="center"
                       >
-                        <EaseMindText color={colors['coral.100']}>{getCategoryCount('stereotypies')}</EaseMindText>
+                        <EasemindText color={colors['coral.100']}>{getCategoryCount('stereotypies')}</EasemindText>
                       </Box>
                     </Box>
                   </Box>
@@ -588,7 +588,7 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
                   </Button>
                 </Box>
               </Box>
-            </EaseMindCard>
+            </EasemindCard>
           </Box>
 
           <Box display="flex" flexDirection="column" gap={spacing.gap}>
@@ -600,4 +600,4 @@ const EaseMindThermometerPage: FC<EaseMindThermometerProps> = () => {
   );
 };
 
-export default EaseMindThermometerPage;
+export default EasemindThermometerPage;
