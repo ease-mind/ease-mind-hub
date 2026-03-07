@@ -9,11 +9,9 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "easemind.laconicamente.com"
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
       "package": "easemind.laconicamente.com",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
@@ -29,9 +27,6 @@
     "plugins": [
       "expo-router",
       "expo-image-picker",
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth",
-      "@react-native-firebase/crashlytics",
       [
         "expo-splash-screen",
         {
