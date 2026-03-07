@@ -210,8 +210,8 @@ export default function ThermometerScreen() {
         }}
       />
       <ScreenFadeIn>
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scrollContent, { paddingBottom: TAB_BAR_HEIGHT + insets.bottom + 24 }]}>
-        <View style={[styles.thermometerSection, { marginTop: spacing, paddingVertical: spacing, paddingHorizontal: spacing * 2 }]}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scrollContent, { paddingTop: spacing * 2, paddingBottom: TAB_BAR_HEIGHT + insets.bottom + 24 }]}>
+        <View style={[styles.thermometerSection, { paddingVertical: spacing * 2, paddingHorizontal: spacing * 2 }]}>
           <View style={[styles.thermometerContainer, { marginBottom: spacing / 2 }]}>
             <View style={[styles.thermometerBackground, { backgroundColor: themeColors.sliderTrack }]} />
 
@@ -244,8 +244,8 @@ export default function ThermometerScreen() {
              'Considere fazer uma pausa e praticar técnicas de relaxamento'}
           </Text>
 
-          <View style={[styles.symptomCountContainer, { marginTop: spacing / 2 }]}>
-            <Text style={[styles.symptomCount, { fontSize, color: themeColors.textPrimary, fontWeight: '600', lineHeight: fontSize + spacing }]}>{selectedSymptoms.length} sintomas identificados</Text>
+          <View style={[styles.symptomCountContainer, { marginTop: spacing / 2, flexDirection: 'column', alignItems: 'center', gap: spacing }]}>
+            <Text style={[styles.symptomCount, { fontSize, color: themeColors.textPrimary, fontWeight: '600', lineHeight: fontSize + spacing, textAlign: 'center' }]}>{selectedSymptoms.length} sintomas identificados</Text>
             
             {selectedSymptoms.length > 0 && (
               <TouchableOpacity onPress={handleReset} style={[styles.resetButton, { paddingHorizontal: spacing * 2, paddingVertical: spacing, backgroundColor: themeColors.accent }]}>
@@ -360,8 +360,7 @@ const styles = StyleSheet.create({
   },
   thermometerSection: {
     alignItems: 'center',
-    marginTop: 20,
-    paddingVertical: 32,
+    paddingVertical: 40,
     paddingHorizontal: 20,
   },
   thermometerContainer: {
@@ -431,11 +430,12 @@ const styles = StyleSheet.create({
     color: '#1F2937',
   },
   symptomCountContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     marginTop: 16,
     width: '100%',
+    gap: 12,
   },
   resetButton: {
     flexDirection: 'row',
