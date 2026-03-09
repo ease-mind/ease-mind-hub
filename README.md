@@ -14,6 +14,35 @@ Plataforma de saúde mental e cognitiva para pessoas neurodivergentes (TDAH, aut
 
 ---
 
+## Arquitetura
+
+### Clean Architecture + Microfrontends
+
+O website implementa Clean Architecture através de camadas isoladas, permitindo escalabilidade e manutenção independente:
+
+```
+packages/data-access/
+├── domain/
+│   ├── entities/          # Modelos de negócio (Task, User, Symptom)
+│   ├── repositories/      # Interfaces de contrato
+│   └── use-cases/         # Lógica de aplicação pura
+├── infrastructure/
+│   ├── api/               # HTTP clients (Axios)
+│   ├── repositories/      # Implementações concretas
+│   └── factories/         # Injeção de dependências
+└── presentation/
+    └── hooks/             # Adaptadores React (useTask, useAuth)
+```
+
+**Microfrontends** via Module Federation (Webpack 5):
+- `apps/easemind-web`: Shell principal, gerencia roteamento e autenticação
+- `apps/mfe-tasks`: Domínio de tarefas isolado, expõe `/tasks` via remote entry
+- `packages/ui`: Design system compartilhado entre MFEs
+
+**Inversão de Dependências**: Use cases dependem de abstrações (`ITaskRepository`), não de implementações. Factories resolvem dependências em tempo de execução.
+
+---
+
 ## Estrutura
 
 ```
