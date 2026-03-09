@@ -26,7 +26,11 @@ export default defineConfig({
     pluginReact(),
     pluginSvgr({ mixedImport: true }),
     pluginModuleFederation(mfConfig),
-    pluginSass(),
+    pluginSass({
+      sassLoaderOptions: {
+        api: 'modern-compiler',
+      },
+    }),
   ],
   source: {
     // Compile all JS files and exclude core-js

@@ -15,9 +15,11 @@
     "devDependencies": {
         "@repo/eslint-config": "*",
         "@repo/typescript-config": "*",
+        "@types/jest": "29.5.12",
+        "@types/minimatch": "^6.0.0",
+        "@types/node": "^25.4.0",
         "@types/react": "19.0.0",
         "@types/react-dom": "19.0.0",
-        "@types/minimatch": "^6.0.0",
         "eslint": "^9.28.0",
         "ts-node": "10.9.1",
         "tslib": "^2.3.0",

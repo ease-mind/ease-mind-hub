@@ -1,6 +1,6 @@
 # EaseMind Hub
 
-Plataforma de saúde mental e cognitiva para pessoas neurodivergentes (TDAH, autismo e outras condições). Composta por uma **API RESTful**, **aplicação mobile** (React Native + Expo) e **website** (Next.js + TurboRepo).
+Plataforma de saúde mental e cognitiva para pessoas neurodivergentes (TDAH, autismo e outras condições). Composta por uma **API RESTful**, **aplicação mobile** (React Native + Expo) e **website** (React + TurboRepo).
 
 ---
 
@@ -10,7 +10,7 @@ Plataforma de saúde mental e cognitiva para pessoas neurodivergentes (TDAH, aut
 |--------|------------|
 | **API** | Node.js, Express, TypeScript, MongoDB, JWT, Swagger, Multer |
 | **Mobile** | React Native, Expo SDK 54, TypeScript, React Navigation, React Hook Form, AsyncStorage |
-| **Website** | Next.js 14, TypeScript, Material-UI, TurboRepo, Storybook |
+| **Website** | React, TypeScript, Material-UI, TurboRepo, Storybook |
 
 ---
 
