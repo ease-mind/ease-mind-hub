@@ -2,7 +2,7 @@ import { useSymptom, SymptomEntity, UserSymptomRecordEntity } from '@/data-acces
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
 import { useCognitiveSettings, useAuth } from '@/data-access';
 import { EasemindButton } from '@/shared/ui/Button';
-import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 

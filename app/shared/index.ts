@@ -25,7 +25,6 @@ export * from './hooks/useFeedbackAnimation';
 export * from './hooks/useThemeColor';
 export * from './hooks/useUploadFile';
 export * from './i18n/datePickerLocale';
-export * from './types/tasks';
 export * from './ui/Button';
 export * from './ui/Card';
 export * from './ui/Drawer';
