@@ -4,9 +4,10 @@ import React, { createContext, ReactNode, useCallback, useContext, useEffect, us
 import { themeColorsNormal, themeColorsLow, themeColorsHigh, ThemeColors } from '@/shared/classes/constants/themeColors';
 import { useCognitiveSettingsData } from '../hooks/use-cognitive-settings-data.hook';
 import { useAuth } from './auth.context';
+import { CognitiveSettingsEntity } from '../../domain/entities/cognitive-settings.entity';
 
-export type ComplexityMode = 'simple' | 'complete';
-export type ContrastMode = 'low' | 'normal' | 'high';
+export type ComplexityMode = CognitiveSettingsEntity['complexity'];
+export type ContrastMode = CognitiveSettingsEntity['contrast'];
 
 export type CognitiveSettingsState = {
   complexity: ComplexityMode;
