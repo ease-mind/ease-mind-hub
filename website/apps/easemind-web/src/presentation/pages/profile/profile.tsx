@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { Box, Container } from '@mui/material';
 import { EasemindCard, EasemindButton, EasemindText, SnackbarData, EasemindIllustration, EasemindInputController, EasemindSnackbar, EasemindSelectController } from '@repo/ui';
 import { formatCPF, useTheme, validateCPF } from '@repo/utils';
-import { getUserAddress, STATES_LIST, updateUser, updateUserProfileImage, useUser } from '@repo/data-access';
+import { STATES_LIST, updateUser, updateUserProfileImage, useUser, useAddress, AddressEntity } from '@repo/data-access';
 import { FormProvider, useForm } from 'react-hook-form';
 import CameraEnhanceRoundedIcon from '@mui/icons-material/CameraEnhanceRounded';
 import "./profile.scss";
@@ -25,6 +25,7 @@ const EasemindProfilePage: FC<EasemindProfileProps> = () => {
     const [hasUserImage, setHasUserImage] = useState(false);
     const { isDarkMode, colors } = useTheme();
     const { user, setUser } = useUser();
+    const { getUserAddress, loading: addressLoading } = useAddress();
     const [snackbarData, setSnackbarData] = useState<SnackbarData | null>(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [isLoading, setLoading] = useState(false);
@@ -143,21 +144,33 @@ const EasemindProfilePage: FC<EasemindProfileProps> = () => {
     const getData = async () => {
         if (!user) return;
         setHasUserImage(!!user?.image)
-        const { data } = await getUserAddress(user._id)
-
-        userMethods.reset({
-            name: user?.name || '',
-            email: user?.email || '',
-            document: user?.document || '',
-            address: data?.address,
-            city: data?.city,
-            state: data?.state,
-            complement: data?.complement,
-        })
+        
+        try {
+            const addressData = await getUserAddress(user._id);
+            
+            userMethods.reset({
+                name: user?.name || '',
+                email: user?.email || '',
+                document: user?.document || '',
+                address: addressData?.address || '',
+                city: addressData?.city || '',
+                state: addressData?.state || '',
+                complement: addressData?.complement || '',
+            });
+        } catch (err) {
+            userMethods.reset({
+                name: user?.name || '',
+                email: user?.email || '',
+                document: user?.document || '',
+                address: '',
+                city: '',
+                state: '',
+                complement: '',
+            });
+        }
     };
 
     useEffect(() => {
-
         getData();
     }, [user, userMethods]);
 
@@ -343,7 +356,7 @@ const EasemindProfilePage: FC<EasemindProfileProps> = () => {
                                         label="Alterar dados"
                                         color="primary"
                                         variant="contained"
-                                        loading={isLoading}
+                                        loading={isLoading || addressLoading}
                                         borderRadius="8px"
 								sx={{
 									borderColor: colors["coral.100"],
