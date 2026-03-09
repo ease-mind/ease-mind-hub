@@ -184,19 +184,6 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
         return selectedSymptoms.filter((id) => symptoms.find((s) => s.id === id)?.category === category).length;
     };
 
-    const getCategoryIcon = (category: string) => {
-        switch (category) {
-            case 'communication':
-                return <MaterialIcons name="cancel" size={24} color={ColorsPalette.light['coral.500']} />;
-            case 'physical':
-                return <Feather name="zap" size={24} color="#FFC107" />;
-            case 'stereotypies':
-                return <MaterialCommunityIcons name="chart-line" size={24} color="#2196F3" />;
-            default:
-                return null;
-        }
-    };
-
     const getCategoryTitle = (category: string) => {
         switch (category) {
             case 'communication':
@@ -305,7 +292,6 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
                                 {currentSymptom && (
                                     <>
                                         <View style={styles.categoryBadge}>
-                                            {getCategoryIcon(currentSymptom.category)}
                                             <Text style={styles.categoryText}>{getCategoryTitle(currentSymptom.category)}</Text>
                                         </View>
 
@@ -339,7 +325,6 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
                         <ScrollView style={[styles.listContainer, { paddingHorizontal: spacing * 2, paddingTop: spacing * 2 }]} showsVerticalScrollIndicator={false}>
                             <View style={[styles.categorySection, { marginBottom: spacing * 3 }]}>
                                 <View style={[styles.categorySectionHeader, { gap: spacing, marginBottom: spacing * 2 }]}>
-                                    <MaterialIcons name="cancel" size={fontSize * 1.5} color={ColorsPalette.light['coral.500']} />
                                     <Text style={[styles.categorySectionTitle, { fontSize: fontSize + 4, color: themeColors.textPrimary, fontWeight: contrastStyles.fontWeight }]}>Falha na Comunicação</Text>
                                 </View>
                                 <View style={[styles.symptomsGrid, { gap: spacing }]}>
@@ -385,7 +370,6 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
 
                             <View style={[styles.categorySection, { marginBottom: spacing * 3 }]}>
                                 <View style={[styles.categorySectionHeader, { gap: spacing, marginBottom: spacing * 2 }]}>
-                                    <Feather name="zap" size={fontSize * 1.5} color="#FFC107" />
                                     <Text style={[styles.categorySectionTitle, { fontSize: fontSize + 4, color: themeColors.textPrimary, fontWeight: contrastStyles.fontWeight }]}>Sintomas Físicos</Text>
                                 </View>
                                 <View style={[styles.symptomsGrid, { gap: spacing }]}>
@@ -431,7 +415,6 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
 
                             <View style={[styles.categorySection, { marginBottom: spacing * 3 }]}>
                                 <View style={[styles.categorySectionHeader, { gap: spacing, marginBottom: spacing * 2 }]}>
-                                    <MaterialCommunityIcons name="chart-line" size={fontSize * 1.5} color="#2196F3" />
                                     <Text style={[styles.categorySectionTitle, { fontSize: fontSize + 4, color: themeColors.textPrimary, fontWeight: contrastStyles.fontWeight }]}>Aumento de Estereotipias</Text>
                                 </View>
                                 <View style={[styles.symptomsGrid, { gap: spacing }]}>

@@ -273,7 +273,6 @@ export default function ThermometerScreen() {
                 }
               ]}>
                 <View style={[styles.categoryHeader, { gap: spacing }]}>
-                  <MaterialIcons name="cancel" size={fontSize * 1.5} color={themeColors.accent} />
                   <View style={styles.categoryInfo}>
                     <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing, fontWeight: contrastStyles.fontWeight }]}>Falha na Comunicação</Text>
                   </View>
@@ -296,7 +295,6 @@ export default function ThermometerScreen() {
                 }
               ]}>
                 <View style={[styles.categoryHeader, { gap: spacing }]}>
-                  <Feather name="zap" size={fontSize * 1.5} color="#FFC107" />
                   <View style={styles.categoryInfo}>
                     <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing, fontWeight: contrastStyles.fontWeight }]}>Sintomas Físicos</Text>
                   </View>
@@ -319,7 +317,6 @@ export default function ThermometerScreen() {
                 }
               ]}>
                 <View style={[styles.categoryHeader, { gap: spacing }]}>
-                  <MaterialCommunityIcons name="chart-line" size={fontSize * 1.5} color="#2196F3" />
                   <View style={styles.categoryInfo}>
                     <Text style={[styles.categoryTitle, { fontSize, color: themeColors.textPrimary, marginBottom: spacing / 2, lineHeight: fontSize + spacing, fontWeight: contrastStyles.fontWeight }]}>Aumento de Estereotipias</Text>
                   </View>
