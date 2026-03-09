@@ -1,9 +1,8 @@
 import * as DocumentPicker from "expo-document-picker";
 import { launchImageLibraryAsync, requestMediaLibraryPermissionsAsync } from "expo-image-picker";
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { useState } from "react";
 import { Alert } from "react-native";
-import { ProgressBar } from "react-native-paper";
+import { api } from "@/data-access";
 
 const handleUploadFile = async (type: 'image' | 'file') => {
     if (type === 'image') {
@@ -34,48 +33,56 @@ const handleUploadFile = async (type: 'image' | 'file') => {
 
 export const useUploadFile = () => {
     const [uploadProgress, setUploadProgress] = useState(0);
-    const [isProgressVisible, setIsProgressVisible] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
 
-    const uploadFile = async (type: 'image' | 'file', storageUrl: string) => {
+    const uploadFile = async (type: 'image' | 'file', uploadEndpoint: string = '/upload') => {
         try {
             const selectedFile = await handleUploadFile(type);
             if (!selectedFile) return;
 
+            setIsUploading(true);
             setUploadProgress(0);
-            setIsProgressVisible(true);
 
-            const sourceUri = selectedFile?.uri;
-            const storage = getStorage();
-            const filename = sourceUri.substring(sourceUri.lastIndexOf('/') + 1);
+            const formData = new FormData();
+            const fileName = 'name' in selectedFile && selectedFile.name 
+                ? selectedFile.name 
+                : `${type}-${Date.now()}.${type === 'image' ? 'jpg' : 'pdf'}`;
+            
+            const file = {
+                uri: selectedFile.uri,
+                type: selectedFile.mimeType || (type === 'image' ? 'image/jpeg' : 'application/pdf'),
+                name: fileName,
+            };
 
-            const uploadPath = `${storageUrl}/${Date.now()}-${filename}`;
+            formData.append('file', file as any);
 
-            const referenceBlob = ref(storage, uploadPath);
-            const response = await fetch(sourceUri);
-            const blob = await response.blob();
-            const task = uploadBytesResumable(referenceBlob, blob);
-
-            task.on('state_changed', (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                setUploadProgress(progress);
+            const response = await api.post(uploadEndpoint, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress: (progressEvent) => {
+                    if (progressEvent.total) {
+                        const progress = (progressEvent.loaded / progressEvent.total) * 100;
+                        setUploadProgress(progress);
+                    }
+                },
             });
 
-            await task;
-            return await getDownloadURL(referenceBlob);
+            return response.data.url || response.data.fileUrl;
         } catch (error: any) {
             if (error && error?.message?.includes('user canceled')) {
                 console.log('Seleção de arquivo cancelada');
             } else {
+                console.error('Upload error:', error);
                 Alert.alert("Erro", "Não foi possível enviar o arquivo. Tente novamente.");
             }
+            throw error;
         } finally {
             setUploadProgress(0);
-            setIsProgressVisible(false);
+            setIsUploading(false);
         }
     }
 
-    const UploadProgressBar = () => <ProgressBar progress={uploadProgress} visible={isProgressVisible} />;
-
-    return { uploadProgress, isProgressVisible, uploadFile, UploadProgressBar };
+    return { uploadProgress, isUploading, uploadFile };
 }
 

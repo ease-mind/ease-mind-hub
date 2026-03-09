@@ -9,7 +9,7 @@ import {
   SettingsCard,
   SliderRow,
 } from '@/shared/components/settings';
-import { useCognitiveSettings } from '@/shared/contexts';
+import { useCognitiveSettings, useCognitiveSettingsData } from '@/data-access';
 import { Stack } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
@@ -19,9 +19,6 @@ import { EasemindButton } from '@/shared/ui/Button';
 import {
   CognitiveContrast,
   CognitiveSettingsData,
-  getCognitiveSettings,
-  resetCognitiveSettings,
-  updateCognitiveSettings,
 } from '@/shared/services/cognitiveSettingsService';
 
 type ComplexityLevel = 'simples' | 'completo';
@@ -74,6 +71,7 @@ const TAB_BAR_HEIGHT = 64 + 24;
 export default function ConfigScreen() {
   const insets = useSafeAreaInsets();
   const { themeColors, spacing, updateState: updateContextState, loadSettings } = useCognitiveSettings();
+  const { getSettings, updateSettings, resetSettings, loading: apiLoading } = useCognitiveSettingsData();
   const [complexidade, setComplexidade] = useState<ComplexityLevel>('completo');
   const [contraste, setContraste] = useState<ContrastLevel>('normal');
   const [espacamento, setEspacamento] = useState<12 | 14 | 18>(12);
@@ -111,21 +109,17 @@ export default function ConfigScreen() {
     return 18;
   };
 
-  const applyBackendSettings = (settings: CognitiveSettingsData) => {
-    setComplexidade(mapComplexityFromBackend(settings.complexity));
-    setContraste(mapContrastFromBackend(settings.contrast));
-    setEspacamento(normalizeSpacing(Number(settings.spacing) || 12));
-    setTamanhoFonte(normalizeFontSize(Number(settings.fontSize) || 14));
-  };
-
   useEffect(() => {
     let isMounted = true;
 
     const fetchSettings = async () => {
       try {
-        const settings = await getCognitiveSettings();
+        const settings = await getSettings();
         if (!isMounted) return;
-        applyBackendSettings(settings);
+        setComplexidade(mapComplexityFromBackend(settings.complexity));
+        setContraste(mapContrastFromBackend(settings.contrast));
+        setEspacamento(normalizeSpacing(Number(settings.spacing) || 12));
+        setTamanhoFonte(normalizeFontSize(Number(settings.fontSize) || 14));
       } catch {
         Alert.alert(
           'Erro',
@@ -141,20 +135,23 @@ export default function ConfigScreen() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [getSettings]);
 
   const handleSave = async () => {
     try {
       setSaving(true);
-      const payload: Partial<CognitiveSettingsData> = {
+      const payload = {
         complexity: mapComplexityToBackend(complexidade),
         contrast: mapContrastToBackend(contraste),
         spacing: espacamento,
         fontSize: tamanhoFonte,
       };
 
-      const updated = await updateCognitiveSettings(payload);
-      applyBackendSettings(updated);
+      const updated = await updateSettings(payload);
+      setComplexidade(mapComplexityFromBackend(updated.complexity));
+      setContraste(mapContrastFromBackend(updated.contrast));
+      setEspacamento(normalizeSpacing(Number(updated.spacing) || 12));
+      setTamanhoFonte(normalizeFontSize(Number(updated.fontSize) || 14));
       updateContextState({
         complexity: mapComplexityToBackend(complexidade),
         contrast: mapContrastToBackend(contraste),
@@ -176,8 +173,11 @@ export default function ConfigScreen() {
   const handleReset = async () => {
     try {
       setResetting(true);
-      const settings = await resetCognitiveSettings();
-      applyBackendSettings(settings);
+      const settings = await resetSettings();
+      setComplexidade(mapComplexityFromBackend(settings.complexity));
+      setContraste(mapContrastFromBackend(settings.contrast));
+      setEspacamento(normalizeSpacing(Number(settings.spacing) || 12));
+      setTamanhoFonte(normalizeFontSize(Number(settings.fontSize) || 14));
       updateContextState({
         complexity: settings.complexity,
         contrast: settings.contrast,

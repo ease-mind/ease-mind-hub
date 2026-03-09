@@ -3,7 +3,7 @@ import { render, act } from '@testing-library/react-native';
 import { router } from 'expo-router';
 
 import SplashScreen from '@/app/splash';
-import { useAuth } from '@/shared/contexts';
+import { useAuth } from '@/data-access';
 
 jest.mock('expo-router', () => ({
   router: {

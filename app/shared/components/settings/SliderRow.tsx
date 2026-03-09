@@ -1,4 +1,4 @@
-import { useCognitiveSettings } from '@/shared/contexts';
+import { useCognitiveSettings } from '@/data-access';
 import Slider from '@react-native-community/slider';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';

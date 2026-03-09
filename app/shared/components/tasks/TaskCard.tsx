@@ -1,5 +1,5 @@
-import { useCognitiveSettings } from '@/shared/contexts';
-import { Task, PRIORITY_LABELS } from '@/shared/types/tasks';
+import { useCognitiveSettings } from '@/data-access';
+import { Task, PRIORITY_LABELS } from '@/data-access';
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';

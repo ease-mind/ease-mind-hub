@@ -1,4 +1,4 @@
-import { useCognitiveSettings } from '@/shared/contexts';
+import { useCognitiveSettings } from '@/data-access';
 import React, { useEffect } from 'react';
 import {
   StyleSheet,

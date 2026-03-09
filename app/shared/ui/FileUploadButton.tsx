@@ -1,4 +1,4 @@
-import { useAuth } from '@/shared/contexts';
+import { useAuth } from '@/data-access';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -13,7 +13,8 @@ interface FileUploadButtonProps {
 export const FileUploadButton: React.FC<FileUploadButtonProps> = ({ label, onFinished }) => {
   const { user } = useAuth();
   const [isFinished, setIsFinished] = useState(false);
-  const { isProgressVisible, uploadFile } = useUploadFile();
+  const [isProgressVisible, setIsProgressVisible] = useState(false);
+  const { uploadFile } = useUploadFile();
   const [downloadURL, setDownloadURL] = useState<string | null>(null);
   const [disabled, setDisabled] = useState(false);
 
@@ -24,6 +25,7 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({ label, onFin
     }
 
     try {
+      setIsProgressVisible(true);
       const downloadURL = await uploadFile('file', `users/${user?._id}`);
       if (!downloadURL) return;
 
@@ -37,6 +39,7 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({ label, onFin
         Alert.alert("Erro", "Não foi possível enviar o arquivo. Tente novamente.");
       }
     } finally {
+      setIsProgressVisible(false);
       setIsFinished(true);
     }
   };

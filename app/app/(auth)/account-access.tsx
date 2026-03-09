@@ -1,4 +1,4 @@
-import { useAuth } from '@/shared/contexts';
+import { useAuth } from '@/data-access';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
 import { EasemindButton } from '@/shared/ui/Button';
 import { EasemindInputController } from '@/shared/ui/Input/InputController';

@@ -1,4 +1,4 @@
-import { CognitiveSettingsProvider, useAuth } from '@/shared/contexts';
+import { CognitiveSettingsProvider, useAuth } from '@/data-access';
 import { EasemindTabBar } from '@/shared/ui/TabBar';
 import { Tabs } from 'expo-router';
 import { Platform } from 'react-native';

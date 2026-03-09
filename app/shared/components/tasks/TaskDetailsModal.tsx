@@ -1,5 +1,5 @@
-import { useCognitiveSettings } from '@/shared/contexts';
-import { Subtask, Task, PRIORITY_LABELS } from '@/shared/types/tasks';
+import { useCognitiveSettings } from '@/data-access';
+import { Subtask, Task, PRIORITY_LABELS } from '@/data-access';
 import { Feather } from '@expo/vector-icons';
 import React, { useMemo, useState } from 'react';
 import {

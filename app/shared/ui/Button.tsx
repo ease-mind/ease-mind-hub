@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { ActivityIndicator, StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
 import { ColorsPalette } from "../classes/constants/Pallete";
-import { useCognitiveSettings } from "../contexts";
+import { useCognitiveSettings } from "@/data-access";
 
 export interface EasemindButtonProps {
     variant?: 'primary' | 'secondary' | 'outlined' | 'ghost';

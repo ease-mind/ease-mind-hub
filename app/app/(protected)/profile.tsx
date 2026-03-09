@@ -1,4 +1,4 @@
-import { useAuth, useCognitiveSettings } from '@/shared/contexts';
+import { useAuth, useCognitiveSettings } from '@/data-access';
 import { ScreenHeader, ScreenFadeIn } from '@/shared/components';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
 import { maskDocument } from '@/shared/helpers/maskDocument';
@@ -17,7 +17,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 const ProfileScreen = () => {
     const insets = useSafeAreaInsets();
-    const { user, updateUser, updateUserProfileImage, logout } = useAuth();
+    const { user, logout, updateUser, updateUserProfileImage } = useAuth();
     const { themeColors, spacing, fontSize, contrast } = useCognitiveSettings();
     const { showFeedback, FeedbackAnimation } = useFeedbackAnimation();
     
@@ -91,7 +91,11 @@ const ProfileScreen = () => {
     const handleSaveProfile = async (data: { name: string, email: string, document: string }) => {
         try {
             setIsSaving(true);
-            await updateUser({ name: data.name, email: data.email, document: data.document });
+            await updateUser({ 
+                name: data.name, 
+                email: data.email, 
+                document: data.document 
+            });
             showFeedback("success");
             setIsEditing(false);
         } catch (error) {

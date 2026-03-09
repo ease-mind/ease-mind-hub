@@ -1,4 +1,4 @@
-import { useCognitiveSettings } from '@/shared/contexts';
+import { useCognitiveSettings } from '@/data-access';
 import { Href, useRouter, useSegments } from 'expo-router';
 import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';

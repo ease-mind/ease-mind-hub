@@ -1,4 +1,4 @@
-import { useAuth } from '@/shared/contexts';
+import { useAuth } from '@/data-access';
 import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';

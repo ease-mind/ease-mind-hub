@@ -1,6 +1,6 @@
-import { useAuth, symptomService, Symptom, UserSymptomRecord } from '@/shared';
+import { useSymptom, SymptomEntity, UserSymptomRecordEntity } from '@/data-access';
 import { ColorsPalette } from '@/shared/classes/constants/Pallete';
-import { useCognitiveSettings } from '@/shared/contexts';
+import { useCognitiveSettings, useAuth } from '@/data-access';
 import { EasemindButton } from '@/shared/ui/Button';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
@@ -15,7 +15,8 @@ interface ThermometerModalProps {
 export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onClose, onSave }) => {
     const { user } = useAuth();
     const { themeColors, fontSize, spacing, contrast, complexity } = useCognitiveSettings();
-    const [symptoms, setSymptoms] = useState<Symptom[]>([]);
+    const { getAllSymptoms, saveUserSymptoms, getLatestUserSymptoms, loading: symptomLoading } = useSymptom();
+    const [symptoms, setSymptoms] = useState<SymptomEntity[]>([]);
     const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -59,7 +60,7 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
     const loadSymptoms = async () => {
         setLoading(true);
         try {
-            const data = await symptomService.getAll();
+            const data = await getAllSymptoms();
             setSymptoms(Array.isArray(data) ? data : []);
         } catch (err) {
             console.error('Erro ao carregar sintomas:', err);
@@ -72,7 +73,7 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
     const loadUserSymptoms = async () => {
         if (!user?._id) return;
         try {
-            const result = await symptomService.getLatestUserSymptoms(user._id);
+            const result = await getLatestUserSymptoms(user._id);
             if (result?.selectedSymptoms) {
                 setSelectedSymptoms(result.selectedSymptoms);
             }
@@ -103,7 +104,7 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
         if (!user?._id) return;
 
         setSaving(true);
-        const data: UserSymptomRecord = {
+        const data: UserSymptomRecordEntity = {
             userId: user._id,
             selectedSymptoms,
             temperature: getTemperature(),
@@ -117,7 +118,7 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
         };
 
         try {
-            await symptomService.saveUserSymptoms(data);
+            await saveUserSymptoms(data);
             setCurrentQuestionIndex(0);
             onSave?.();
             onClose();
@@ -138,7 +139,7 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
         if (!user?._id) return;
 
         setSaving(true);
-        const data: UserSymptomRecord = {
+        const data: UserSymptomRecordEntity = {
             userId: user._id,
             selectedSymptoms,
             temperature: getTemperature(),
@@ -152,7 +153,7 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
         };
 
         try {
-            await symptomService.saveUserSymptoms(data);
+            await saveUserSymptoms(data);
             onSave?.();
             onClose();
         } catch (err) {

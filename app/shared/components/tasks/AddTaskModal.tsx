@@ -1,5 +1,5 @@
-import { useCognitiveSettings } from '@/shared/contexts';
-import { Priority, PRIORITY_LABELS, CATEGORY_OPTIONS, Task } from '@/shared/types/tasks';
+import { useCognitiveSettings } from '@/data-access';
+import { Priority, PRIORITY_LABELS, CATEGORY_OPTIONS, Task, Category } from '@/data-access';
 import React, { useMemo, useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -32,13 +32,12 @@ const PRIORITIES: Priority[] = ['alta', 'media', 'baixa'];
 export function AddTaskModal({ visible, onClose, onAdd, editingTask }: AddTaskModalProps) {
   const { themeColors, spacing, fontSize } = useCognitiveSettings();
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<(typeof CATEGORY_OPTIONS)[number]>(CATEGORY_OPTIONS[0]);
+  const [category, setCategory] = useState<Category>(CATEGORY_OPTIONS[0]);
   const [priority, setPriority] = useState<Priority>('alta');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [priorityOpen, setPriorityOpen] = useState(false);
 
-  // Pre-fill form when editing
   React.useEffect(() => {
     if (editingTask) {
       setTitle(editingTask.title);

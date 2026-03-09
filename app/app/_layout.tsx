@@ -1,5 +1,5 @@
-import { AuthProvider } from '@/shared/contexts';
-import { CognitiveSettingsProvider } from '@/shared';
+import { AuthProvider } from '@/data-access';
+import { CognitiveSettingsProvider } from '@/data-access';
 import { PaperDarkTheme, PaperLightTheme } from '@/shared/classes/constants/Colors';
 import { useColorScheme } from '@/shared/hooks/useColorScheme';
 import '@/shared/i18n/datePickerLocale';

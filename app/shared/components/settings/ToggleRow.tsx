@@ -1,4 +1,4 @@
-import { useCognitiveSettings } from '@/shared/contexts';
+import { useCognitiveSettings } from '@/data-access';
 import React from 'react';
 import { Platform, StyleSheet, Switch, Text, View } from 'react-native';
 

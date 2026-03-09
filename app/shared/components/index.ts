@@ -1,6 +1,6 @@
-export * from './Header/AppHeader';
-export * from './Header/ProtectedHeader';
-export * from './Header/ScreenHeader';
+export * from './headers/AppHeader';
+export * from './headers/ProtectedHeader';
+export * from './headers/ScreenHeader';
 export * from './ScreenFadeIn';
 export * from './ThermometerModal';
 

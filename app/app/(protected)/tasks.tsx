@@ -1,7 +1,8 @@
 import { ScreenHeader, ScreenFadeIn } from '@/shared/components';
 import { AddTaskModal, NewTaskForm, TaskCard, TaskDetailsModal } from '@/shared/components/tasks';
-import { useCognitiveSettings } from '@/shared/contexts';
-import { Priority, Task, TaskFilter } from '@/shared/types/tasks';
+import { Category, useCognitiveSettings } from '@/data-access';
+import { Priority, Task, TaskFilter } from '@/data-access';
+import { useTask, TaskEntity, CreateTaskDTO } from '@/data-access';
 import { Stack } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
@@ -14,24 +15,16 @@ import {
   Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import {
-  TaskDto,
-  TaskPriority,
-  TaskStatus,
-  createTask,
-  getAllTasks,
-  updateTask,
-} from '@/shared/services/taskService';
 
 const AddIcon = require('@/assets/images/add.svg').default;
 
-const mapPriorityFromBackend = (priority: TaskPriority): Priority => {
+const mapPriorityFromBackend = (priority: 'low' | 'medium' | 'high'): Priority => {
   if (priority === 'high') return 'alta';
   if (priority === 'medium') return 'media';
   return 'baixa';
 };
 
-const mapPriorityToBackend = (priority: Priority): TaskPriority => {
+const mapPriorityToBackend = (priority: Priority): 'low' | 'medium' | 'high' => {
   if (priority === 'alta') return 'high';
   if (priority === 'media') return 'medium';
   return 'low';
@@ -50,7 +43,7 @@ const estimatedTimeFromMinutes = (minutes: number): string => {
   return `${minutes} min`;
 };
 
-const mapFromBackend = (dto: TaskDto): Task => {
+const mapFromBackend = (dto: TaskEntity): Task => {
   const createdAtTime =
     typeof dto.createdAt === 'string' ? new Date(dto.createdAt).getTime() : Date.now();
   const completed = dto.status === 'done';
@@ -58,7 +51,7 @@ const mapFromBackend = (dto: TaskDto): Task => {
   return {
     id: dto.id,
     title: dto.title,
-    category: dto.category ?? 'Rotina',
+    category: 'Rotina',
     priority: mapPriorityFromBackend(dto.priority),
     estimatedTime: estimatedTimeFromMinutes(dto.estimatedMinutes),
     description: dto.description,
@@ -68,11 +61,12 @@ const mapFromBackend = (dto: TaskDto): Task => {
   };
 };
 
-const statusFromCompleted = (completed: boolean): TaskStatus => (completed ? 'done' : 'todo');
+const statusFromCompleted = (completed: boolean): 'todo' | 'in-progress' | 'done' => (completed ? 'done' : 'todo');
 
 export default function TasksScreen() {
   const insets = useSafeAreaInsets();
   const { themeColors, fontSize, spacing, contrast } = useCognitiveSettings();
+  const { getAllTasks, createTask, updateTask, loading: taskLoading } = useTask();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<TaskFilter>('todas');
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -118,15 +112,15 @@ export default function TasksScreen() {
     try {
       const data = await getAllTasks();
       setTasks(data.map(mapFromBackend));
-    } catch {
+    } catch (err: any) {
       Alert.alert(
         'Erro ao carregar tarefas',
-        'Não foi possível carregar suas tarefas. Tente novamente mais tarde.',
+        err.message || 'Não foi possível carregar suas tarefas. Tente novamente mais tarde.',
       );
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [getAllTasks]);
 
   useEffect(() => {
     loadTasks();
@@ -139,10 +133,9 @@ export default function TasksScreen() {
 
   const handleAddTask = useCallback(async (form: NewTaskForm) => {
     try {
-      const payload: Omit<TaskDto, 'id' | 'createdAt' | 'updatedAt'> = {
+      const payload: CreateTaskDTO = {
         title: form.title,
         description: '',
-        category: form.category,
         priority: mapPriorityToBackend(form.priority),
         status: 'todo',
         estimatedMinutes: minutesFromEstimatedTime(form.estimatedTime),
@@ -150,10 +143,10 @@ export default function TasksScreen() {
       };
       const created = await createTask(payload);
       setTasks((prev) => [mapFromBackend(created), ...prev]);
-    } catch {
-      Alert.alert('Erro ao criar tarefa', 'Não foi possível criar a tarefa. Tente novamente.');
+    } catch (err: any) {
+      Alert.alert('Erro ao criar tarefa', err.message || 'Não foi possível criar a tarefa. Tente novamente.');
     }
-  }, []);
+  }, [createTask]);
 
   const patchTaskRemote = useCallback(
     async (task: Task) => {
@@ -161,18 +154,17 @@ export default function TasksScreen() {
         await updateTask(task.id, {
           title: task.title,
           description: task.description,
-          category: task.category,
           priority: mapPriorityToBackend(task.priority),
           status: statusFromCompleted(task.completed),
           estimatedMinutes: minutesFromEstimatedTime(task.estimatedTime),
           subtasks: task.subtasks,
         });
-      } catch {
-        Alert.alert('Erro ao atualizar tarefa', 'Não foi possível atualizar a tarefa.');
+      } catch (err: any) {
+        Alert.alert('Erro ao atualizar tarefa', err.message || 'Não foi possível atualizar a tarefa.');
         loadTasks();
       }
     },
-    [loadTasks],
+    [loadTasks, updateTask],
   );
 
   const handleToggleComplete = useCallback(
@@ -286,7 +278,7 @@ export default function TasksScreen() {
       const updated: Task = {
         ...editingTask,
         title: form.title,
-        category: form.category,
+        category: form.category as Category,
         priority: form.priority,
         estimatedTime: form.estimatedTime,
       };
