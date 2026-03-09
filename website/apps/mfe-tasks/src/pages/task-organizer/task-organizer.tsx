@@ -42,9 +42,6 @@ function TaskOrganizerPage() {
 	const { settings } = useCognitiveSettings();
 	const isSimple = settings.complexity === "simple";
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Hooks
-
 	const {
 		todoTasks,
 		inProgressTasks,
@@ -60,9 +57,6 @@ function TaskOrganizerPage() {
 
 	const timer = useFocusTimer(15);
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * States & Refs
-
 	const [modalOpen, setModalOpen] = useState(false);
 	const [focusTask, setFocusTask] = useState<Task | null>(null);
 	const [focusModeActive, setFocusModeActive] = useState(false);
@@ -73,28 +67,6 @@ function TaskOrganizerPage() {
 	const cogAlertFiredRef = useRef(false);
 	const focusStartRef = useRef<number>(0);
 	const draggedTaskRef = useRef<string | null>(null);
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Derived styles
-
-	const pageBg = isDarkMode ? colors.background : "#fef3f1";
-	const cardBg = isDarkMode ? colors["background.card"] : "#ffffff";
-	const colBg = isDarkMode ? "rgba(255,255,255,0.04)" : "#fafafa";
-	const darkBorder =
-		settings.contrast === "high"
-			? "rgba(255,255,255,0.25)"
-			: settings.contrast === "normal"
-				? "rgba(255,255,255,0.1)"
-				: "transparent";
-	const borderColor = isDarkMode ? darkBorder : "#e5e7eb";
-	const textPrimary = isDarkMode ? colors["coral.contrast"] : "#111827";
-	const textSecondary = isDarkMode ? colors["coral.800"] : "#4b5563";
-	const progressTrackBg = isDarkMode ? "rgba(255,255,255,0.1)" : "#e5e7eb";
-	const subtaskBg = isDarkMode ? "rgba(255,255,255,0.04)" : "#ffffff";
-	const subtaskDoneBg = isDarkMode ? "rgba(76,175,80,0.12)" : "#f1f8e9";
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Effects
 
 	useEffect(() => {
 		if (!settings.alertsEnabled || !focusModeActive) return;
@@ -117,9 +89,6 @@ function TaskOrganizerPage() {
 
 		return () => clearInterval(id);
 	}, [focusModeActive, settings.alertsEnabled, settings.alertIntervalMinutes]);
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handlers
 
 	const handleCreateTask = useCallback(
 		async (data: Omit<Task, "id" | "createdAt" | "updatedAt">) => {
@@ -186,13 +155,7 @@ function TaskOrganizerPage() {
 		handleExitFocus();
 	};
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Helpers
-
 	const progressPercent = totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0;
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Render — Focus mode
 
 	if (focusModeActive && focusTask) {
 		const completedSubs = focusTask.subtasks.filter(s => s.completed).length;
@@ -200,28 +163,28 @@ function TaskOrganizerPage() {
 		const taskProgress = totalSubs > 0 ? Math.round((completedSubs / totalSubs) * 100) : 0;
 
 		return (
-			<Box className="task-page" sx={{ background: pageBg }}>
+			<Box className="task-page" sx={{ background: colors.background }}>
 				<Box
 					className="focus-badge"
-					sx={{ background: cardBg, border: `1px solid ${borderColor}` }}
+					sx={{ background: colors["background.card"], border: `1px solid ${colors["coral.100"]}` }}
 				>
-					<FocusBadgeIcon sx={{ color: "#ff4353", fontSize: "1.25rem" }} />
-					<Typography variant="body2" fontWeight={600} color={textPrimary}>
+					<FocusBadgeIcon sx={{ color: colors["coral.500"], fontSize: "1.25rem" }} />
+					<Typography variant="body2" fontWeight={600} color={colors.text}>
 						Modo Foco Ativado
 					</Typography>
 				</Box>
 
-				<Typography variant="h4" fontWeight={700} textAlign="center" color={textPrimary}>
+				<Typography variant="h4" fontWeight={700} textAlign="center" color={colors.text}>
 					Concentre-se no que importa
 				</Typography>
-				<Typography variant="body2" color={textSecondary} textAlign="center">
+				<Typography variant="body2" color={colors["coral.800"]} textAlign="center">
 					Uma tarefa de cada vez, sem distrações
 				</Typography>
 
 				<Box className="focus-layout">
 					<Box
 						className="focus-task-card"
-						sx={{ background: cardBg, border: `1px solid ${borderColor}` }}
+						sx={{ background: colors["background.card"], border: `1px solid ${colors["coral.100"]}` }}
 					>
 						<Box display="flex" gap={1} alignItems="center" mb={1}>
 							<Chip
@@ -237,19 +200,19 @@ function TaskOrganizerPage() {
 								<TimerIcon
 									sx={{
 										fontSize: "0.875rem",
-										color: isDarkMode ? colors["coral.800"] : "#999"
+										color: colors["coral.800"]
 									}}
 								/>
-								<Typography variant="caption" color={textSecondary}>
+								<Typography variant="caption" color={colors["coral.800"]}>
 									{focusTask.estimatedMinutes} min
 								</Typography>
 							</Box>
 						</Box>
 
-						<Typography variant="h5" fontWeight={700} color={textPrimary}>
+						<Typography variant="h5" fontWeight={700} color={colors.text}>
 							{focusTask.title}
 						</Typography>
-						<Typography variant="body2" color={textSecondary} mb={2}>
+						<Typography variant="body2" color={colors["coral.800"]} mb={2}>
 							{focusTask.description}
 						</Typography>
 
@@ -264,7 +227,7 @@ function TaskOrganizerPage() {
 									<Typography
 										variant="body2"
 										fontWeight={600}
-										color={textPrimary}
+										color={colors.text}
 									>
 										Progresso da Tarefa
 									</Typography>
@@ -282,7 +245,7 @@ function TaskOrganizerPage() {
 									sx={{
 										height: 8,
 										borderRadius: 4,
-										backgroundColor: progressTrackBg,
+										backgroundColor: colors["coral.100"],
 										"& .MuiLinearProgress-bar": {
 											backgroundColor: colors["coral.500"]
 										}
@@ -294,7 +257,7 @@ function TaskOrganizerPage() {
 										variant="subtitle2"
 										fontWeight={700}
 										mb={1}
-										color={textPrimary}
+										color={colors.text}
 									>
 										Subtarefas
 									</Typography>
@@ -305,20 +268,16 @@ function TaskOrganizerPage() {
 											onClick={() => handleToggleSubtask(focusTask, st.id)}
 											sx={{
 												backgroundColor: st.completed
-													? subtaskDoneBg
-													: subtaskBg,
-												borderColor
+													? (isDarkMode ? "rgba(76,175,80,0.12)" : "#f1f8e9")
+													: colors["background.card"],
+												borderColor: colors["coral.100"]
 											}}
 										>
 											{st.completed ? (
 												<CheckCircleIcon sx={{ color: "#4caf50" }} />
 											) : (
 												<UncheckedIcon
-													sx={{
-														color: isDarkMode
-															? colors["coral.400"]
-															: "#bbb"
-													}}
+													sx={{ color: colors["coral.400"] }}
 												/>
 											)}
 											<Typography
@@ -328,10 +287,8 @@ function TaskOrganizerPage() {
 														? "line-through"
 														: "none",
 													color: st.completed
-														? isDarkMode
-															? colors["coral.800"]
-															: "#999"
-														: textPrimary
+														? colors["coral.800"]
+														: colors.text
 												}}
 											>
 												{st.title}
@@ -351,11 +308,11 @@ function TaskOrganizerPage() {
 								borderRadius="8px"
 								sx={{
 									flex: 1,
-									borderColor: "#e5e7eb",
-									color: isDarkMode ? colors["coral.800"] : "#374151",
+									borderColor: colors["coral.100"],
+									color: colors["coral.800"],
 									"&:hover": {
-										borderColor: "#d1d5db",
-										background: "rgba(0,0,0,0.04)"
+										borderColor: colors["coral.200"],
+										background: colors["coral.50"]
 									}
 								}}
 							/>
@@ -367,7 +324,7 @@ function TaskOrganizerPage() {
 								borderRadius="8px"
 								sx={{
 									flex: 1,
-									background: "linear-gradient(90deg, #FF4353 0%, #FF4353 100%)",
+									background: `linear-gradient(90deg, ${colors["coral.500"]} 0%, ${colors["coral.500"]} 100%)`,
 									color: "#fff !important"
 								}}
 							/>
@@ -394,17 +351,17 @@ function TaskOrganizerPage() {
 						<TimerPanel
 							timer={timer}
 							isDarkMode={isDarkMode}
-							cardBg={cardBg}
-							textPrimary={textPrimary}
-							textSecondary={textSecondary}
+							cardBg={colors["background.card"]}
+							textPrimary={colors.text}
+							textSecondary={colors["coral.800"]}
 						/>
 						<TipsPanel
 							tips={FOCUS_TIPS}
 							title="Dicas de Foco"
 							isDarkMode={isDarkMode}
-							cardBg={cardBg}
-							textPrimary={textPrimary}
-							textSecondary={textSecondary}
+							cardBg={colors["background.card"]}
+							textPrimary={colors.text}
+							textSecondary={colors["coral.800"]}
 						/>
 					</Box>
 				</Box>
@@ -417,7 +374,7 @@ function TaskOrganizerPage() {
 						handleExitFocus();
 					}}
 					isDarkMode={isDarkMode}
-					textSecondary={textSecondary}
+					textSecondary={colors["coral.800"]}
 					minutes={settings.alertIntervalMinutes}
 				/>
 
@@ -426,17 +383,17 @@ function TaskOrganizerPage() {
 					onClose={() => setDeleteConfirmOpen(false)}
 					PaperProps={{
 						sx: {
-							background: cardBg,
+							background: colors["background.card"],
 							borderRadius: "12px",
 							padding: "8px"
 						}
 					}}
 				>
-					<DialogTitle sx={{ color: textPrimary, fontWeight: 700 }}>
+					<DialogTitle sx={{ color: colors.text, fontWeight: 700 }}>
 						Excluir tarefa
 					</DialogTitle>
 					<DialogContent>
-						<DialogContentText sx={{ color: textSecondary }}>
+						<DialogContentText sx={{ color: colors["coral.800"] }}>
 							Tem certeza que deseja excluir esta tarefa? Esta ação não pode ser
 							desfeita.
 						</DialogContentText>
@@ -473,9 +430,6 @@ function TaskOrganizerPage() {
 		);
 	}
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Render — Loading
-
 	if (loading) {
 		return (
 			<Box
@@ -490,30 +444,27 @@ function TaskOrganizerPage() {
 		);
 	}
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Render — Main
-
 	return (
-		<Box className="task-page" sx={{ background: pageBg }}>
+		<Box className="task-page" sx={{ background: colors.background }}>
 			<Box className="task-header">
 				<Box>
-					<Typography variant="h4" fontWeight={700} color={textPrimary}>
+					<Typography variant="h4" fontWeight={700} color={colors.text}>
 						Organizador de Tarefas
 					</Typography>
-					<Typography variant="body1" color={textSecondary}>
+					<Typography variant="body1" color={colors["coral.800"]}>
 						Gerencie suas atividades com suporte cognitivo inteligente
 					</Typography>
 				</Box>
 
 				<Box
 					className="task-progress-badge"
-					sx={{ background: cardBg, border: `1px solid ${borderColor}` }}
+					sx={{ background: colors["background.card"], border: `1px solid ${colors["coral.100"]}` }}
 				>
-					<Typography variant="caption" color={textSecondary}>
+					<Typography variant="caption" color={colors["coral.800"]}>
 						Progresso Geral
 					</Typography>
 					<Box className="task-progress-ring">
-						<Typography variant="h5" fontWeight={700} color="#ff4353">
+						<Typography variant="h5" fontWeight={700} color={colors["coral.500"]}>
 							{completedCount}/{totalTasks}
 						</Typography>
 						<LinearProgress
@@ -524,8 +475,8 @@ function TaskOrganizerPage() {
 								height: 6,
 								borderRadius: 3,
 								mt: "4px",
-								backgroundColor: progressTrackBg,
-								"& .MuiLinearProgress-bar": { backgroundColor: "#ff4353" }
+								backgroundColor: colors["coral.100"],
+								"& .MuiLinearProgress-bar": { backgroundColor: colors["coral.500"] }
 							}}
 						/>
 					</Box>
@@ -535,12 +486,12 @@ function TaskOrganizerPage() {
 			<Box className={`task-body ${isSimple ? "task-body--simple" : ""}`}>
 				<Box
 					className="task-kanban-wrapper"
-					sx={{ background: cardBg, border: `1px solid ${borderColor}` }}
+					sx={{ background: colors["background.card"], border: `1px solid ${colors["coral.100"]}` }}
 				>
 					<Box className="task-kanban-header">
 						<Box display="flex" alignItems="center" gap={1}>
-							<KanbanIcon sx={{ color: "#ff4353" }} />
-							<Typography variant="h6" fontWeight={700} color={textPrimary}>
+							<KanbanIcon sx={{ color: colors["coral.500"] }} />
+							<Typography variant="h6" fontWeight={700} color={colors.text}>
 								Quadro Kanban
 							</Typography>
 						</Box>
@@ -551,7 +502,7 @@ function TaskOrganizerPage() {
 							onClick={() => setModalOpen(true)}
 							borderRadius="8px"
 							sx={{
-								background: "linear-gradient(90deg, #FF4353 0%, #FF4353 100%)",
+								background: `linear-gradient(90deg, ${colors["coral.500"]} 0%, ${colors["coral.500"]} 100%)`,
 								color: "#fff !important"
 							}}
 						/>
@@ -565,11 +516,11 @@ function TaskOrganizerPage() {
 							tasks={todoTasks}
 							isSimple={isSimple}
 							isDarkMode={isDarkMode}
-							colBg={colBg}
-							cardBg={cardBg}
-							borderColor={borderColor}
-							textPrimary={textPrimary}
-							textSecondary={textSecondary}
+							colBg={isDarkMode ? "rgba(255,255,255,0.04)" : "#fafafa"}
+							cardBg={colors["background.card"]}
+							borderColor={colors["coral.100"]}
+							textPrimary={colors.text}
+							textSecondary={colors["coral.800"]}
 							onDragStart={handleDragStart}
 							onDrop={handleDrop}
 							onFocus={handleEnterFocus}
@@ -582,11 +533,11 @@ function TaskOrganizerPage() {
 							tasks={inProgressTasks}
 							isSimple={isSimple}
 							isDarkMode={isDarkMode}
-							colBg={colBg}
-							cardBg={cardBg}
-							borderColor={borderColor}
-							textPrimary={textPrimary}
-							textSecondary={textSecondary}
+							colBg={isDarkMode ? "rgba(255,255,255,0.04)" : "#fafafa"}
+							cardBg={colors["background.card"]}
+							borderColor={colors["coral.100"]}
+							textPrimary={colors.text}
+							textSecondary={colors["coral.800"]}
 							onDragStart={handleDragStart}
 							onDrop={handleDrop}
 							onFocus={handleEnterFocus}
@@ -599,11 +550,11 @@ function TaskOrganizerPage() {
 							tasks={doneTasks}
 							isSimple={isSimple}
 							isDarkMode={isDarkMode}
-							colBg={colBg}
-							cardBg={cardBg}
-							borderColor={borderColor}
-							textPrimary={textPrimary}
-							textSecondary={textSecondary}
+							colBg={isDarkMode ? "rgba(255,255,255,0.04)" : "#fafafa"}
+							cardBg={colors["background.card"]}
+							borderColor={colors["coral.100"]}
+							textPrimary={colors.text}
+							textSecondary={colors["coral.800"]}
 							onDragStart={handleDragStart}
 							onDrop={handleDrop}
 							onFocus={handleEnterFocus}
@@ -617,17 +568,17 @@ function TaskOrganizerPage() {
 						<TimerPanel
 							timer={timer}
 							isDarkMode={isDarkMode}
-							cardBg={cardBg}
-							textPrimary={textPrimary}
-							textSecondary={textSecondary}
+							cardBg={colors["background.card"]}
+							textPrimary={colors.text}
+							textSecondary={colors["coral.800"]}
 						/>
 						<TipsPanel
 							tips={GENERAL_TIPS}
 							title="Dicas"
 							isDarkMode={isDarkMode}
-							cardBg={cardBg}
-							textPrimary={textPrimary}
-							textSecondary={textSecondary}
+							cardBg={colors["background.card"]}
+							textPrimary={colors.text}
+							textSecondary={colors["coral.800"]}
 						/>
 						<StatisticsPanel
 							totalTasks={totalTasks}
@@ -635,9 +586,9 @@ function TaskOrganizerPage() {
 							inProgressCount={inProgressTasks.length}
 							progressPercent={progressPercent}
 							isDarkMode={isDarkMode}
-							cardBg={cardBg}
-							textPrimary={textPrimary}
-							textSecondary={textSecondary}
+							cardBg={colors["background.card"]}
+							textPrimary={colors.text}
+							textSecondary={colors["coral.800"]}
 						/>
 					</Box>
 				)}

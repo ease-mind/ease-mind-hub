@@ -84,7 +84,8 @@ export function CognitiveSettingsProvider({ children }: { children: ReactNode })
 			body.classList.remove('dark-mode');
 		}
 		
-		root.style.setProperty("--space-base", `${settings.spacing}px`);
+		root.style.setProperty("--spacing-base", `${settings.spacing}px`);
+		root.style.setProperty("--font-size-base", `${settings.fontSize}px`);
 		root.style.setProperty("--font-base", `${settings.fontSize}px`);
 		
 		root.setAttribute("data-contrast", settings.contrast);

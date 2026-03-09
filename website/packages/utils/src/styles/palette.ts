@@ -15,7 +15,7 @@ const lightPalette = {
   "coral.subcontrast": "#4D0F18",
   "coral.highcontrast": "#991F2D",
   "coral.accent": "#FF4353",
-  background: "#F3F3F3",
+  background: "#fef3f1",
   navigation: "rgba(255, 255, 255, 0.85)",
   "background.card": "oklch(1 0 0 / 0.8)",
   "background.bankcard": "#FFD294",

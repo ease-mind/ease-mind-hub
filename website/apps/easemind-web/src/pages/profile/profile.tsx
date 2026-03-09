@@ -29,7 +29,6 @@ const EasemindProfilePage: FC<EasemindProfileProps> = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [isLoading, setLoading] = useState(false);
 
-    // Define o background igual ao das outras páginas
     const pageBg = isDarkMode ? colors.background : "#fef3f1";
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);

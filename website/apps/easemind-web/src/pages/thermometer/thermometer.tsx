@@ -17,7 +17,7 @@ import './thermometer.scss';
 interface EasemindThermometerProps { }
 
 const EasemindThermometerPage: FC<EasemindThermometerProps> = () => {
-  const { colors, isDarkMode } = useTheme();
+  const { colors } = useTheme();
   const { user } = useUser();
   const { settings } = useCognitiveSettings();
   const isSimple = settings.complexity === 'simple';
@@ -28,9 +28,6 @@ const EasemindThermometerPage: FC<EasemindThermometerProps> = () => {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-
-  // Define o background igual ao da página de tasks
-  const pageBg = isDarkMode ? colors.background : "#fef3f1";
 
   useEffect(() => {
     loadSymptoms();
@@ -393,7 +390,7 @@ const EasemindThermometerPage: FC<EasemindThermometerProps> = () => {
 
   if (error) {
     return (
-      <Box p={spacing.card} sx={{ background: pageBg, minHeight: '100vh' }}>
+      <Box p={spacing.card} sx={{ background: colors['background'], minHeight: '100vh' }}>
         <Alert severity="error" action={
           <Button color="inherit" size="small" onClick={loadSymptoms}>
             Tentar Novamente
@@ -406,13 +403,13 @@ const EasemindThermometerPage: FC<EasemindThermometerProps> = () => {
   }
 
   return (
-    <Box className="thermometer-page" width={'100%'} sx={{ background: pageBg, minHeight: '100vh' }}>
+    <Box className="thermometer-page" width={'100%'} sx={{ background: colors['background'], minHeight: '100vh' }}>
       <Box width={'100%'} px={{xs: 2, sm: 3, md: 4}} py={spacing.card} display={'flex'} flexDirection={'column'} gap={spacing.gap}>
         <Box>
-          <Typography variant="h4" fontWeight="bold" display="flex" alignItems="center" gap={1}>
+          <Typography variant="h4" fontWeight="bold" display="flex" color={colors["coral.contrast"]} alignItems="center" gap={1}>
           Termômetro Sensorial
           </Typography>
-          <Typography variant="body2" mt={1}>
+          <Typography variant="body2" mt={1} color={colors["coral.800"]}>
             Identifique sinais de sobrecarga antes que ela aconteça (Rumble Stage)
           </Typography>
           {saving && (

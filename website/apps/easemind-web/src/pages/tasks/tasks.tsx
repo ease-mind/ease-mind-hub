@@ -1,7 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
 import { Suspense } from "react";
 import { TaskOrganizerPage } from "../../utils/microfrontends";
-import { CognitiveSettingsProvider } from "@repo/data-access";
 import { useTheme } from "@repo/utils";
 
 export const TasksPage = () => {
@@ -23,9 +22,7 @@ export const TasksPage = () => {
 					</Box>
 				}
 			>
-				<CognitiveSettingsProvider>
-					<TaskOrganizerPage />
-				</CognitiveSettingsProvider>
+				<TaskOrganizerPage />
 			</Suspense>
 		</Box>
 	);

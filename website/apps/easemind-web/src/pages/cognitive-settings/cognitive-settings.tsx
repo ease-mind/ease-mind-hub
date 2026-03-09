@@ -31,23 +31,6 @@ function CognitiveSettingsPage() {
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
 	const [draft, setDraft] = useState<CognitiveSettings>({ ...settings });
 
-	const cardBg = isDarkMode ? colors["background.card"] : "#ffffff";
-	const pageBg = isDarkMode ? colors.background : "#fef3f1";
-	const sidebarBg = isDarkMode ? colors["background.card"] : "#ffffff";
-	const darkBorder =
-		settings.contrast === "high"
-			? "rgba(255,255,255,0.25)"
-			: settings.contrast === "normal"
-				? "rgba(255,255,255,0.1)"
-				: "transparent";
-	const optionBorder = isDarkMode ? darkBorder : "#e5e7eb";
-	const optionSelectedBg = isDarkMode ? "rgba(255,67,83,0.12)" : "#fef2f2";
-	const previewBg = isDarkMode ? "rgba(255,255,255,0.06)" : "#fef3f1";
-	const alertExampleBg = isDarkMode ? "rgba(220,38,38,0.12)" : "#fee2e2";
-	const textPrimary = isDarkMode ? colors["coral.contrast"] : "#111827";
-	const textSecondary = isDarkMode ? colors["coral.800"] : "#4b5563";
-	const borderSubtle = isDarkMode ? darkBorder : "transparent";
-
 	const patchDraft = (patch: Partial<CognitiveSettings>) =>
 		setDraft(prev => ({ ...prev, ...patch }));
 
@@ -67,10 +50,9 @@ function CognitiveSettingsPage() {
 
 	const getSectionMeta = (id: SectionId) => {
 		const s = SECTIONS.find(s => s.id === id)!;
-		const darkIconBg = "rgba(255,255,255,0.08)";
 		return {
 			iconColor: isDarkMode ? colors["coral.600"] : s.iconColor,
-			iconBg: isDarkMode ? darkIconBg : s.iconBg
+			iconBg: isDarkMode ? colors["background.card"] : s.iconBg
 		};
 	};
 
@@ -81,11 +63,11 @@ function CognitiveSettingsPage() {
 				icon={<AppsIcon sx={{ color: meta.iconColor }} />}
 				title="Nível de Complexidade da Interface"
 				subtitle="Ajuste a quantidade de informações exibidas"
-				cardBg={cardBg}
+				cardBg={colors["background.card"]}
 				iconBg={meta.iconBg}
-				borderSubtle={borderSubtle}
-				textPrimary={textPrimary}
-				textSecondary={textSecondary}
+				borderSubtle={colors["coral.100"]}
+				textPrimary={colors["coral.800"] }
+				textSecondary={colors["coral.800"]}
 			>
 				<Box className="cog-option-row">
 					<OptionCard
@@ -101,12 +83,12 @@ function CognitiveSettingsPage() {
 						}
 						label="Simples"
 						description="Apenas o essencial"
-						optionBorder={optionBorder}
-						selectedBg={optionSelectedBg}
-						accentColor="#ff4353"
+						optionBorder={colors["coral.100"]}
+						selectedBg={colors["coral.50"]}
+						accentColor={colors["coral.500"]}
 						iconRingBg={isDarkMode ? "rgba(22,163,74,0.15)" : "#dcfce7"}
-						textPrimary={textPrimary}
-						textSecondary={textSecondary}
+						textPrimary={colors["coral.800"] }
+						textSecondary={colors["coral.800"]}
 					/>
 					<OptionCard
 						selected={draft.complexity === "complete"}
@@ -121,12 +103,12 @@ function CognitiveSettingsPage() {
 						}
 						label="Completo"
 						description="Todas as opções"
-						optionBorder={optionBorder}
-						selectedBg={optionSelectedBg}
-						accentColor="#ff4353"
+						optionBorder={colors["coral.100"]}
+						selectedBg={colors["coral.50"]}
+						accentColor={colors["coral.500"]}
 						iconRingBg={isDarkMode ? "rgba(147,51,234,0.15)" : "#f3e8ff"}
-						textPrimary={textPrimary}
-						textSecondary={textSecondary}
+						textPrimary={colors["coral.800"] }
+						textSecondary={colors["coral.800"]}
 					/>
 				</Box>
 			</SectionCard>
@@ -140,11 +122,11 @@ function CognitiveSettingsPage() {
 				icon={<ContrastIcon sx={{ color: meta.iconColor }} />}
 				title="Contraste"
 				subtitle="Ajuste o contraste visual da interface"
-				cardBg={cardBg}
+				cardBg={colors["background.card"]}
 				iconBg={meta.iconBg}
-				borderSubtle={borderSubtle}
-				textPrimary={textPrimary}
-				textSecondary={textSecondary}
+				borderSubtle={colors["coral.100"]}
+				textPrimary={colors["coral.800"] }
+				textSecondary={colors["coral.800"]}
 			>
 				<Box className="cog-option-row">
 					{(["low", "normal", "high"] as ContrastLevel[]).map(level => {
@@ -189,12 +171,12 @@ function CognitiveSettingsPage() {
 								icon={iconMap[level]}
 								label={labelMap[level]}
 								description={descMap[level]}
-								optionBorder={optionBorder}
-								selectedBg={optionSelectedBg}
-								accentColor="#ff4353"
+								optionBorder={colors["coral.100"]}
+								selectedBg={colors["coral.50"]}
+								accentColor={colors["coral.500"]}
 								iconRingBg={ringBgMap[level]}
-								textPrimary={textPrimary}
-								textSecondary={textSecondary}
+								textPrimary={colors["coral.800"] }
+								textSecondary={colors["coral.800"]}
 							/>
 						);
 					})}
@@ -215,13 +197,13 @@ function CognitiveSettingsPage() {
 				icon={<SpaceBarIcon sx={{ color: meta.iconColor }} />}
 				title="Espaçamento"
 				subtitle="Controle o espaço entre elementos"
-				cardBg={cardBg}
+				cardBg={colors["background.card"]}
 				iconBg={meta.iconBg}
-				borderSubtle={borderSubtle}
-				textPrimary={textPrimary}
-				textSecondary={textSecondary}
+				borderSubtle={colors["coral.100"]}
+				textPrimary={colors["coral.800"] }
+				textSecondary={colors["coral.800"]}
 			>
-				<Typography variant="caption" color={textSecondary}>
+				<Typography variant="caption" color={colors["coral.800"]}>
 					Espaçamento: {draft.spacing}px
 				</Typography>
 				<Box px={1} mt={1}>
@@ -232,7 +214,7 @@ function CognitiveSettingsPage() {
 						marks={marks}
 						min={12}
 						max={24}
-						sx={{ color: "#ff4353" }}
+						sx={{ color: colors["coral.500"] }}
 					/>
 				</Box>
 			</SectionCard>
@@ -251,13 +233,13 @@ function CognitiveSettingsPage() {
 				icon={<TextFieldsIcon sx={{ color: meta.iconColor }} />}
 				title="Tamanho da Fonte"
 				subtitle="Ajuste o tamanho do texto"
-				cardBg={cardBg}
+				cardBg={colors["background.card"]}
 				iconBg={meta.iconBg}
-				borderSubtle={borderSubtle}
-				textPrimary={textPrimary}
-				textSecondary={textSecondary}
+				borderSubtle={colors["coral.100"]}
+				textPrimary={colors["coral.800"] }
+				textSecondary={colors["coral.800"]}
 			>
-				<Typography variant="caption" color={textSecondary}>
+				<Typography variant="caption" color={colors["coral.800"]}>
 					Tamanho: {draft.fontSize}px
 				</Typography>
 				<Box px={1} mt={1}>
@@ -268,11 +250,13 @@ function CognitiveSettingsPage() {
 						marks={marks}
 						min={12}
 						max={24}
-						sx={{ color: "#ff4353" }}
+						sx={{ color: colors["coral.500"] }}
 					/>
 				</Box>
-				<Box mt={2} p={2} borderRadius={2} sx={{ background: previewBg }}>
-					<Typography sx={{ fontSize: `${draft.fontSize}px`, color: textPrimary }}>
+				<Box mt={2} p={2} borderRadius={2} sx={{ background: colors["coral.50"] }}>
+					<Typography 
+						style={{ fontSize: `${draft.fontSize}px`, color: colors["coral.800"] , lineHeight: 1.5 }}
+					>
 						Parágrafo de exemplo com o tamanho selecionado.
 					</Typography>
 				</Box>
@@ -293,22 +277,22 @@ function CognitiveSettingsPage() {
 				icon={<AlertIcon sx={{ color: meta.iconColor }} />}
 				title="Alertas Cognitivos"
 				subtitle="Receba avisos sobre seu tempo de atividade"
-				cardBg={cardBg}
+				cardBg={colors["background.card"]}
 				iconBg={meta.iconBg}
-				borderSubtle={borderSubtle}
-				textPrimary={textPrimary}
-				textSecondary={textSecondary}
+				borderSubtle={colors["coral.100"]}
+				textPrimary={colors["coral.800"] }
+				textSecondary={colors["coral.800"]}
 			>
 				<Box className="cog-toggle-row">
 					<Box>
 						<Typography
 							variant="body2"
 							fontWeight={600}
-							color={draft.alertsEnabled ? "#ff4353" : textPrimary}
+							color={draft.alertsEnabled ? colors["coral.500"] : colors["coral.800"] }
 						>
 							Alertas Ativados
 						</Typography>
-						<Typography variant="caption" color={textSecondary}>
+						<Typography variant="caption" color={colors["coral.800"]}>
 							Você receberá notificações
 						</Typography>
 					</Box>
@@ -316,16 +300,16 @@ function CognitiveSettingsPage() {
 						checked={draft.alertsEnabled}
 						onChange={(_, checked) => patchDraft({ alertsEnabled: checked })}
 						sx={{
-							"& .MuiSwitch-switchBase.Mui-checked": { color: "#ff4353" },
+							"& .MuiSwitch-switchBase.Mui-checked": { color: colors["coral.500"] },
 							"& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-								backgroundColor: "#ff4353"
+								backgroundColor: colors["coral.500"]
 							}
 						}}
 					/>
 				</Box>
 				{draft.alertsEnabled && (
 					<>
-						<Typography variant="caption" color={textSecondary} mt={2}>
+						<Typography variant="caption" color={colors["coral.800"]} mt={2}>
 							Alerta após {draft.alertIntervalMinutes} minutos
 						</Typography>
 						<Box px={1} mt={1}>
@@ -338,17 +322,17 @@ function CognitiveSettingsPage() {
 								marks={intervalMarks}
 								min={15}
 								max={60}
-								sx={{ color: "#ff4353" }}
+								sx={{ color: colors["coral.500"] }}
 							/>
 						</Box>
-						<Box mt={2} p={2} borderRadius={2} sx={{ background: alertExampleBg }}>
+						<Box mt={2} p={2} borderRadius={2} sx={{ background: isDarkMode ? "rgba(220,38,38,0.12)" : "#fee2e2" }}>
 							<Box display="flex" alignItems="center" gap="6px" mb="4px">
 								<AlarmExampleIcon sx={{ color: "#dc2626", fontSize: "1.1rem" }} />
 								<Typography variant="body2" fontWeight={600} color="#dc2626">
 									Exemplo de Alerta
 								</Typography>
 							</Box>
-							<Typography variant="caption" color={textSecondary}>
+							<Typography variant="caption" color={colors["coral.800"]}>
 								Você está focado há um tempo! Considere fazer uma pausa de 5
 								minutos.
 							</Typography>
@@ -359,9 +343,6 @@ function CognitiveSettingsPage() {
 		);
 	};
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Render
-
 	const sectionRenderers: Record<SectionId, () => React.ReactNode> = {
 		complexity: renderComplexity,
 		contrast: renderContrast,
@@ -371,12 +352,12 @@ function CognitiveSettingsPage() {
 	};
 
 	return (
-		<Box className="cog-settings-page" sx={{ background: pageBg }}>
+		<Box className="cog-settings-page" sx={{ background: colors.background }}>
 			<Box className="cog-settings-header">
-				<Typography variant="h4" fontWeight={700} color={textPrimary}>
+				<Typography variant="h4" fontWeight={700} color={colors["coral.800"] }>
 					Configurações Cognitivas
 				</Typography>
-				<Typography variant="body1" color={textSecondary}>
+				<Typography variant="body1" color={colors["coral.800"]}>
 					Personalize sua experiência para melhor suporte cognitivo
 				</Typography>
 			</Box>
@@ -392,8 +373,8 @@ function CognitiveSettingsPage() {
 					<Box
 						className="cog-sidebar"
 						sx={{
-							background: sidebarBg,
-							border: `1px solid ${isDarkMode ? darkBorder : "#e5e7eb"}`
+							background: colors["background.card"],
+							border: `1px solid ${colors["coral.100"]}`
 						}}
 					>
 						{SECTIONS.map(s => (
@@ -403,8 +384,7 @@ function CognitiveSettingsPage() {
 								onClick={() => setActiveSection(s.id)}
 								sx={{
 									...(activeSection === s.id && {
-										background:
-											"linear-gradient(90deg, #FF4353 0%, #FF4353 100%)",
+										background: `linear-gradient(90deg, ${colors["coral.500"]} 0%, ${colors["coral.500"]} 100%)`,
 										color: "#fff",
 										borderRadius: "0.75rem",
 										"& .MuiSvgIcon-root": { color: "#fff" },
@@ -434,9 +414,9 @@ function CognitiveSettingsPage() {
 					onClick={handleCancel}
 					borderRadius="8px"
 					sx={{
-						borderColor: "#e5e7eb",
-						color: isDarkMode ? colors["coral.800"] : "#374151",
-						"&:hover": { borderColor: "#d1d5db", background: "rgba(0,0,0,0.04)" }
+						borderColor: colors["coral.100"],
+						color: colors["coral.800"],
+						"&:hover": { borderColor: colors["coral.200"], background: colors["coral.50"] }
 					}}
 				/>
 				<EasemindButton
@@ -446,7 +426,7 @@ function CognitiveSettingsPage() {
 					onClick={handleSave}
 					borderRadius="8px"
 					sx={{
-						background: "linear-gradient(90deg, #FF4353 0%, #FF4353 100%)",
+						background: `linear-gradient(90deg, ${colors["coral.500"]} 0%, ${colors["coral.500"]} 100%)`,
 						color: "#fff !important"
 					}}
 				/>
