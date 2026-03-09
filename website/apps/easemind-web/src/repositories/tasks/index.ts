@@ -1,5 +1,4 @@
 export { ApiTaskRepository } from "./api-task.repository";
-export { LocalStorageTaskRepository } from "./local-storage-task.repository";
 export {
 	generateId,
 	priorityColor,

@@ -83,7 +83,7 @@ export function NewTaskModal({ open, onClose, onSubmit }: NewTaskModalProps) {
 			<Box className="new-task-form">
 				<Box className="new-task-field">
 					<Typography variant="body2" fontWeight={600}>
-						Título da Tarefa *
+						Título da Tarefa*
 					</Typography>
 					<TextField
 						fullWidth
@@ -98,7 +98,7 @@ export function NewTaskModal({ open, onClose, onSubmit }: NewTaskModalProps) {
 
 				<Box className="new-task-field">
 					<Typography variant="body2" fontWeight={600}>
-						Descrição
+						Descrição*
 					</Typography>
 					<TextField
 						fullWidth

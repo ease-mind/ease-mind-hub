@@ -3,10 +3,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
-import { EasemindWrapper } from "./components/wrapper/wrapper";
 import ErrorBoundary from "./error-boundary";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import { EasemindWrapper } from "./presentation/components/wrapper/wrapper";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(

@@ -92,7 +92,6 @@ jest.mock("../../repositories/tasks", () => ({
 		update: mockUpdate,
 		delete: mockDelete
 	})),
-	LocalStorageTaskRepository: jest.fn()
 }));
 
 describe("useTasks", () => {

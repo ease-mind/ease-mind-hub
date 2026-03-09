@@ -44,7 +44,7 @@ export function EasemindButton({
   label,
   color,
   variant,
-  borderRadius,
+  borderRadius = '8px',
   onClick,
   ...props
 }: EasemindButtonProps): JSX.Element {
@@ -90,7 +90,7 @@ export function EasemindButton({
     },
     '&.Mui-disabled': {
       color: '#3E3E3E',
-      backgroundColor: '#A7A7A7',
+      backgroundColor: 'rgba(242, 242, 242, 0.81)',
     },
     '&': {
       borderWidth: '1px',
@@ -105,7 +105,7 @@ export function EasemindButton({
       boxShadow: '0px 1px 1px -2px rgba(0,0,0,0.1),0px 1px 1px 0px rgba(0,0,0,0.1),1px 1px 4px 0px rgba(0,0,0,0.1)',
     },
     '&.MuiButton-outlined:hover,&.MuiButton-text:hover': {
-      backgroundColor: 'rgba(211, 217, 184, 0.2)',
+      backgroundColor: 'rgba(221, 221, 221, 0.2)',
     }
   }
   ]));

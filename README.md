@@ -100,15 +100,20 @@ yarn dev               # http://localhost:8080
 ```bash
 cd app
 yarn install
-npx expo start --clear --localhost
-# i → iOS Simulator | a → Android Emulator
+yarn start
+
+ - Use o Expo Go no seu celular ou rode em um emulador:
+   - Pressione `i` para iOS
+   - Pressione `a` para Android
+   - Escaneie o QR Code com Expo Go
+
 ```
 
 ### Website
 ```bash
 cd website
 yarn install
-yarn dev               # http://localhost:3001
+yarn dev               # http://localhost:3000
 ```
 
 ### Storybook
@@ -130,9 +135,6 @@ yarn test
 cd app
 yarn test
 
-# API
-cd api
-yarn test
 ```
 
 ---

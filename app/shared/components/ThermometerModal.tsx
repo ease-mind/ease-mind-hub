@@ -60,9 +60,10 @@ export const ThermometerModal: React.FC<ThermometerModalProps> = ({ visible, onC
         setLoading(true);
         try {
             const data = await symptomService.getAll();
-            setSymptoms(data);
+            setSymptoms(Array.isArray(data) ? data : []);
         } catch (err) {
             console.error('Erro ao carregar sintomas:', err);
+            setSymptoms([]);
         } finally {
             setLoading(false);
         }
