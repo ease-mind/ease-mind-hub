@@ -20,6 +20,7 @@ import {
   CognitiveContrast,
   CognitiveSettingsData,
 } from '@/shared/services/cognitiveSettingsService';
+import { useFeedbackAnimation } from '@/shared/hooks/useFeedbackAnimation';
 
 type ComplexityLevel = 'simples' | 'completo';
 type ContrastLevel = 'baixo' | 'normal' | 'alto';
@@ -72,6 +73,7 @@ export default function ConfigScreen() {
   const insets = useSafeAreaInsets();
   const { themeColors, spacing, updateState: updateContextState, loadSettings } = useCognitiveSettings();
   const { getSettings, updateSettings, resetSettings, loading: apiLoading } = useCognitiveSettingsData();
+  const { showFeedback, FeedbackAnimation } = useFeedbackAnimation();
   const [complexidade, setComplexidade] = useState<ComplexityLevel>('completo');
   const [contraste, setContraste] = useState<ContrastLevel>('normal');
   const [espacamento, setEspacamento] = useState<12 | 14 | 18>(12);
@@ -159,7 +161,7 @@ export default function ConfigScreen() {
         fontSize: tamanhoFonte,
       });
       await loadSettings();
-      Alert.alert('Configurações salvas', 'Suas preferências cognitivas foram atualizadas.');
+      showFeedback('success');
     } catch {
       Alert.alert(
         'Erro',
@@ -185,10 +187,7 @@ export default function ConfigScreen() {
         fontSize: normalizeFontSize(Number(settings.fontSize) || 14),
       });
       await loadSettings();
-      Alert.alert(
-        'Configurações restauradas',
-        'Suas preferências cognitivas foram restauradas para os valores padrão.',
-      );
+      showFeedback('success');
     } catch {
       Alert.alert(
         'Erro',
@@ -413,6 +412,7 @@ export default function ConfigScreen() {
           </>
         )}
       </ScrollView>
+      <FeedbackAnimation />
       </ScreenFadeIn>
     </>
   );

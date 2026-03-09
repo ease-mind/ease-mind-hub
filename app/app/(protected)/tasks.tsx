@@ -66,7 +66,7 @@ const statusFromCompleted = (completed: boolean): 'todo' | 'in-progress' | 'done
 export default function TasksScreen() {
   const insets = useSafeAreaInsets();
   const { themeColors, fontSize, spacing, contrast } = useCognitiveSettings();
-  const { getAllTasks, createTask, updateTask, loading: taskLoading } = useTask();
+  const { getAllTasks, createTask, updateTask, loading: taskLoading, FeedbackAnimation } = useTask();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<TaskFilter>('todas');
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -428,6 +428,7 @@ export default function TasksScreen() {
           onEdit={handleEdit}
         />
       </View>
+      <FeedbackAnimation />
       </ScreenFadeIn>
     </>
   );
