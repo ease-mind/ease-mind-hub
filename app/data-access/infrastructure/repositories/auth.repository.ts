@@ -29,10 +29,7 @@ export class AuthRepository implements IAuthRepository {
     }
   }
 
-  async logout(): Promise<void> {
-    // Clear local storage or async storage
-    // This will be handled in the context
-  }
+  async logout(): Promise<void> {}
 
   async verifyToken(token: string): Promise<UserEntity> {
     try {

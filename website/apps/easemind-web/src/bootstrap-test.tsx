@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-// Simple test component to verify rendering
 function TestApp() {
   return (
     <div style={{ padding: '20px' }}>

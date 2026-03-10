@@ -4,7 +4,7 @@ import { AccessModalType } from '@repo/ui';
 
 jest.mock('@repo/data-access', () => ({
   useUser: () => ({
-    register: jest.fn(), // não testamos fluxo de API aqui
+    register: jest.fn(),
   }),
 }));
 

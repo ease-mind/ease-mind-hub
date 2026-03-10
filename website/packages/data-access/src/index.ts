@@ -57,5 +57,4 @@ export * from './helpers/is-token-expired';
 export * from './hooks/use-fetch';
 export * from './hooks/use-session';
 
-// Temporary exports for backward compatibility (will be refactored to clean architecture)
 export { updateUser, updateUserProfileImage } from './api/userService';

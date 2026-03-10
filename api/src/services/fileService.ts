@@ -14,7 +14,6 @@ declare global {
   }
 }
 
-// Create folder to save files
 export const uploadDir = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
@@ -52,7 +51,6 @@ export const uploadFile = async (req: Request, res: Response): Promise<any> => {
 
     const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${filename}`;
 
-    // Save file
     const newFile = new File({
       filename,
       originalName,

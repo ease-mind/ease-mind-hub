@@ -1,4 +1,3 @@
-// Domain Layer
 export * from './domain/entities/address.entity';
 export * from './domain/entities/auth.entity';
 export * from './domain/entities/cognitive-settings.entity';
@@ -30,7 +29,6 @@ export * from './domain/use-cases/user/get-user-by-id.use-case';
 export * from './domain/use-cases/user/update-user-profile-image.use-case';
 export * from './domain/use-cases/user/update-user.use-case';
 
-// Infrastructure Layer
 export * from './infrastructure/factories/auth.factory';
 export * from './infrastructure/factories/cognitive-settings.factory';
 export * from './infrastructure/factories/symptom.factory';
@@ -44,11 +42,9 @@ export * from './infrastructure/repositories/symptom.repository';
 export * from './infrastructure/repositories/task.repository';
 export * from './infrastructure/repositories/user.repository';
 
-// Presentation Layer - Contexts
 export * from './presentation/contexts/auth.context';
 export * from './presentation/contexts/cognitive-settings.context';
 
-// Presentation Layer - Hooks
 export * from './presentation/hooks/use-auth.hook';
 export * from './presentation/hooks/use-cognitive-settings-data.hook';
 export * from './presentation/hooks/use-symptom.hook';

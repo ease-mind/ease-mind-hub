@@ -65,11 +65,8 @@ export const authService = {
      * Realiza o logout do usuário
      */
     async logout(): Promise<void> {
-        // Limpa o usuário e token do sessionStorage
         sessionStorage.removeItem('user');
         sessionStorage.removeItem('token');
-        
-        // Limpa o token do axios
         delete api.defaults.headers.common['Authorization'];
     },
 };
