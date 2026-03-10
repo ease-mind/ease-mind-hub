@@ -1,8 +1,4 @@
-import {
-	getCognitiveSettings as fetchSettings,
-	resetCognitiveSettings as resetRemoteSettings,
-	updateCognitiveSettings as saveSettings
-} from "../../api/cognitiveSettingsService";
+import { useTheme } from "@repo/utils";
 import {
 	createContext,
 	useCallback,
@@ -12,7 +8,11 @@ import {
 	useState,
 	type ReactNode
 } from "react";
-import { useTheme } from "@repo/utils";
+import {
+	getCognitiveSettings as fetchSettings,
+	resetCognitiveSettings as resetRemoteSettings,
+	updateCognitiveSettings as saveSettings
+} from "../../api/cognitiveSettingsService";
 
 export type ComplexityLevel = "simple" | "complete";
 export type ContrastLevel = "low" | "normal" | "high";
@@ -75,19 +75,19 @@ export function CognitiveSettingsProvider({ children }: { children: ReactNode })
 	useEffect(() => {
 		const root = document.documentElement;
 		const body = document.body;
-		
+
 		if (isDarkMode) {
-			root.classList.add('dark-mode');
-			body.classList.add('dark-mode');
+			root.classList.add("dark-mode");
+			body.classList.add("dark-mode");
 		} else {
-			root.classList.remove('dark-mode');
-			body.classList.remove('dark-mode');
+			root.classList.remove("dark-mode");
+			body.classList.remove("dark-mode");
 		}
-		
-		root.style.setProperty("--spacing-base", `${settings.spacing}px`);
+
+		root.style.setProperty("--space-base", `${settings.spacing}px`);
 		root.style.setProperty("--font-size-base", `${settings.fontSize}px`);
 		root.style.setProperty("--font-base", `${settings.fontSize}px`);
-		
+
 		root.setAttribute("data-contrast", settings.contrast);
 		root.setAttribute("data-complexity", settings.complexity);
 		body.setAttribute("data-contrast", settings.contrast);
