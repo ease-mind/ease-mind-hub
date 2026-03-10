@@ -1,8 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import { TasksPage } from './tasks';
 
-vi.mock('@repo/utils', () => ({
+jest.mock('@repo/utils', () => ({
   useTheme: () => ({
     colors: {
       background: '#ffffff',
@@ -12,7 +11,7 @@ vi.mock('@repo/utils', () => ({
   }),
 }));
 
-vi.mock('../../utils/microfrontends', () => ({
+jest.mock('../../../utils/microfrontends', () => ({
   TaskOrganizerPage: () => <div data-testid="task-organizer">Task Organizer Component</div>,
 }));
 
@@ -52,7 +51,7 @@ describe('TasksPage', () => {
 
   it('deve aplicar background correto no modo escuro', () => {
     const { useTheme } = require('@repo/utils');
-    vi.mocked(useTheme).mockReturnValue({
+    jest.mocked(useTheme).mockReturnValue({
       colors: {
         background: '#1a1a1a',
         'coral.500': '#ff4353',

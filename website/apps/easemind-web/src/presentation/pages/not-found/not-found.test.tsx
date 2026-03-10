@@ -1,9 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { vi } from 'vitest';
 import NotFoundPage from './not-found';
 
-vi.mock('@repo/utils', () => ({
+jest.mock('@repo/ui', () => ({
+  EasemindCard: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="mock-card">{children}</div>
+  ),
+  EasemindDatePicker: () => <div data-testid="mock-datepicker" />,
+}));
+
+jest.mock('react-router-dom');
+
+jest.mock('@repo/utils', () => ({
   useTheme: () => ({
     colors: {
       background: '#ffffff',

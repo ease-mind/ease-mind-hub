@@ -3,6 +3,13 @@ import { render, screen, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import EasemindThermometerPage from './thermometer';
 
+jest.mock('@repo/data-access', () => ({
+  ...jest.requireActual('@repo/data-access'),
+  AuthRepository: jest.fn().mockImplementation(() => ({
+    login: jest.fn(),
+  })),
+}));
+
 const mockUseTheme = {
   colors: {
     'coral.500': '#FF4353',

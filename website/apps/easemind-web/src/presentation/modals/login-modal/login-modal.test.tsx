@@ -1,39 +1,126 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import { EasemindLoginModal } from './login-modal';
 import { AccessModalType } from '@repo/ui';
 
-vi.mock('@repo/data-access', () => ({
+jest.mock('@repo/data-access', () => ({
   useUser: () => ({
-    login: vi.fn().mockResolvedValue({ success: true, message: 'Login realizado com sucesso' }),
+    login: jest.fn(), // não testamos fluxo de API aqui
   }),
 }));
 
-vi.mock('@repo/ui', async () => {
-  const actual = await vi.importActual('@repo/ui');
-  return {
-    ...actual,
-    EasemindModal: ({ children, open, onClose, title }: any) =>
-      open ? (
-        <div data-testid="modal">
-          <h2>{title}</h2>
-          <button onClick={onClose}>Fechar</button>
-          {children}
-        </div>
-      ) : null,
-  };
-});
+jest.mock('@repo/ui', () => ({
+  AccessModalType: {
+    LOGIN: 'LOGIN',
+    REGISTER: 'REGISTER',
+  },
+  EasemindModal: ({ children, open, onClose, title }: any) =>
+    open ? (
+      <div data-testid="modal">
+        <h2>{title}</h2>
+        <button onClick={onClose}>Fechar</button>
+        {children}
+      </div>
+    ) : null,
+}));
 
 const mockProps = {
   open: true,
-  onClose: vi.fn(),
-  onSubmit: vi.fn(),
-  openModal: vi.fn(),
+  onClose: jest.fn(),
+  onSubmit: jest.fn(),
+  openModal: jest.fn(),
 };
 
 describe('EasemindLoginModal', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
+  });
+
+  it('deve renderizar o modal quando open é true', () => {
+    render(<EasemindLoginModal {...mockProps} />);
+    expect(screen.getByTestId('modal')).toBeInTheDocument();
+    expect(screen.getByText('Login')).toBeInTheDocument();
+  });
+
+  it('não deve renderizar o modal quando open é false', () => {
+    render(<EasemindLoginModal {...mockProps} open={false} />);
+    expect(screen.queryByTestId('modal')).not.toBeInTheDocument();
+  });
+
+  it('deve exibir campos de e-mail e senha', () => {
+    render(<EasemindLoginModal {...mockProps} />);
+    expect(screen.getByPlaceholderText('Digite seu e-mail')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Digite sua senha')).toBeInTheDocument();
+  });
+
+  it('deve exibir botão "Entrar"', () => {
+    render(<EasemindLoginModal {...mockProps} />);
+    expect(screen.getByRole('button', { name: /entrar/i })).toBeInTheDocument();
+  });
+
+  it('deve chamar openModal ao clicar em "Crie uma agora!"', () => {
+    render(<EasemindLoginModal {...mockProps} />);
+    const createAccountLink = screen.getByText('Crie uma agora!');
+    fireEvent.click(createAccountLink);
+    expect(mockProps.openModal).toHaveBeenCalledWith(AccessModalType.LOGIN);
+  });
+
+  it('deve chamar onClose ao fechar o modal', () => {
+    render(<EasemindLoginModal {...mockProps} />);
+    const closeButton = screen.getByText('Fechar');
+    fireEvent.click(closeButton);
+    expect(mockProps.onClose).toHaveBeenCalled();
+  });
+
+  it('não deve chamar onSubmit quando campos obrigatórios estão vazios', async () => {
+    render(<EasemindLoginModal {...mockProps} />);
+    const submitButton = screen.getByRole('button', { name: /entrar/i });
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockProps.onSubmit).not.toHaveBeenCalled();
+    });
+  });
+});
+
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { EasemindLoginModal } from './login-modal';
+import { AccessModalType } from '@repo/ui';
+
+let loginMock: jest.Mock;
+
+jest.mock('@repo/data-access', () => ({
+  useUser: () => ({
+    login: loginMock,
+  }),
+}));
+
+jest.mock('@repo/ui', () => ({
+  AccessModalType: {
+    LOGIN: 'LOGIN',
+    REGISTER: 'REGISTER',
+  },
+  EasemindModal: ({ children, open, onClose, title }: any) =>
+    open ? (
+      <div data-testid="modal">
+        <h2>{title}</h2>
+        <button onClick={onClose}>Fechar</button>
+        {children}
+      </div>
+    ) : null,
+}));
+
+const mockProps = {
+  open: true,
+  onClose: jest.fn(),
+  onSubmit: jest.fn(),
+  openModal: jest.fn(),
+};
+
+describe('EasemindLoginModal', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    loginMock = jest.fn(); // reatribui aqui
   });
 
   it('deve renderizar o modal quando open é true', () => {
@@ -94,9 +181,7 @@ describe('EasemindLoginModal', () => {
   });
 
   it('deve chamar onSubmit com sucesso ao fazer login válido', async () => {
-    const { useUser } = await import('@repo/data-access');
-    const loginMock = vi.fn().mockResolvedValue({ success: true, message: 'Login realizado' });
-    vi.mocked(useUser).mockReturnValue({ login: loginMock } as any);
+    loginMock.mockResolvedValueOnce({ success: true, message: 'Login realizado' });
 
     render(<EasemindLoginModal {...mockProps} />);
     
@@ -118,12 +203,10 @@ describe('EasemindLoginModal', () => {
   });
 
   it('deve chamar onSubmit com erro ao falhar login', async () => {
-    const { useUser } = await import('@repo/data-access');
-    const loginMock = vi.fn().mockResolvedValue({ 
-      success: false, 
-      message: 'Credenciais inválidas' 
+    loginMock.mockResolvedValueOnce({
+      success: false,
+      message: 'Credenciais inválidas'
     });
-    vi.mocked(useUser).mockReturnValue({ login: loginMock } as any);
 
     render(<EasemindLoginModal {...mockProps} />);
     

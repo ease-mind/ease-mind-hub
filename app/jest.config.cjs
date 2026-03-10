@@ -1,6 +1,6 @@
-module.exports = {
-  preset: 'jest-expo',
-  testEnvironment: 'node',
+const { getNodePreset } = require('jest-expo/config');
+
+module.exports = getNodePreset({
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
@@ -11,5 +11,5 @@ module.exports = {
     '/ios/',
     '/.expo/',
   ],
-};
+});
 

@@ -4,6 +4,7 @@
   "scripts": {
     "build": "npx turbo run build",
     "build:prod": "NODE_ENV=production turbo run build",
+    "test": "turbo run test",
     "preview": "turbo run preview --filter=easemind-web",
     "preview:mfe-tasks": "turbo run preview --filter=mfe-tasks",
     "build:easemind-web": "turbo run build --filter=easemind-web",

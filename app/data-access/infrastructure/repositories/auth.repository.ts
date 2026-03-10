@@ -6,8 +6,15 @@ import { api } from '../http/api-client';
 export class AuthRepository implements IAuthRepository {
   async login(credentials: LoginCredentials): Promise<AuthEntity> {
     try {
-      const response = await api.post<AuthEntity>('/auth/login', credentials);
-      return response.data;
+      const response = await api.post('/auth/login', credentials);
+
+      const data: any = response.data;
+      const token: string | undefined = data.token ?? data.accessToken;
+
+      return {
+        user: data.user,
+        token,
+      } as AuthEntity;
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Erro ao fazer login');
     }

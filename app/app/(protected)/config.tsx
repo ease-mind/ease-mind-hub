@@ -368,6 +368,8 @@ export default function ConfigScreen() {
             {simpleSectionIndex === SECTIONS.length - 1 && (
               <View style={[styles.footer, { marginTop: spacing / 2, gap: spacing / 2 }]}>
                 <EasemindButton
+                  testID="config-save"
+                  accessibilityLabel="Salvar preferências"
                   variant="primary"
                   onPress={handleSave}
                   disabled={loading || saving || resetting}
@@ -376,6 +378,8 @@ export default function ConfigScreen() {
                   {saving ? 'Salvando...' : 'Salvar preferências'}
                 </EasemindButton>
                 <EasemindButton
+                  testID="config-reset"
+                  accessibilityLabel="Restaurar padrão"
                   variant="outlined"
                   onPress={handleReset}
                   disabled={loading || saving || resetting}
@@ -394,6 +398,8 @@ export default function ConfigScreen() {
             {renderSectionTamanhoFonte()}
             <View style={[styles.footer, { marginTop: spacing / 2, gap: spacing / 2 }]}>
               <EasemindButton
+                testID="config-save"
+                accessibilityLabel="Salvar preferências"
                 variant="primary"
                 onPress={handleSave}
                 disabled={loading || saving || resetting}
@@ -402,6 +408,8 @@ export default function ConfigScreen() {
                 {saving ? 'Salvando...' : 'Salvar preferências'}
               </EasemindButton>
               <EasemindButton
+                testID="config-reset"
+                accessibilityLabel="Restaurar padrão"
                 variant="outlined"
                 onPress={handleReset}
                 disabled={loading || saving || resetting}

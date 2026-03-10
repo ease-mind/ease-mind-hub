@@ -14,14 +14,18 @@ const mockSettings = {
 const mockUpdateSettings = jest.fn();
 const mockResetSettings = jest.fn();
 
-jest.mock("../../contexts/cognitive-settings/cognitive-settings.context", () => ({
-	...jest.requireActual("../../contexts/cognitive-settings/cognitive-settings.context"),
+jest.mock('@repo/data-access', () => ({
+	...jest.requireActual('@repo/data-access'),
 	useCognitiveSettings: () => ({
-		settings: mockSettings,
-		updateSettings: mockUpdateSettings,
-		resetSettings: mockResetSettings
-	})
-}));
+	  settings: mockSettings,
+	  updateSettings: mockUpdateSettings,
+	  resetSettings: mockResetSettings,
+	}),
+  }));
+  
+  jest.mock('../../../packages/data-access/src/infrastructure/http/api-client', () => ({
+	apiClient: { get: jest.fn(), post: jest.fn() },
+  }));
 
 jest.mock("@repo/utils", () => ({
 	useTheme: () => ({

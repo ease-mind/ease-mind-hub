@@ -1,8 +1,14 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import EasemindProfilePage from './profile';
 
-vi.mock('@repo/utils', () => ({
+jest.mock('@repo/ui', () => ({
+  EasemindCard: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="mock-card">{children}</div>
+  ),
+  EasemindDatePicker: () => <div data-testid="mock-datepicker" />,
+}));
+
+jest.mock('@repo/utils', () => ({
   useTheme: () => ({
     colors: {
       background: '#ffffff',
@@ -19,7 +25,7 @@ vi.mock('@repo/utils', () => ({
   validateCPF: () => true,
 }));
 
-vi.mock('@repo/data-access', () => ({
+jest.mock('@repo/data-access', () => ({
   useUser: () => ({
     user: {
       _id: '1',
@@ -28,9 +34,9 @@ vi.mock('@repo/data-access', () => ({
       image: null,
       document: '12345678900',
     },
-    setUser: vi.fn(),
+      setUser: jest.fn(),
   }),
-  getUserAddress: vi.fn().mockResolvedValue({
+  getUserAddress: jest.fn().mockResolvedValue({
     data: {
       address: 'Rua Teste, 123',
       city: 'São Paulo',
@@ -38,14 +44,14 @@ vi.mock('@repo/data-access', () => ({
       complement: 'Apto 10',
     },
   }),
-  updateUser: vi.fn().mockResolvedValue({
+  updateUser: jest.fn().mockResolvedValue({
     status: 200,
     data: {
       name: 'Daniela Farias',
       email: 'daniela@test.com',
     },
   }),
-  updateUserProfileImage: vi.fn().mockResolvedValue({
+  updateUserProfileImage: jest.fn().mockResolvedValue({
     name: 'Daniela Farias',
     image: 'http://image.com/photo.jpg',
   }),
@@ -57,7 +63,7 @@ vi.mock('@repo/data-access', () => ({
 
 describe('EasemindProfilePage', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('deve renderizar sem erros', () => {
@@ -123,7 +129,7 @@ describe('EasemindProfilePage', () => {
   it('deve acionar input de arquivo ao clicar em "Editar foto"', () => {
     render(<EasemindProfilePage />);
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    const clickSpy = vi.spyOn(fileInput, 'click');
+    const clickSpy = jest.spyOn(fileInput, 'click');
     
     const editButton = screen.getByRole('button', { name: /editar foto/i });
     fireEvent.click(editButton);
@@ -165,7 +171,7 @@ describe('EasemindProfilePage', () => {
 
   it('deve exibir snackbar de erro quando atualização falha', async () => {
     const { updateUser } = await import('@repo/data-access');
-    vi.mocked(updateUser).mockResolvedValueOnce({
+    jest.mocked(updateUser).mockResolvedValueOnce({
       status: 400,
       data: { message: 'Erro ao atualizar dados' },
     } as any);
@@ -241,7 +247,7 @@ describe('EasemindProfilePage', () => {
 
   it('deve exibir loading state durante submissão', async () => {
     const { updateUser } = await import('@repo/data-access');
-    vi.mocked(updateUser).mockImplementation(() => 
+    jest.mocked(updateUser).mockImplementation(() => 
       new Promise(resolve => setTimeout(() => resolve({ status: 200, data: {} } as any), 100))
     );
 

@@ -342,6 +342,8 @@ export default function TasksScreen() {
               return (
                 <TouchableOpacity
                   key={tab.value}
+                  testID={`tab-${tab.value}`}
+                  accessibilityLabel={tab.label}
                   style={[
                     styles.tab,
                     { borderWidth: contrastStyles.tabBorderWidth },
@@ -385,12 +387,14 @@ export default function TasksScreen() {
         <FlatList
           data={filteredTasks}
           keyExtractor={(item) => item.id}
+          testID="tasks-list"
           renderItem={({ item }) => (
             <TaskCard
               task={item}
               onToggleComplete={handleToggleComplete}
               onClickDetails={setSelectedTask}
               onEdit={handleEdit}
+              testID={`task-${item.id}`}
             />
           )}
           contentContainerStyle={[
