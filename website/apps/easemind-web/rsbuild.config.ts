@@ -18,7 +18,6 @@ export default defineConfig({
     pluginModuleFederation(mfConfig),
   ],
   source: {
-    // Compile all JS files and exclude core-js
     include: [{ not: /[\\/]core-js[\\/]/ }],
     define: publicVars,
   },

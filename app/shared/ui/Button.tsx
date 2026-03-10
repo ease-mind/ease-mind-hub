@@ -12,6 +12,8 @@ export interface EasemindButtonProps {
     icon?: ReactNode;
     style?: StyleProp<ViewStyle>;
     fullWidth?: boolean;
+    testID?: string;
+    accessibilityLabel?: string;
 }
 
 export function EasemindButton({
@@ -23,6 +25,8 @@ export function EasemindButton({
     icon,
     style,
     fullWidth = false,
+    testID,
+    accessibilityLabel,
 }: EasemindButtonProps) {
     const { spacing, fontSize, contrast } = useCognitiveSettings();
 
@@ -91,6 +95,8 @@ export function EasemindButton({
 
     return (
         <TouchableOpacity
+            testID={testID}
+            accessibilityLabel={accessibilityLabel}
             style={[
                 buttonStyles.button,
                 {

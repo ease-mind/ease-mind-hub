@@ -16,14 +16,16 @@ export const useAuthData = () => {
     try {
       const useCase = AuthFactory.createLoginUseCase();
       const authData = await useCase.execute(credentials);
-      
-      // Store token and user in AsyncStorage
+
+      if (!authData.token) {
+        throw new Error('Token de autenticação não retornado pela API.');
+      }
+
       await AsyncStorage.setItem('token', authData.token);
       await AsyncStorage.setItem('user', JSON.stringify(authData.user));
-      
-      // Set auth token for future requests
+
       setAuthToken(authData.token);
-      
+
       return authData;
     } catch (err: any) {
       const message = err.message || 'Erro ao fazer login';

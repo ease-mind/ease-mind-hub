@@ -1,4 +1,3 @@
-// guards/public.guard.tsx
 import { useUser } from '@repo/data-access';
 import { Navigate } from 'react-router-dom';
 

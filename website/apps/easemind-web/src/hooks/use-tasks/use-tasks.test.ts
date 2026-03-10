@@ -70,34 +70,37 @@ const mockTasks = [
 	}
 ];
 
-const mockGetAll = jest.fn().mockResolvedValue(mockTasks);
+const mockGetAll = jest.fn();
 const mockGetById = jest.fn();
-const mockCreate = jest.fn().mockImplementation(async (data: any) => ({
-	...data,
-	id: "new-task",
-	createdAt: new Date().toISOString(),
-	updatedAt: new Date().toISOString()
-}));
-const mockUpdate = jest.fn().mockImplementation(async (id: string, patch: any) => {
-	const task = mockTasks.find(t => t.id === id);
-	return { ...task, ...patch, updatedAt: new Date().toISOString() };
-});
-const mockDelete = jest.fn().mockResolvedValue(undefined);
+const mockCreate = jest.fn();
+const mockUpdate = jest.fn();
+const mockDelete = jest.fn();
 
 jest.mock("../../repositories/tasks", () => ({
 	ApiTaskRepository: jest.fn().mockImplementation(() => ({
-		getAll: mockGetAll,
-		getById: mockGetById,
-		create: mockCreate,
-		update: mockUpdate,
-		delete: mockDelete
-	})),
+		getAll: (...args: any[]) => mockGetAll(...args),
+		getById: (...args: any[]) => mockGetById(...args),
+		create: (...args: any[]) => mockCreate(...args),
+		update: (...args: any[]) => mockUpdate(...args),
+		delete: (...args: any[]) => mockDelete(...args)
+	}))
 }));
 
 describe("useTasks", () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockGetAll.mockResolvedValue([...mockTasks]);
+		mockCreate.mockImplementation(async (data: any) => ({
+			...data,
+			id: "new-task",
+			createdAt: new Date().toISOString(),
+			updatedAt: new Date().toISOString()
+		}));
+		mockUpdate.mockImplementation(async (id: string, patch: any) => {
+			const task = mockTasks.find(t => t.id === id);
+			return { ...task, ...patch, updatedAt: new Date().toISOString() };
+		});
+		mockDelete.mockResolvedValue(undefined);
 	});
 
 	test("deve carregar tarefas da API inicialmente", async () => {

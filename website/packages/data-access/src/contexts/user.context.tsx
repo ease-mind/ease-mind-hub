@@ -31,10 +31,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!isExpired) {
           setUser(sessionUser);
           setIsAuthenticated(true);
-          // Configura o token no header do axios
           api.defaults.headers.common['Authorization'] = `Bearer ${sessionToken}`;
         } else {
-          // Token expirado, limpa a sessão
           setUser(null);
           setSessionUser(null);
           setSessionToken(null);
@@ -60,14 +58,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       const response = await authService.login(credentials);
-      
-      // Salva o usuário e token na sessão
       setSessionUser(response.user);
       setSessionToken(response.accessToken);
       setUser(response.user);
       setIsAuthenticated(true);
-      
-      // Configura o token no header do axios
       api.defaults.headers.common['Authorization'] = `Bearer ${response.accessToken}`;
       
       return { success: true };
@@ -91,16 +85,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async (): Promise<void> => {
-    // Chama o serviço de logout que limpa o token do axios
     await authService.logout();
-    
-    // Limpa todos os estados locais
     setUser(null);
     setSessionUser(null);
     setSessionToken(null);
     setIsAuthenticated(false);
-    
-    // Remove o token do header do axios (garantia adicional)
     delete api.defaults.headers.common['Authorization'];
   };
 

@@ -12,7 +12,6 @@ export default defineConfig({
   server: {
     port: 3001,
   },
-  // mode: 'production',
   dev: {
     assetPrefix: APP_URL,
   },
@@ -33,7 +32,6 @@ export default defineConfig({
     }),
   ],
   source: {
-    // Compile all JS files and exclude core-js
     include: [{ not: /[\\/]core-js[\\/]/ }],
     define: publicVars,
   },

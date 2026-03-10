@@ -26,9 +26,6 @@ export type EasemindSelectProps = SelectProps & {
   helperText?: string;
   loading?: boolean;
   multiple?:boolean;
-  /**
-   * As cores do select
-   */
   color?: "primary" | "secondary" | "success" | "error" | "info" | "warning";
 };
 

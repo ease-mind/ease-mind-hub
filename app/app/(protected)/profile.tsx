@@ -140,7 +140,6 @@ const ProfileScreen = () => {
     const isHighContrast = contrast === 'high';
     const isLowContrast = contrast === 'low';
 
-    // Contrast-aware styles
     const getContrastBorderWidth = () => isHighContrast ? 2 : 1;
     const getContrastShadowOpacity = () => {
         if (isLowContrast) return 0.02;

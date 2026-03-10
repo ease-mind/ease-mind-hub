@@ -3,6 +3,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Task } from "../../../repositories/tasks";
 import { TaskCard } from "./task-card";
 
+jest.mock("@repo/data-access", () => ({}));
+
 describe("<TaskCard />", () => {
 	const baseTask: Task = {
 		id: "t-1",

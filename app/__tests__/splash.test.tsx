@@ -11,7 +11,7 @@ jest.mock('expo-router', () => ({
   },
 }));
 
-jest.mock('@/shared/contexts', () => ({
+jest.mock('@/data-access', () => ({
   useAuth: jest.fn(),
 }));
 

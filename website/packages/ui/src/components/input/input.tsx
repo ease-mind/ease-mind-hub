@@ -35,7 +35,6 @@ export type EasemindInputProps = Omit<TextFieldProps, "onChange" | "value"> & {
 };
 
 function formatCurrency(value: string) {
-  // Verifica se o valor já é um número com ponto decimal
   const number = parseFloat(value);
 
   if (isNaN(number)) return "";

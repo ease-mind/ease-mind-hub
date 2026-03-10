@@ -1,9 +1,7 @@
 export function validateCPF(value: string) {
-    // Remove tudo que não for número
     if (!value) return true;
     const cpf = value.replace(/[^\d]+/g, '');
     if (cpf.length !== 11) return "CPF deve ter 11 dígitos";
-    // Validação básica de CPF (pode ser melhorada)
     let sum = 0;
     let rest;
     if (/^(\d)\1+$/.test(cpf)) return "CPF inválido";

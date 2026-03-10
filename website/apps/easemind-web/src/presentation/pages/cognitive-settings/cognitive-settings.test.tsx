@@ -14,8 +14,7 @@ const mockSettings = {
 const mockUpdateSettings = jest.fn();
 const mockResetSettings = jest.fn();
 
-jest.mock("../../contexts/cognitive-settings/cognitive-settings.context", () => ({
-	...jest.requireActual("../../contexts/cognitive-settings/cognitive-settings.context"),
+jest.mock("@repo/data-access", () => ({
 	useCognitiveSettings: () => ({
 		settings: mockSettings,
 		updateSettings: mockUpdateSettings,
@@ -86,14 +85,14 @@ describe("<CognitiveSettingsPage />", () => {
 	test("deve exibir botões de salvar e cancelar", () => {
 		render(<CognitiveSettingsPage />);
 
-		expect(screen.getByText("Salvar Configurações")).toBeInTheDocument();
+		expect(screen.getByText("Salvar configurações")).toBeInTheDocument();
 		expect(screen.getByText("Cancelar")).toBeInTheDocument();
 	});
 
 	test("deve chamar updateSettings ao clicar em Salvar", () => {
 		render(<CognitiveSettingsPage />);
 
-		fireEvent.click(screen.getByText("Salvar Configurações"));
+		fireEvent.click(screen.getByText("Salvar configurações"));
 
 		expect(mockUpdateSettings).toHaveBeenCalledTimes(1);
 	});
@@ -111,7 +110,7 @@ describe("<CognitiveSettingsPage />", () => {
 
 		fireEvent.click(screen.getByText("Simples"));
 
-		fireEvent.click(screen.getByText("Salvar Configurações"));
+		fireEvent.click(screen.getByText("Salvar configurações"));
 
 		expect(mockUpdateSettings).toHaveBeenCalledTimes(1);
 		expect(mockUpdateSettings).toHaveBeenCalledWith(

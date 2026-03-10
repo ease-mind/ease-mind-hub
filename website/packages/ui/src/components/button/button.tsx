@@ -12,13 +12,7 @@ declare module '@mui/material/Button' {
 }
 
 export interface EasemindButtonProps extends ButtonProps {
-  /**
-   * O texto do botão
-   */
   label: string;
-  /**
-   * A cor do botão
-   */
   color:
   | 'primary'
   | 'secondary'
@@ -29,11 +23,6 @@ export interface EasemindButtonProps extends ButtonProps {
   | 'warning'
   | 'black'
   | 'white';
-  /**
-   * O estilo do botão
-   */
-
-    /** Raio da borda (padrão: 5rem) */
   borderRadius?: string;
 
   variant?: 'contained' | 'text' | 'outlined';

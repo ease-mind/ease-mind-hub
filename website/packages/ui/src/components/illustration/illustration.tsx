@@ -1,15 +1,7 @@
 import { Box } from "@mui/material";
 
 export interface EasemindIllustrationProps {
-  /**
-   * O nome da ilustração
-   */
   name?: string;
-  /**
-   * O tamanho da ilustração
-   * @type 'sm' | 'md' |'lg' | 'auto'
-   * @default md
-   */
   variant?: "sm" | "md" | "lg" | "auto" | "fixed";
   type?: "svg" | "png" | "gif";
   width?: string;

@@ -9,6 +9,7 @@ type TaskCardProps = {
   onToggleComplete: (taskId: string) => void;
   onClickDetails: (task: Task) => void;
   onEdit?: (task: Task) => void;
+  testID?: string;
 };
 
 const priorityBg: Record<string, string> = {
@@ -17,7 +18,7 @@ const priorityBg: Record<string, string> = {
   baixa: '#D1FAE5',
 };
 
-export function TaskCard({ task, onToggleComplete, onClickDetails, onEdit }: TaskCardProps) {
+export function TaskCard({ task, onToggleComplete, onClickDetails, onEdit, testID }: TaskCardProps) {
   const { complexity, themeColors, fontSize, spacing, contrast } = useCognitiveSettings();
   const isSimple = complexity === 'simple';
 
@@ -60,7 +61,7 @@ export function TaskCard({ task, onToggleComplete, onClickDetails, onEdit }: Tas
 
   if (isSimple) {
     return (
-      <View style={[
+      <View testID={testID} accessibilityLabel={task.title} style={[
         styles.card, 
         { 
           borderColor: contrastStyles.borderColor, 
@@ -102,7 +103,7 @@ export function TaskCard({ task, onToggleComplete, onClickDetails, onEdit }: Tas
   const totalSubtasks = task.subtasks.length;
 
   return (
-    <View style={[
+    <View testID={testID} accessibilityLabel={task.title} style={[
       styles.card, 
       { 
         marginBottom: spacing, 

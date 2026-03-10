@@ -1,6 +1,5 @@
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-// Import theme colors from shared folder (UI-related constants can stay in shared)
 import { themeColorsNormal, themeColorsLow, themeColorsHigh, ThemeColors } from '@/shared/classes/constants/themeColors';
 import { useCognitiveSettingsData } from '../hooks/use-cognitive-settings-data.hook';
 import { useAuth } from './auth.context';
