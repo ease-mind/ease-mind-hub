@@ -1,6 +1,6 @@
 # EaseMind Hub
 
-Plataforma de saúde mental e cognitiva para pessoas neurodivergentes (TDAH, autismo e outras condições). Composta por uma **API RESTful**, **aplicação mobile** (React Native + Expo) e **website** (Next.js + TurboRepo).
+Plataforma de saúde mental e cognitiva para pessoas neurodivergentes (TDAH, autismo e outras condições). Composta por uma **API RESTful**, **aplicação mobile** (React Native + Expo) e **website** (React + TurboRepo).
 
 ---
 
@@ -10,7 +10,36 @@ Plataforma de saúde mental e cognitiva para pessoas neurodivergentes (TDAH, aut
 |--------|------------|
 | **API** | Node.js, Express, TypeScript, MongoDB, JWT, Swagger, Multer |
 | **Mobile** | React Native, Expo SDK 54, TypeScript, React Navigation, React Hook Form, AsyncStorage |
-| **Website** | Next.js 14, TypeScript, Material-UI, TurboRepo, Storybook |
+| **Website** | React, TypeScript, Material-UI, TurboRepo, Storybook |
+
+---
+
+## Arquitetura
+
+### Clean Architecture + Microfrontends
+
+O website implementa Clean Architecture através de camadas isoladas, permitindo escalabilidade e manutenção independente:
+
+```
+packages/data-access/
+├── domain/
+│   ├── entities/          # Modelos de negócio (Task, User, Symptom)
+│   ├── repositories/      # Interfaces de contrato
+│   └── use-cases/         # Lógica de aplicação pura
+├── infrastructure/
+│   ├── api/               # HTTP clients (Axios)
+│   ├── repositories/      # Implementações concretas
+│   └── factories/         # Injeção de dependências
+└── presentation/
+    └── hooks/             # Adaptadores React (useTask, useAuth)
+```
+
+**Microfrontends** via Module Federation (Webpack 5):
+- `apps/easemind-web`: Shell principal, gerencia roteamento e autenticação
+- `apps/mfe-tasks`: Domínio de tarefas isolado, expõe `/tasks` via remote entry
+- `packages/ui`: Design system compartilhado entre MFEs
+
+**Inversão de Dependências**: Use cases dependem de abstrações (`ITaskRepository`), não de implementações. Factories resolvem dependências em tempo de execução.
 
 ---
 

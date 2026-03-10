@@ -9,17 +9,14 @@ import {
   SettingsCard,
   SliderRow,
 } from '@/shared/components/settings';
-import { useCognitiveSettings, useCognitiveSettingsData } from '@/data-access';
+import { useCognitiveSettings, useCognitiveSettingsData, CognitiveSettingsEntity } from '@/data-access';
 import { Stack } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { EasemindButton } from '@/shared/ui/Button';
-import {
-  CognitiveContrast,
-  CognitiveSettingsData,
-} from '@/shared/services/cognitiveSettingsService';
+import { useFeedbackAnimation } from '@/shared/hooks/useFeedbackAnimation';
 
 type ComplexityLevel = 'simples' | 'completo';
 type ContrastLevel = 'baixo' | 'normal' | 'alto';
@@ -39,21 +36,21 @@ function fontSizeToSliderIndex(fontSize: 14 | 16 | 18): number {
   return i >= 0 ? i : 1;
 }
 
-const mapComplexityFromBackend = (value: CognitiveSettingsData['complexity']): ComplexityLevel => {
+const mapComplexityFromBackend = (value: CognitiveSettingsEntity['complexity']): ComplexityLevel => {
   return value === 'complete' ? 'completo' : 'simples';
 };
 
-const mapComplexityToBackend = (value: ComplexityLevel): CognitiveSettingsData['complexity'] => {
+const mapComplexityToBackend = (value: ComplexityLevel): CognitiveSettingsEntity['complexity'] => {
   return value === 'completo' ? 'complete' : 'simple';
 };
 
-const mapContrastFromBackend = (value: CognitiveContrast): ContrastLevel => {
+const mapContrastFromBackend = (value: CognitiveSettingsEntity['contrast']): ContrastLevel => {
   if (value === 'low') return 'baixo';
   if (value === 'high') return 'alto';
   return 'normal';
 };
 
-const mapContrastToBackend = (value: ContrastLevel): CognitiveContrast => {
+const mapContrastToBackend = (value: ContrastLevel): CognitiveSettingsEntity['contrast'] => {
   if (value === 'baixo') return 'low';
   if (value === 'alto') return 'high';
   return 'normal';
@@ -72,6 +69,7 @@ export default function ConfigScreen() {
   const insets = useSafeAreaInsets();
   const { themeColors, spacing, updateState: updateContextState, loadSettings } = useCognitiveSettings();
   const { getSettings, updateSettings, resetSettings, loading: apiLoading } = useCognitiveSettingsData();
+  const { showFeedback, FeedbackAnimation } = useFeedbackAnimation();
   const [complexidade, setComplexidade] = useState<ComplexityLevel>('completo');
   const [contraste, setContraste] = useState<ContrastLevel>('normal');
   const [espacamento, setEspacamento] = useState<12 | 14 | 18>(12);
@@ -159,7 +157,7 @@ export default function ConfigScreen() {
         fontSize: tamanhoFonte,
       });
       await loadSettings();
-      Alert.alert('Configurações salvas', 'Suas preferências cognitivas foram atualizadas.');
+      showFeedback('success');
     } catch {
       Alert.alert(
         'Erro',
@@ -185,10 +183,7 @@ export default function ConfigScreen() {
         fontSize: normalizeFontSize(Number(settings.fontSize) || 14),
       });
       await loadSettings();
-      Alert.alert(
-        'Configurações restauradas',
-        'Suas preferências cognitivas foram restauradas para os valores padrão.',
-      );
+      showFeedback('success');
     } catch {
       Alert.alert(
         'Erro',
@@ -421,6 +416,7 @@ export default function ConfigScreen() {
           </>
         )}
       </ScrollView>
+      <FeedbackAnimation />
       </ScreenFadeIn>
     </>
   );

@@ -45,7 +45,7 @@ export function EasemindButton({
 })<ButtonProps & { borderRadius?: string }>(({ borderRadius }) => ([{
     '&.MuiButton-containedSecondary': {
       backgroundColor: palette['coral.500'],
-      color: palette['coral.subcontrast']
+      color: palette['coral.100']
     },
     '&.MuiButton-outlinedSecondary': {
       borderColor: palette['coral.800'],

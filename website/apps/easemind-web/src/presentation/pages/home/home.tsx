@@ -167,7 +167,7 @@ const EasemindHomePage = () => {
                 ({ icon, title, description }: Benefit, index: number) => (
                   <Box maxWidth={"20em"} key={index}>
                     <EasemindCard
-                      bgcolor={colors["coral.contrast"]}
+                      bgcolor={colors["coral.subcontrast"]}
                       variant={"outlined"}
                       styles={{ borderColor: colors["coral.100"] }}
                     >
@@ -186,7 +186,7 @@ const EasemindHomePage = () => {
                         <Typography
                           variant="md"
                           fontWeight={"bold"}
-                          color={colors["coral.400"]}
+                          color={colors["coral.200"]}
                           style={{ marginTop: "8px" }}
                         >
                           {title}

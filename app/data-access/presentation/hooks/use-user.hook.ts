@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react';
 import { UserFactory } from '../../infrastructure/factories/user.factory';
 import { UserEntity } from '../../domain/entities/user.entity';
+import { useFeedbackAnimation } from '@/shared/hooks/useFeedbackAnimation';
 
 export const useUser = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { showFeedback, FeedbackAnimation } = useFeedbackAnimation();
 
   const getUserById = useCallback(async (id: string): Promise<UserEntity> => {
     setLoading(true);
@@ -27,6 +29,7 @@ export const useUser = () => {
     try {
       const useCase = UserFactory.createUpdateUserUseCase();
       const updatedUser = await useCase.execute(id, data);
+      showFeedback('success');
       return updatedUser;
     } catch (err: any) {
       setError(err.message);
@@ -34,7 +37,7 @@ export const useUser = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showFeedback]);
 
   const updateUserProfileImage = useCallback(async (id: string, file: any): Promise<UserEntity> => {
     setLoading(true);
@@ -42,6 +45,7 @@ export const useUser = () => {
     try {
       const useCase = UserFactory.createUpdateUserProfileImageUseCase();
       const updatedUser = await useCase.execute(id, file);
+      showFeedback('success');
       return updatedUser;
     } catch (err: any) {
       setError(err.message);
@@ -49,7 +53,7 @@ export const useUser = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showFeedback]);
 
   return {
     loading,
@@ -57,5 +61,6 @@ export const useUser = () => {
     getUserById,
     updateUser,
     updateUserProfileImage,
+    FeedbackAnimation,
   };
 };
