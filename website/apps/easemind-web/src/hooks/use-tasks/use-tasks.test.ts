@@ -78,11 +78,11 @@ const mockDelete = jest.fn();
 
 jest.mock("../../repositories/tasks", () => ({
 	ApiTaskRepository: jest.fn().mockImplementation(() => ({
-		getAll: mockGetAll,
-		getById: mockGetById,
-		create: mockCreate,
-		update: mockUpdate,
-		delete: mockDelete
+		getAll: (...args: any[]) => mockGetAll(...args),
+		getById: (...args: any[]) => mockGetById(...args),
+		create: (...args: any[]) => mockCreate(...args),
+		update: (...args: any[]) => mockUpdate(...args),
+		delete: (...args: any[]) => mockDelete(...args)
 	}))
 }));
 

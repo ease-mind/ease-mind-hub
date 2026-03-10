@@ -77,7 +77,7 @@ jest.mock("../../hooks/use-focus-timer/use-focus-timer", () => ({
 	})
 }));
 
-jest.mock("../../contexts/cognitive-settings/cognitive-settings.context", () => ({
+jest.mock("@repo/data-access", () => ({
 	useCognitiveSettings: () => ({
 		settings: {
 			complexity: "complete",

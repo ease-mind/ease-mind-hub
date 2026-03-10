@@ -3,6 +3,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Task } from "../../../repositories/tasks";
 import { KanbanColumn } from "./kanban-column";
 
+jest.mock("@repo/data-access", () => ({}));
+
 describe("<KanbanColumn />", () => {
 	const tasks: Task[] = [
 		{
